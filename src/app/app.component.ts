@@ -6,10 +6,9 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   template: `
-    <div class="p-5">
-      <button>smth</button>
+    <main class="h-dvh p-5">
       <router-outlet></router-outlet>
-    </div>
+    </main>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
