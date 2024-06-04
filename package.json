@@ -45,7 +45,7 @@
   "lint-staged": {
     "*": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write --ignore-unknown"
     ]
   }
 }
