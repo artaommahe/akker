@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 
 interface Barn {
   version: number;
@@ -18,6 +18,10 @@ export class BarnService {
 
   seeds = computed(() => this.barn().seeds);
 
+  constructor() {
+    this.initStorage();
+  }
+
   addSeed(name: string) {
     this.barn.update(barn => {
       const seed = barn.seeds[name] ?? { name, count: 0, addedAt: Date.now(), lastAddedAt: Date.now() };
@@ -31,4 +35,20 @@ export class BarnService {
       };
     });
   }
+
+  private initStorage() {
+    const barn = localStorage.getItem(barnStorageKey);
+
+    if (barn) {
+      this.barn.set(JSON.parse(barn));
+    }
+
+    effect(() => {
+      const barn = this.barn();
+
+      localStorage.setItem(barnStorageKey, JSON.stringify(barn));
+    });
+  }
 }
+
+const barnStorageKey = 'barn';
