@@ -36,6 +36,14 @@ export class BarnService {
     });
   }
 
+  removeSeed(name: string) {
+    this.barn.update(barn => {
+      const { [name]: _, ...seeds } = barn.seeds;
+
+      return { ...barn, seeds: seeds };
+    });
+  }
+
   private initStorage() {
     const barn = localStorage.getItem(barnStorageKey);
 
