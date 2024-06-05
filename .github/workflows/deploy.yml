@@ -34,6 +34,8 @@ jobs:
       run: npm install
     - name: Build
       run: npm run build -- --base-href=/${{ github.event.repository.name }}/
+    - name: Prepare
+      run: cp ./dist/${{ github.event.repository.name }}/browser/index.html ./dist/${{ github.event.repository.name }}/browser/404.html
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
