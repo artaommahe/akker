@@ -5,7 +5,7 @@ interface Barn {
   seeds: Record<string, Seed>;
 }
 
-interface Seed {
+export interface Seed {
   name: string;
   count: number;
   addedAt: number;

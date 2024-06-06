@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { BarnService } from '../../barn/barn.service';
+import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-new-seed',
@@ -19,9 +18,9 @@ import { BarnService } from '../../barn/barn.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewSeedComponent {
-  newSeed = signal('');
+  onNewSeed = output<string>();
 
-  private barn = inject(BarnService);
+  newSeed = signal('');
 
   updateSeed(event: Event) {
     this.newSeed.set((event.target as HTMLInputElement).value);
@@ -34,7 +33,7 @@ export class NewSeedComponent {
       return;
     }
 
-    this.barn.addSeed(seed);
+    this.onNewSeed.emit(seed);
     this.newSeed.set('');
   }
 }

@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { BarnService } from '../../barn/barn.service';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { Seed } from '../../barn/barn.service';
 
 @Component({
   selector: 'app-seeds-list',
   template: `
     <ul class="flex flex-col gap-2">
-      @for (seed of seeds(); track seed.name) {
+      @for (seed of sortedSeeds(); track seed.name) {
         <li class="flex items-center gap-2">
           <span class="grow line-clamp-1">{{ seed.name }}</span>
           <span class="shrink-0">{{ seed.count }}</span>
@@ -19,13 +19,12 @@ import { BarnService } from '../../barn/barn.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsListComponent {
-  private barn = inject(BarnService);
+  seeds = input.required<Seed[]>();
+  onRemoveSeed = output<string>();
 
-  seeds = computed(() =>
-    Object.values(this.barn.seeds()).toSorted((a, b) => b.count - a.count || b.lastAddedAt - a.lastAddedAt),
-  );
+  sortedSeeds = computed(() => this.seeds().toSorted((a, b) => b.count - a.count || b.lastAddedAt - a.lastAddedAt));
 
   remove(name: string) {
-    this.barn.removeSeed(name);
+    this.onRemoveSeed.emit(name);
   }
 }
