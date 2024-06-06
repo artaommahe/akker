@@ -7,7 +7,7 @@ import { BarnService } from '../../barn/barn.service';
     <div class="flex flex-col gap-2">
       <input
         type="text"
-        class="p-2 border border-gray-300 text-center"
+        class="p-2 border border-support/50 text-center"
         placeholder="New seed"
         [value]="newSeed()"
         (input)="updateSeed($event)"

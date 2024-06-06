@@ -6,6 +6,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
   selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
+      <!-- TODO: use inputs/outputs -->
       <app-new-seed></app-new-seed>
       <app-seeds-list></app-seeds-list>
     </div>
