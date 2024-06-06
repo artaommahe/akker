@@ -3,7 +3,7 @@ import { NewSeedComponent } from './new-seed/new-seed.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
 
 @Component({
-  selector: 'app-seeding-page',
+  selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
       <app-new-seed></app-new-seed>
@@ -14,4 +14,4 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeedingPageComponent {}
+export class PlantingPageComponent {}

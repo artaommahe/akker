@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: 'seeding', loadChildren: () => import('./seeding/seeding.routes').then(m => m.seedingRoutes) },
-  { path: '', redirectTo: '/seeding', pathMatch: 'full' },
+  { path: 'planting', loadChildren: () => import('./planting/planting.routes').then(m => m.plantingRoutes) },
+  { path: '', redirectTo: '/planting', pathMatch: 'full' },
 ];
