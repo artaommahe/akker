@@ -6,7 +6,7 @@ import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
   selector: 'app-cultivating-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-sprouts-list [sprouts]="sprouts()" (onRemoveSprout)="onRemoveSprout($event)"></app-sprouts-list>
+      <app-sprouts-list [sprouts]="sprouts()" (onRemoveSprout)="onRemoveSprout($event)" />
     </div>
   `,
   imports: [SproutsListComponent],

@@ -7,8 +7,8 @@ import { BarnService } from '../barn/barn.service';
   selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-new-seed (onNewSeed)="onNewSeed($event)"></app-new-seed>
-      <app-seeds-list [seeds]="seeds()" (onRemoveSeed)="onRemoveSeed($event)"></app-seeds-list>
+      <app-new-seed (onNewSeed)="onNewSeed($event)" />
+      <app-seeds-list [seeds]="seeds()" (onRemoveSeed)="onRemoveSeed($event)" />
     </div>
   `,
   imports: [NewSeedComponent, SeedsListComponent],
@@ -16,15 +16,15 @@ import { BarnService } from '../barn/barn.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantingPageComponent {
-  private barn = inject(BarnService);
+  private barnService = inject(BarnService);
 
-  seeds = computed(() => Object.values(this.barn.seeds()));
+  seeds = computed(() => Object.values(this.barnService.seeds()));
 
   onNewSeed(name: string) {
-    this.barn.addSeed(name);
+    this.barnService.addSeed(name);
   }
 
   onRemoveSeed(name: string) {
-    this.barn.removeSeed(name);
+    this.barnService.removeSeed(name);
   }
 }

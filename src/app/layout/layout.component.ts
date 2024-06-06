@@ -6,7 +6,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   template: `
     <div class="h-dvh flex flex-col overflow-hidden">
       <main class="p-5 grow overflow-y-auto">
-        <ng-content></ng-content>
+        <ng-content />
       </main>
 
       <nav class="shrink-0 border-t border-support/50">

@@ -6,7 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
   selector: 'app-root',
   template: `
     <app-layout>
-      <router-outlet></router-outlet>
+      <router-outlet />
     </app-layout>
   `,
   imports: [RouterOutlet, LayoutComponent],
