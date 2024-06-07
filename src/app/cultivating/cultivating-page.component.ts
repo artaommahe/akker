@@ -1,12 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BarnService } from '../barn/barn.service';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
+import { UpdateSproutData } from './sprouts-list/sprouts-list-item.component';
 
 @Component({
   selector: 'app-cultivating-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-sprouts-list [sprouts]="sprouts()" (onRemoveSprout)="onRemoveSprout($event)" />
+      <app-sprouts-list
+        [sprouts]="sprouts()"
+        (onRemoveSprout)="onRemoveSprout($event)"
+        (onUpdateSprout)="onUpdateSprout($event)"
+      />
     </div>
   `,
   imports: [SproutsListComponent],
@@ -20,5 +25,9 @@ export class CultivatingPageComponent {
 
   onRemoveSprout(name: string) {
     this.barnService.removeSprout(name);
+  }
+
+  onUpdateSprout({ name, value }: UpdateSproutData) {
+    this.barnService.updateSprout(name, value);
   }
 }

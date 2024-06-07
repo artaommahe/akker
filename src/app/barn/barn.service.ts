@@ -6,6 +6,7 @@ interface Barn {
   sprouts: Sprout[];
 }
 
+// TODO: add id
 export interface Seed {
   name: string;
   count: number;
@@ -13,6 +14,7 @@ export interface Seed {
   lastAddedAt: number;
 }
 
+// TODO: add id
 export interface Sprout {
   name: string;
   addedAt: number;
@@ -71,6 +73,13 @@ export class BarnService {
     this.barn.update(barn => ({
       ...barn,
       sprouts: barn.sprouts.filter(sprout => sprout.name !== name),
+    }));
+  }
+
+  updateSprout(name: string, newData: Partial<Sprout>) {
+    this.barn.update(barn => ({
+      ...barn,
+      sprouts: barn.sprouts.map(sprout => (sprout.name === name ? { ...sprout, ...newData } : sprout)),
     }));
   }
 

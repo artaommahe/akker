@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-layout',
   template: `
-    <div class="h-dvh flex flex-col overflow-hidden">
+    <div class="h-dvh flex flex-col overflow-hidden bg-background-primary">
       <main class="p-5 grow overflow-y-auto">
         <ng-content />
       </main>

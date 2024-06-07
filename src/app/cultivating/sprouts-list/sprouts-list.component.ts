@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { Sprout } from '../../barn/barn.service';
+import { SproutsListItemComponent, UpdateSproutData } from './sprouts-list-item.component';
 
 @Component({
   selector: 'app-sprouts-list',
@@ -10,9 +11,12 @@ import { Sprout } from '../../barn/barn.service';
 
         <ul class="flex flex-col gap-2">
           @for (sprout of newSprouts(); track sprout.name) {
-            <li class="flex items-center gap-2">
-              <span class="grow line-clamp-1">{{ sprout.name }}</span>
-              <button class="shrink-0" aria-label="remove" (click)="remove(sprout.name)">⌫</button>
+            <li>
+              <app-sprouts-list-item
+                [sprout]="sprout"
+                (onRemove)="onRemoveSprout.emit($event)"
+                (onUpdate)="onUpdateSprout.emit($event)"
+              />
             </li>
           }
         </ul>
@@ -24,9 +28,12 @@ import { Sprout } from '../../barn/barn.service';
 
           <ul class="flex flex-col gap-2">
             @for (sprout of restSprouts(); track sprout.name) {
-              <li class="flex items-center gap-2">
-                <span class="grow line-clamp-1">{{ sprout.name }}</span>
-                <button class="shrink-0" aria-label="remove" (click)="remove(sprout.name)">⌫</button>
+              <li>
+                <app-sprouts-list-item
+                  [sprout]="sprout"
+                  (onRemove)="onRemoveSprout.emit($event)"
+                  (onUpdate)="onUpdateSprout.emit($event)"
+                />
               </li>
             }
           </ul>
@@ -34,21 +41,18 @@ import { Sprout } from '../../barn/barn.service';
       }
     </div>
   `,
-  imports: [],
+  imports: [SproutsListItemComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SproutsListComponent {
   sprouts = input.required<Sprout[]>();
   onRemoveSprout = output<string>();
+  onUpdateSprout = output<UpdateSproutData>();
 
   sortedSprouts = computed(() => this.sprouts().toSorted((a, b) => b.addedAt - a.addedAt));
   newSprouts = computed(() => this.sortedSprouts().slice(0, newSproutsAmount));
   restSprouts = computed(() => this.sortedSprouts().slice(newSproutsAmount));
-
-  remove(name: string) {
-    this.onRemoveSprout.emit(name);
-  }
 }
 
 const newSproutsAmount = 10;

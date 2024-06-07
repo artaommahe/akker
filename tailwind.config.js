@@ -9,6 +9,9 @@ module.exports = {
         primary: colors.slate['900'],
         secondary: colors.slate['500'],
       },
+      background: {
+        primary: colors.neutral['50'],
+      },
       support: colors.neutral['950'],
     },
     extend: {},
