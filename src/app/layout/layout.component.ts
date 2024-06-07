@@ -12,9 +12,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       <nav class="shrink-0 border-t border-support/50">
         <ul class="flex gap-2">
           @for (link of navigationLinks; track link.path) {
-            <li class="p-3">
+            <li>
               <!-- TODO: fix important usage -->
-              <a class="text-text-secondary" [routerLink]="link.path" routerLinkActive="!text-text-primary">
+              <a class="text-text-secondary p-3 block" [routerLink]="link.path" routerLinkActive="!text-text-primary">
                 {{ link.label }}
               </a>
             </li>
