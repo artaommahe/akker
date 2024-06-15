@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { Sprout } from '../../barn/barn.service';
-import { SproutsListItemComponent, UpdateSproutData } from './sprouts-list-item.component';
+import { SproutsListItemComponent } from './sprouts-list-item.component';
 
 @Component({
   selector: 'app-sprouts-list',
@@ -12,11 +12,7 @@ import { SproutsListItemComponent, UpdateSproutData } from './sprouts-list-item.
         <ul class="flex flex-col gap-2">
           @for (sprout of newSprouts(); track sprout.name) {
             <li>
-              <app-sprouts-list-item
-                [sprout]="sprout"
-                (onRemove)="onRemoveSprout.emit($event)"
-                (onUpdate)="onUpdateSprout.emit($event)"
-              />
+              <app-sprouts-list-item [sprout]="sprout" (onShowDetails)="onShowDetails.emit($event)" />
             </li>
           }
         </ul>
@@ -29,11 +25,7 @@ import { SproutsListItemComponent, UpdateSproutData } from './sprouts-list-item.
           <ul class="flex flex-col gap-2">
             @for (sprout of restSprouts(); track sprout.name) {
               <li>
-                <app-sprouts-list-item
-                  [sprout]="sprout"
-                  (onRemove)="onRemoveSprout.emit($event)"
-                  (onUpdate)="onUpdateSprout.emit($event)"
-                />
+                <app-sprouts-list-item [sprout]="sprout" (onShowDetails)="onShowDetails.emit($event)" />
               </li>
             }
           </ul>
@@ -47,8 +39,7 @@ import { SproutsListItemComponent, UpdateSproutData } from './sprouts-list-item.
 })
 export class SproutsListComponent {
   sprouts = input.required<Sprout[]>();
-  onRemoveSprout = output<string>();
-  onUpdateSprout = output<UpdateSproutData>();
+  onShowDetails = output<Sprout>();
 
   sortedSprouts = computed(() => this.sprouts().toSorted((a, b) => b.addedAt - a.addedAt));
   newSprouts = computed(() => this.sortedSprouts().slice(0, newSproutsAmount));

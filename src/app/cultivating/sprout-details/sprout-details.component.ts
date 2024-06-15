@@ -8,6 +8,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
     <form class="flex flex-col gap-2 h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
       <label>
         Name
+        <!-- TODO: ui/input -->
         <input type="text" formControlName="name" minlength="1" required />
       </label>
 
@@ -30,7 +31,7 @@ export class SproutDetailsComponent implements OnInit {
   onUpdate = output<SproutFormValue>();
 
   form = inject(NonNullableFormBuilder).group({
-    // TODO: check that name is not used by other sprouts
+    // TODO: ? check that name is not used by other sprouts
     name: ['', [Validators.minLength(1), Validators.required]],
   });
 
