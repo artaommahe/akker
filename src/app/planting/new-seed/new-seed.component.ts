@@ -16,9 +16,10 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
       <!-- TODO: ui/input -->
       @if (mode() === 'single') {
         <input
-          type="text"
           class="p-2 border border-primary/50 text-center grow"
+          type="text"
           placeholder="New seed"
+          autocapitalize="off"
           [value]="newSeed()"
           (input)="updateSeed($event)"
           (keydown.enter)="saveSeed()"
@@ -28,6 +29,7 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
           class="grow p-2 border border-primary/50"
           placeholder="One seed a line"
           rows="10"
+          autocapitalize="off"
           #seedsList
         ></textarea>
 
