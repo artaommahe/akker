@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { BarnService, Sprout } from '../barn/barn.service';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
-import { SproutDetailsComponent, SproutFormValue } from './sprout-details/sprout-details.component';
+import { SproutDetailsComponent } from './sprout-details/sprout-details.component';
 
 @Component({
   selector: 'app-cultivating-page',
@@ -39,7 +39,7 @@ export class CultivatingPageComponent {
     this.sproutDetails.set(null);
   }
 
-  onUpdateSprout(name: string, value: SproutFormValue) {
+  onUpdateSprout(name: string, value: Partial<Sprout>) {
     this.barnService.updateSprout(name, value);
     this.sproutDetails.set(null);
   }

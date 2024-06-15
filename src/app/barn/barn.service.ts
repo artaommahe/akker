@@ -73,6 +73,16 @@ export class BarnService {
     });
   }
 
+  updateSeed(name: string, newData: Partial<Seed>) {
+    this.barn.update(barn => ({
+      ...barn,
+      seeds: {
+        ...barn.seeds,
+        [name]: { ...barn.seeds[name], ...newData },
+      },
+    }));
+  }
+
   removeSprout(name: string) {
     this.barn.update(barn => ({
       ...barn,
