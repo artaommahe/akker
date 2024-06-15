@@ -61,6 +61,10 @@ export class BarnService {
     });
   }
 
+  addMultipleSeeds(names: string[]) {
+    names.forEach(name => this.addSeed(name));
+  }
+
   removeSeed(name: string) {
     this.barn.update(barn => {
       const { [name]: _, ...seeds } = barn.seeds;

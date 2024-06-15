@@ -7,7 +7,7 @@ import { BarnService } from '../barn/barn.service';
   selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-new-seed (onNewSeed)="onNewSeed($event)" />
+      <app-new-seed (onNewSeed)="onNewSeed($event)" (onNewSeedsList)="onNewSeedsList($event)" />
       <app-seeds-list [seeds]="seeds()" />
     </div>
   `,
@@ -22,5 +22,9 @@ export class PlantingPageComponent {
 
   onNewSeed(name: string) {
     this.barnService.addSeed(name);
+  }
+
+  onNewSeedsList(names: string[]) {
+    this.barnService.addMultipleSeeds(names);
   }
 }
