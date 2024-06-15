@@ -4,15 +4,16 @@ const colors = require('tailwindcss/colors');
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
-    colors: {
-      text: {
-        primary: colors.slate['900'],
-        secondary: colors.slate['500'],
-      },
-      background: {
-        primary: colors.neutral['50'],
-      },
-      support: colors.neutral['950'],
+    colors: {},
+    textColor: {
+      primary: colors.slate['900'],
+      secondary: colors.slate['500'],
+    },
+    backgroundColor: {
+      primary: colors.neutral['50'],
+    },
+    borderColor: {
+      primary: colors.neutral['950'],
     },
     extend: {},
   },

@@ -9,9 +9,9 @@ import { SproutDetailsComponent, SproutFormValue } from '../sprout-details/sprou
       <span class="grow line-clamp-1">{{ sprout().name }}</span>
     </button>
 
-    <!-- TODO: use a proper dialog -->
+    <!-- TODO: ui/dialog -->
     @if (detailsAreOpen()) {
-      <div class="fixed inset-0 p-5 bg-background-primary">
+      <div class="fixed inset-0 p-5 bg-primary">
         <button class="absolute top-2 right-2 p-2" (click)="detailsAreOpen.set(false)">⛌</button>
         <app-sprout-details
           [sprout]="sprout()"

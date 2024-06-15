@@ -4,9 +4,10 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
   selector: 'app-new-seed',
   template: `
     <div class="flex flex-col gap-2">
+      <!-- TODO: ui/input -->
       <input
         type="text"
-        class="p-2 border border-support/50 text-center"
+        class="p-2 border border-primary/50 text-center"
         placeholder="New seed"
         [value]="newSeed()"
         (input)="updateSeed($event)"

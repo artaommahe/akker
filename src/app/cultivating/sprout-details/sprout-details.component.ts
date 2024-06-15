@@ -12,7 +12,8 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
       </label>
 
       <div class="flex gap-4 mt-auto">
-        <button class="text-text-secondary mr-auto" type="button" (click)="onRemove.emit()">Remove</button>
+        <!-- TODO: ui/button -->
+        <button class="text-secondary mr-auto" type="button" (click)="onRemove.emit()">Remove</button>
         <button type="button" (click)="onCancel.emit()">Cancel</button>
         <button type="submit">Save</button>
       </div>
