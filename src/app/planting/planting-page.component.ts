@@ -8,7 +8,7 @@ import { BarnService } from '../barn/barn.service';
   template: `
     <div class="flex flex-col gap-4">
       <app-new-seed (onNewSeed)="onNewSeed($event)" />
-      <app-seeds-list [seeds]="seeds()" (onRemoveSeed)="onRemoveSeed($event)" />
+      <app-seeds-list [seeds]="seeds()" />
     </div>
   `,
   imports: [NewSeedComponent, SeedsListComponent],
@@ -22,9 +22,5 @@ export class PlantingPageComponent {
 
   onNewSeed(name: string) {
     this.barnService.addSeed(name);
-  }
-
-  onRemoveSeed(name: string) {
-    this.barnService.removeSeed(name);
   }
 }
