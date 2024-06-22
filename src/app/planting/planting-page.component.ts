@@ -13,9 +13,9 @@ import { SeedDetailsComponent } from './seed-details/seed-details.component';
 
       <!-- TODO: ui/dialog -->
       @if (seedDetails(); as seed) {
-        <div class="fixed inset-0 p-5 bg-primary">
+        <div class="fixed inset-0 bg-primary p-5">
           <!-- TODO: ui/button -->
-          <button class="absolute top-2 right-2 p-2" (click)="seedDetails.set(null)">⛌</button>
+          <button class="absolute right-2 top-2 p-2" (click)="seedDetails.set(null)">⛌</button>
           <app-seed-details
             [seed]="seed"
             (onCancel)="seedDetails.set(null)"

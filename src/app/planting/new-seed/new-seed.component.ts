@@ -4,7 +4,7 @@ import { InputDirective } from '../../ui/input/input';
 @Component({
   selector: 'app-new-seed',
   template: `
-    <div class="flex gap-2 items-start">
+    <div class="flex items-start gap-2">
       <!-- TODO: ui/button -->
       <button
         class="text-action-secondary"
@@ -20,7 +20,7 @@ import { InputDirective } from '../../ui/input/input';
 
       @if (mode() === 'single') {
         <input
-          class="text-center grow"
+          class="grow text-center"
           appInput
           type="text"
           placeholder="New seed"

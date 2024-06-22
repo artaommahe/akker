@@ -7,8 +7,8 @@ import { Seed } from '../../barn/barn.service';
     <ul class="flex flex-col gap-2">
       @for (seed of sortedSeeds(); track seed.name) {
         <li>
-          <button class="flex items-center gap-2 w-full px-2 py-1 text-left" (click)="onShowDetails.emit(seed)">
-            <span class="grow line-clamp-1">{{ seed.name }}</span>
+          <button class="flex w-full items-center gap-2 px-2 py-1 text-left" (click)="onShowDetails.emit(seed)">
+            <span class="line-clamp-1 grow">{{ seed.name }}</span>
             <span class="shrink-0">{{ seed.count }}</span>
           </button>
         </li>

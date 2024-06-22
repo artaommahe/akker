@@ -6,15 +6,15 @@ import { InputDirective } from '../../ui/input/input';
 @Component({
   selector: 'app-sprout-details',
   template: `
-    <form class="flex flex-col gap-2 h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="flex h-full flex-col gap-2" [formGroup]="form" (ngSubmit)="onSubmit()">
       <label>
         Name
         <input appInput type="text" formControlName="name" minlength="1" required />
       </label>
 
-      <div class="flex gap-4 mt-auto">
+      <div class="mt-auto flex gap-4">
         <!-- TODO: ui/button -->
-        <button class="text-secondary mr-auto" type="button" (click)="onRemove.emit()">Remove</button>
+        <button class="mr-auto text-secondary" type="button" (click)="onRemove.emit()">Remove</button>
         <button type="button" (click)="onCancel.emit()">Cancel</button>
         <button type="submit">Save</button>
       </div>

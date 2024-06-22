@@ -11,9 +11,9 @@ import { SproutDetailsComponent } from './sprout-details/sprout-details.componen
 
       <!-- TODO: ui/dialog -->
       @if (sproutDetails(); as sprout) {
-        <div class="fixed inset-0 p-5 bg-primary">
+        <div class="fixed inset-0 bg-primary p-5">
           <!-- TODO: ui/button -->
-          <button class="absolute top-2 right-2 p-2" (click)="sproutDetails.set(null)">⛌</button>
+          <button class="absolute right-2 top-2 p-2" (click)="sproutDetails.set(null)">⛌</button>
           <app-sprout-details
             [sprout]="sprout"
             (onCancel)="sproutDetails.set(null)"
