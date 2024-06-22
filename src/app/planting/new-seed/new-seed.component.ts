@@ -5,7 +5,11 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
   template: `
     <div class="flex gap-2 items-start">
       <!-- TODO: ui/button -->
-      <button [title]="mode() === 'single' ? 'Toggle multiline mode' : 'Toggle single mode'" (click)="toggleMode()">
+      <button
+        class="text-action-secondary"
+        [title]="mode() === 'single' ? 'Toggle multiline mode' : 'Toggle single mode'"
+        (click)="toggleMode()"
+      >
         @if (mode() === 'single') {
           𝍌
         } @else {
@@ -16,25 +20,29 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
       <!-- TODO: ui/input -->
       @if (mode() === 'single') {
         <input
-          class="p-2 border border-primary/50 text-center grow"
+          class="p-2 border border-transparent bg-secondary rounded-lg placeholder:text-secondary text-center grow focus-visible:border-primary outline-none"
           type="text"
           placeholder="New seed"
           autocapitalize="off"
           [value]="newSeed()"
           (input)="updateSeed($event)"
-          (keydown.enter)="saveSeed()"
+          (keydown.enter)="onAdd()"
         />
       } @else {
+        <!-- TODO: ui/textarea -->
         <textarea
-          class="grow p-2 border border-primary/50"
+          class="grow p-2 border border-transparent bg-secondary rounded-lg placeholder:text-secondary focus-visible:border-primary outline-none"
           placeholder="One seed a line"
           rows="10"
           autocapitalize="off"
-          #seedsList
+          [value]="newSeed()"
+          (input)="updateSeed($event)"
         ></textarea>
-
-        <button title="Add seeds" (click)="saveSeedsList(seedsList)">➕</button>
       }
+
+      <button class="text-action-primary" [title]="mode() === 'single' ? 'Add seed' : 'Add seeds'" (click)="onAdd()">
+        +
+      </button>
     </div>
   `,
   standalone: true,
@@ -52,10 +60,18 @@ export class NewSeedComponent {
   }
 
   updateSeed(event: Event) {
-    this.newSeed.set((event.target as HTMLInputElement).value);
+    this.newSeed.set((event.target as HTMLInputElement | HTMLTextAreaElement).value);
   }
 
-  saveSeed() {
+  onAdd() {
+    if (this.mode() === 'single') {
+      this.saveSeed();
+    } else {
+      this.saveSeedsList();
+    }
+  }
+
+  private saveSeed() {
     const seed = this.newSeed();
 
     if (!seed) {
@@ -66,8 +82,14 @@ export class NewSeedComponent {
     this.newSeed.set('');
   }
 
-  saveSeedsList(seedsList: HTMLTextAreaElement) {
-    const newSeeds = seedsList.value
+  private saveSeedsList() {
+    const seedsList = this.newSeed();
+
+    if (!seedsList) {
+      return;
+    }
+
+    const newSeeds = seedsList
       .split('\n')
       .map(seed => seed.trim())
       .filter(seed => !!seed);
@@ -77,6 +99,6 @@ export class NewSeedComponent {
     }
 
     this.onNewSeedsList.emit(newSeeds);
-    seedsList.value = '';
+    this.newSeed.set('');
   }
 }
