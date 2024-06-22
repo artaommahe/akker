@@ -1,21 +1,37 @@
-const colors = require('tailwindcss/colors');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
-    colors: {},
-    textColor: {
-      primary: colors.slate['900'],
-      secondary: colors.slate['500'],
+    colors: {
+      action: {
+        primary: '#fca321',
+        secondary: '#9a90b4',
+      },
+      semantic: {
+        error: '#dd452e',
+      },
     },
-    backgroundColor: {
-      primary: colors.neutral['50'],
+    fontFamily: {
+      sans: ['"Roboto"', ...defaultTheme.fontFamily.sans],
     },
-    borderColor: {
-      primary: colors.neutral['950'],
+    extend: {
+      textColor: {
+        primary: '#f7f5f1',
+        secondary: '#5d6263',
+        inverse: '#313231',
+      },
+      backgroundColor: {
+        primary: '#313231',
+        secondary: '#3a3b3b',
+      },
+      borderColor: {
+        primary: '#f7f5f1',
+        secondary: '#a5a096',
+        transparent: 'transparent',
+      },
     },
-    extend: {},
   },
   plugins: [],
 };
