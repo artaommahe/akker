@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
+import { InputDirective } from '../../ui/input/input';
 
 @Component({
   selector: 'app-new-seed',
@@ -17,10 +18,10 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
         }
       </button>
 
-      <!-- TODO: ui/input -->
       @if (mode() === 'single') {
         <input
-          class="p-2 border border-transparent bg-secondary rounded-lg placeholder:text-secondary text-center grow focus-visible:border-primary outline-none"
+          class="text-center grow"
+          appInput
           type="text"
           placeholder="New seed"
           autocapitalize="off"
@@ -29,9 +30,9 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
           (keydown.enter)="onAdd()"
         />
       } @else {
-        <!-- TODO: ui/textarea -->
         <textarea
-          class="grow p-2 border border-transparent bg-secondary rounded-lg placeholder:text-secondary focus-visible:border-primary outline-none"
+          class="grow"
+          appInput
           placeholder="One seed a line"
           rows="10"
           autocapitalize="off"
@@ -45,6 +46,7 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
       </button>
     </div>
   `,
+  imports: [InputDirective],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

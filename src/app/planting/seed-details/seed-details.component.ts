@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, input, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Seed } from '../../barn/barn.service';
+import { InputDirective } from '../../ui/input/input';
 
 @Component({
   selector: 'app-seed-details',
@@ -8,8 +9,7 @@ import { Seed } from '../../barn/barn.service';
     <form class="flex flex-col gap-2 h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
       <label>
         Name
-        <!-- TODO: ui/input -->
-        <input type="text" formControlName="name" minlength="1" required />
+        <input appInput type="text" formControlName="name" minlength="1" required />
       </label>
 
       <div class="flex gap-4 mt-auto">
@@ -20,7 +20,7 @@ import { Seed } from '../../barn/barn.service';
       </div>
     </form>
   `,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, InputDirective],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
