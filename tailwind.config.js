@@ -19,7 +19,7 @@ module.exports = {
     extend: {
       textColor: {
         primary: '#f7f5f1',
-        secondary: '#5d6263',
+        secondary: '#a5a096',
         inverse: '#313231',
       },
       backgroundColor: {
