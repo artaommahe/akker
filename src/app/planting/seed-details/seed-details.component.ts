@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, input, output } fro
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Seed } from '../../barn/barn.service';
 import { InputDirective } from '../../ui/input/input';
+import { ButtonDirective } from '../../ui/button/button';
 
 @Component({
   selector: 'app-seed-details',
@@ -13,14 +14,21 @@ import { InputDirective } from '../../ui/input/input';
       </label>
 
       <div class="mt-auto flex gap-4">
-        <!-- TODO: ui/button -->
-        <button class="mr-auto text-secondary" type="button" (click)="onRemove.emit()">Remove</button>
-        <button type="button" (click)="onCancel.emit()">Cancel</button>
-        <button type="submit">Save</button>
+        <button
+          class="mr-auto text-secondary"
+          appButton
+          appButtonType="warning"
+          type="button"
+          (click)="onRemove.emit()"
+        >
+          Remove
+        </button>
+        <button type="button" appButton (click)="onCancel.emit()">Cancel</button>
+        <button type="submit" appButton appButtonType="primary">Save</button>
       </div>
     </form>
   `,
-  imports: [ReactiveFormsModule, InputDirective],
+  imports: [ReactiveFormsModule, InputDirective, ButtonDirective],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

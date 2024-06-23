@@ -6,10 +6,11 @@ module.exports = {
   theme: {
     colors: {
       action: {
-        primary: '#fca321',
+        primary: '#2984a5',
         secondary: '#9a90b4',
       },
       semantic: {
+        warning: '#fca321',
         error: '#dd452e',
       },
     },
@@ -25,6 +26,8 @@ module.exports = {
       backgroundColor: {
         primary: '#313231',
         secondary: '#3a3b3b',
+        tertiary: '#5d6263',
+        inverse: '#f7f5f1',
       },
       borderColor: {
         primary: '#f7f5f1',
