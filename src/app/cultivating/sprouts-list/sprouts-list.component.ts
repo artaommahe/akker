@@ -19,6 +19,7 @@ import { SproutsListItemComponent } from './sprouts-list-item.component';
       </section>
 
       @if (restSprouts().length) {
+        <!-- TODO: ui/expansion-panel -->
         <details>
           <summary class="text-lg">Rest</summary>
 

@@ -9,7 +9,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <ng-content />
       </main>
 
-      <nav class="shrink-0 border-t border-secondary">
+      <nav class="shrink-0 border-t border-primary/10">
         <ul class="flex gap-2">
           @for (link of navigationLinks; track link.path) {
             <li>
