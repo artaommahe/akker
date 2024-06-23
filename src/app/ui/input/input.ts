@@ -1,11 +1,17 @@
 import { Directive } from '@angular/core';
+import clsx from 'clsx';
 
 @Directive({
   selector: 'input[appInput], textarea[appInput]',
   host: {
-    class:
-      'p-2 border border-transparent bg-secondary rounded-lg outline-none placeholder:text-secondary focus-visible:border-primary',
+    '[class]': 'defaultClasses',
   },
   standalone: true,
 })
-export class InputDirective {}
+export class InputDirective {
+  defaultClasses = clsx(
+    'rounded-lg border border-transparent bg-secondary p-2 outline-none',
+    'focus-visible:border-primary',
+    'placeholder:text-secondary',
+  );
+}
