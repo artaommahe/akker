@@ -1,5 +1,10 @@
 import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
 import { InputDirective } from '../../ui/input/input';
+import plus from './assets/plus.svg';
+import multilineInput from './assets/multiline-input.svg';
+import input from './assets/input.svg';
+import { IconComponent } from '../../ui/icon/icon';
+import { provideIcons } from '../../ui/icon/provide-icons';
 
 @Component({
   selector: 'app-new-seed',
@@ -7,15 +12,11 @@ import { InputDirective } from '../../ui/input/input';
     <div class="flex items-start gap-2">
       <!-- TODO: ui/button -->
       <button
-        class="text-action-secondary"
+        class="mt-2"
         [title]="mode() === 'single' ? 'Toggle multiline mode' : 'Toggle single mode'"
         (click)="toggleMode()"
       >
-        @if (mode() === 'single') {
-          𝍌
-        } @else {
-          ~
-        }
+        <app-icon class="size-6 text-action-secondary" [name]="mode() === 'single' ? 'multilineInput' : 'input'" />
       </button>
 
       @if (mode() === 'single') {
@@ -41,12 +42,13 @@ import { InputDirective } from '../../ui/input/input';
         ></textarea>
       }
 
-      <button class="text-action-primary" [title]="mode() === 'single' ? 'Add seed' : 'Add seeds'" (click)="onAdd()">
-        +
+      <button class="mt-2" [title]="mode() === 'single' ? 'Add seed' : 'Add seeds'" (click)="onAdd()">
+        <app-icon class="size-6 text-action-primary" name="plus" />
       </button>
     </div>
   `,
-  imports: [InputDirective],
+  imports: [InputDirective, IconComponent],
+  providers: [provideIcons({ plus, multilineInput, input })],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

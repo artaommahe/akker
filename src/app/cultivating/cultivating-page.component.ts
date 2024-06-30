@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { BarnService, Sprout } from '../barn/barn.service';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 import { SproutDetailsComponent } from './sprout-details/sprout-details.component';
+import { provideIcons } from '../ui/icon/provide-icons';
+import cross from '../ui/modal/assets/cross.svg';
+import { IconComponent } from '../ui/icon/icon';
 
 @Component({
   selector: 'app-cultivating-page',
@@ -13,7 +16,9 @@ import { SproutDetailsComponent } from './sprout-details/sprout-details.componen
       @if (sproutDetails(); as sprout) {
         <div class="fixed inset-0 bg-primary p-5">
           <!-- TODO: ui/button -->
-          <button class="absolute right-2 top-2 p-2" (click)="sproutDetails.set(null)">⛌</button>
+          <button class="absolute right-2 top-2 p-2" (click)="sproutDetails.set(null)">
+            <app-icon class="size-6 text-secondary" name="cross" />
+          </button>
           <app-sprout-details
             [sprout]="sprout"
             (onCancel)="sproutDetails.set(null)"
@@ -24,7 +29,8 @@ import { SproutDetailsComponent } from './sprout-details/sprout-details.componen
       }
     </div>
   `,
-  imports: [SproutsListComponent, SproutDetailsComponent],
+  imports: [SproutsListComponent, SproutDetailsComponent, IconComponent],
+  providers: [provideIcons({ cross })],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
