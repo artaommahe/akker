@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 
 export const routes: Routes = [
   { path: 'planting', loadChildren: () => import('./planting/planting.routes').then(m => m.plantingRoutes) },

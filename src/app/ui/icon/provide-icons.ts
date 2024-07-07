@@ -1,4 +1,4 @@
-import { InjectionToken, Optional, Provider, SkipSelf, inject } from '@angular/core';
+import { InjectionToken, Optional, type Provider, SkipSelf, inject } from '@angular/core';
 
 type Icons = Record<string, string>;
 
