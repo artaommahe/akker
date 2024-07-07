@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, type OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Seed } from '../../barn/barn.service';
 import { InputDirective } from '../../ui/input/input';
 import { ButtonDirective } from '../../ui/button/button';
 
@@ -33,10 +32,10 @@ import { ButtonDirective } from '../../ui/button/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedDetailsComponent implements OnInit {
-  seed = input.required<Seed>();
+  seed = input.required<SeedDetailsSeed>();
   onRemove = output<void>();
   onCancel = output<void>();
-  onUpdate = output<SeedFormValue>();
+  onUpdate = output<SeedDetailsSeed>();
 
   form = inject(NonNullableFormBuilder).group({
     // TODO: ? check that name is not used by other seeds
@@ -56,6 +55,6 @@ export class SeedDetailsComponent implements OnInit {
   }
 }
 
-export interface SeedFormValue {
+export interface SeedDetailsSeed {
   name: string;
 }

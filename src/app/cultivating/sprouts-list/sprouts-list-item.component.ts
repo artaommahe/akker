@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Sprout } from '../../barn/barn.service';
 
 @Component({
   selector: 'app-sprouts-list-item',
@@ -13,6 +12,10 @@ import { Sprout } from '../../barn/barn.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SproutsListItemComponent {
-  sprout = input.required<Sprout>();
-  onShowDetails = output<Sprout>();
+  sprout = input.required<SproutsListItemSprout>();
+  onShowDetails = output<SproutsListItemSprout>();
+}
+
+export interface SproutsListItemSprout {
+  name: string;
 }

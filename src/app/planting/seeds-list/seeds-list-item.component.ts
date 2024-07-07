@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Seed } from '../../barn/barn.service';
 
 @Component({
   selector: 'app-seeds-list-item',
@@ -14,6 +13,11 @@ import { Seed } from '../../barn/barn.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsListItemComponent {
-  seed = input.required<Seed>();
-  onShowDetails = output<Seed>();
+  seed = input.required<SeedsListItemSeed>();
+  onShowDetails = output<SeedsListItemSeed>();
+}
+
+export interface SeedsListItemSeed {
+  name: string;
+  count: number;
 }

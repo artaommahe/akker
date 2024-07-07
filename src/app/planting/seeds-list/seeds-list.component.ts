@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { Seed } from '../../barn/barn.service';
-import { SeedsListItemComponent } from './seeds-list-item.component';
+import { SeedsListItemComponent, type SeedsListItemSeed } from './seeds-list-item.component';
 
 @Component({
   selector: 'app-seeds-list',
@@ -53,16 +52,24 @@ import { SeedsListItemComponent } from './seeds-list-item.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsListComponent {
-  seeds = input.required<Seed[]>();
-  onShowDetails = output<Seed>();
+  seeds = input.required<SeedsListSeed[]>();
+  onShowDetails = output<SeedsListItemSeed>();
 
-  sortedSeeds = computed(() => this.seeds().toSorted((a, b) => b.count - a.count || b.lastAddedAt - a.lastAddedAt));
+  sortedSeeds = computed(() =>
+    this.seeds().toSorted((a, b) => b.count - a.count || b.lastAddedAt.localeCompare(a.lastAddedAt)),
+  );
   topSeeds = computed(() => this.sortedSeeds().slice(0, topSeedsCount));
   lastAddedSeeds = computed(() =>
     this.seeds()
-      .toSorted((a, b) => b.lastAddedAt - a.lastAddedAt)
+      .toSorted((a, b) => b.lastAddedAt.localeCompare(a.lastAddedAt))
       .slice(0, topSeedsCount),
   );
 }
 
 const topSeedsCount = 10;
+
+export interface SeedsListSeed extends SeedsListItemSeed {
+  name: string;
+  count: number;
+  lastAddedAt: string;
+}

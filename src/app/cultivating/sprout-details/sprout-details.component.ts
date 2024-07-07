@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, input, output } from '@angular/core';
-import { Sprout } from '../../barn/barn.service';
+import { ChangeDetectionStrategy, Component, type OnInit, inject, input, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputDirective } from '../../ui/input/input';
 import { ButtonDirective } from '../../ui/button/button';
@@ -33,10 +32,10 @@ import { ButtonDirective } from '../../ui/button/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SproutDetailsComponent implements OnInit {
-  sprout = input.required<Sprout>();
+  sprout = input.required<SproutDetailsSprout>();
   onRemove = output<void>();
   onCancel = output<void>();
-  onUpdate = output<SproutFormValue>();
+  onUpdate = output<SproutDetailsSprout>();
 
   form = inject(NonNullableFormBuilder).group({
     // TODO: ? check that name is not used by other sprouts
@@ -56,6 +55,6 @@ export class SproutDetailsComponent implements OnInit {
   }
 }
 
-export interface SproutFormValue {
+export interface SproutDetailsSprout {
   name: string;
 }

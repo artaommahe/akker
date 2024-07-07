@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { Sprout } from '../../barn/barn.service';
-import { SproutsListItemComponent } from './sprouts-list-item.component';
+import { SproutsListItemComponent, type SproutsListItemSprout } from './sprouts-list-item.component';
 
 @Component({
   selector: 'app-sprouts-list',
@@ -39,12 +38,16 @@ import { SproutsListItemComponent } from './sprouts-list-item.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SproutsListComponent {
-  sprouts = input.required<Sprout[]>();
-  onShowDetails = output<Sprout>();
+  sprouts = input.required<SproutsListSprout[]>();
+  onShowDetails = output<SproutsListItemSprout>();
 
-  sortedSprouts = computed(() => this.sprouts().toSorted((a, b) => b.addedAt - a.addedAt));
+  sortedSprouts = computed(() => this.sprouts().toSorted((a, b) => b.addedAt.localeCompare(a.addedAt)));
   newSprouts = computed(() => this.sortedSprouts().slice(0, newSproutsAmount));
   restSprouts = computed(() => this.sortedSprouts().slice(newSproutsAmount));
 }
 
 const newSproutsAmount = 10;
+
+export interface SproutsListSprout extends SproutsListItemSprout {
+  addedAt: string;
+}

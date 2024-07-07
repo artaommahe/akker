@@ -1,16 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { BarnService, Sprout } from '../barn/barn.service';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
-import { SproutDetailsComponent } from './sprout-details/sprout-details.component';
+import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-details/sprout-details.component';
 import { provideIcons } from '../ui/icon/provide-icons';
 import cross from '../ui/modal/assets/cross.svg';
 import { IconComponent } from '../ui/icon/icon';
+import { BarnV2Service } from '../barn/barnV2.service';
 
 @Component({
   selector: 'app-cultivating-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-sprouts-list [sprouts]="sprouts()" (onShowDetails)="sproutDetails.set($event)" />
+      <app-sprouts-list [sprouts]="sprouts() ?? []" (onShowDetails)="sproutDetails.set($event)" />
 
       <!-- TODO: ui/dialog -->
       @if (sproutDetails(); as sprout) {
@@ -35,17 +35,17 @@ import { IconComponent } from '../ui/icon/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CultivatingPageComponent {
-  private barnService = inject(BarnService);
+  private barnService = inject(BarnV2Service);
 
   sprouts = this.barnService.sprouts;
-  sproutDetails = signal<Sprout | null>(null);
+  sproutDetails = signal<SproutDetailsSprout | null>(null);
 
   onRemoveSprout(name: string) {
     this.barnService.removeSprout(name);
     this.sproutDetails.set(null);
   }
 
-  onUpdateSprout(name: string, value: Partial<Sprout>) {
+  onUpdateSprout(name: string, value: Partial<SproutDetailsSprout>) {
     this.barnService.updateSprout(name, value);
     this.sproutDetails.set(null);
   }

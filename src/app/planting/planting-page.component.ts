@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NewSeedComponent } from './new-seed/new-seed.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
-import { BarnService, Seed } from '../barn/barn.service';
-import { SeedDetailsComponent } from './seed-details/seed-details.component';
+import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
 import { IconComponent } from '../ui/icon/icon';
 import { provideIcons } from '../ui/icon/provide-icons';
 import cross from '../ui/modal/assets/cross.svg';
+import { BarnV2Service } from '../barn/barnV2.service';
 
 @Component({
   selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
       <app-new-seed (onNewSeed)="onNewSeed($event)" (onNewSeedsList)="onNewSeedsList($event)" />
-      <app-seeds-list [seeds]="seeds()" (onShowDetails)="seedDetails.set($event)" />
+      <app-seeds-list [seeds]="seeds() ?? []" (onShowDetails)="seedDetails.set($event)" />
 
       <!-- TODO: ui/dialog -->
       @if (seedDetails(); as seed) {
@@ -37,10 +37,10 @@ import cross from '../ui/modal/assets/cross.svg';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantingPageComponent {
-  private barnService = inject(BarnService);
+  private barnService = inject(BarnV2Service);
 
-  seeds = computed(() => Object.values(this.barnService.seeds()));
-  seedDetails = signal<Seed | null>(null);
+  seeds = this.barnService.seeds;
+  seedDetails = signal<SeedDetailsSeed | null>(null);
 
   onNewSeed(name: string) {
     this.barnService.addSeed(name);
@@ -55,7 +55,7 @@ export class PlantingPageComponent {
     this.seedDetails.set(null);
   }
 
-  onUpdateSeed(name: string, value: Partial<Seed>) {
+  onUpdateSeed(name: string, value: Partial<SeedDetailsSeed>) {
     this.barnService.updateSeed(name, value);
     this.seedDetails.set(null);
   }
