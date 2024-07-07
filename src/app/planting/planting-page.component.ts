@@ -5,7 +5,7 @@ import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-
 import { IconComponent } from '../ui/icon/icon';
 import { provideIcons } from '../ui/icon/provide-icons';
 import cross from '../ui/modal/assets/cross.svg';
-import { BarnV2Service } from '../barn/barnV2.service';
+import { BarnService } from '../barn/barn.service';
 
 @Component({
   selector: 'app-planting-page',
@@ -37,7 +37,7 @@ import { BarnV2Service } from '../barn/barnV2.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantingPageComponent {
-  private barnService = inject(BarnV2Service);
+  private barnService = inject(BarnService);
 
   seeds = this.barnService.seeds;
   seedDetails = signal<SeedDetailsSeed | null>(null);

@@ -4,7 +4,7 @@ import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-detai
 import { provideIcons } from '../ui/icon/provide-icons';
 import cross from '../ui/modal/assets/cross.svg';
 import { IconComponent } from '../ui/icon/icon';
-import { BarnV2Service } from '../barn/barnV2.service';
+import { BarnService } from '../barn/barn.service';
 
 @Component({
   selector: 'app-cultivating-page',
@@ -35,7 +35,7 @@ import { BarnV2Service } from '../barn/barnV2.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CultivatingPageComponent {
-  private barnService = inject(BarnV2Service);
+  private barnService = inject(BarnService);
 
   sprouts = this.barnService.sprouts;
   sproutDetails = signal<SproutDetailsSprout | null>(null);

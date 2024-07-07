@@ -1,128 +1,139 @@
-import { Injectable, computed, effect, signal } from '@angular/core';
-
-interface Barn {
-  version: number;
-  seeds: Record<string, Seed>;
-  sprouts: Sprout[];
-}
-
-// TODO: add id
-export interface Seed {
-  name: string;
-  count: number;
-  addedAt: number;
-  lastAddedAt: number;
-}
-
-// TODO: add id
-export interface Sprout {
-  name: string;
-  addedAt: number;
-}
+import { inject, Injectable, Injector } from '@angular/core';
+import { BarnDbService } from './barnDb.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import type { Observable } from 'rxjs';
+import { nanoid } from 'nanoid';
+import type { DbSeed } from './rxdb/schema/seed';
+import type { DbSprout } from './rxdb/schema/sprout';
 
 @Injectable({ providedIn: 'root' })
 export class BarnService {
-  private barn = signal<Barn>({ version: 1, seeds: {}, sprouts: [] });
+  private barnDb = inject(BarnDbService);
+  private injector = inject(Injector);
 
-  seeds = computed(() => this.barn().seeds);
-  sprouts = computed(() => this.barn().sprouts);
+  seeds = this.convertToSignal(this.barnDb.seeds.find().$);
+  sprouts = this.convertToSignal(this.barnDb.sprouts.find().$);
 
   constructor() {
-    this.initStorage();
+    this.migrateOldBarn();
   }
 
-  addSeed(name: string) {
-    const sprout = this.barn().sprouts.find(sprout => sprout.name === name);
+  async addSeed(name: string) {
+    const sprout = await this.barnDb.sprouts.findOne({ selector: { name } }).exec();
 
     // if the seed is already sprouted, don't add it to the seeds
     if (sprout) {
       return;
     }
 
-    let seed: Seed | undefined = this.barn().seeds[name];
+    const seed = await this.barnDb.seeds.findOne({ selector: { name } }).exec();
 
     // if the count of this seed is greater than or equal to the treshold, convert it to a sprout
-    if (seed?.count >= seedPlantingTreshold - 1) {
-      this.addSprout(name);
-      this.removeSeed(name);
+    if (seed?.count && seed.count >= seedPlantingTreshold - 1) {
+      await this.addSprout(name);
+      await this.removeSeed(name);
+
       return;
     }
 
-    this.barn.update(barn => {
-      seed ??= { name, count: 0, addedAt: Date.now(), lastAddedAt: Date.now() };
+    if (seed) {
+      await seed.patch({ count: seed.count + 1, lastAddedAt: new Date().toISOString() });
+    } else {
+      await this.barnDb.seeds.insert({
+        id: nanoid(),
+        name,
+        count: 1,
+        addedAt: new Date().toISOString(),
+        lastAddedAt: new Date().toISOString(),
+      });
+    }
+  }
 
-      return {
-        ...barn,
-        seeds: {
-          ...barn.seeds,
-          [name]: { ...seed, count: seed.count + 1, lastAddedAt: Date.now() },
-        },
-      };
+  async addMultipleSeeds(names: string[]) {
+    for (const name of names) {
+      await this.addSeed(name);
+    }
+  }
+
+  async removeSeed(name: string) {
+    await this.barnDb.seeds.findOne({ selector: { name } }).remove();
+  }
+
+  async updateSeed(name: string, newData: Partial<DbSeed>) {
+    await this.barnDb.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
+  }
+
+  async addSprout(name: string) {
+    await this.barnDb.sprouts.insert({
+      id: nanoid(),
+      name,
+      addedAt: new Date().toISOString(),
     });
   }
 
-  addMultipleSeeds(names: string[]) {
-    names.forEach(name => this.addSeed(name));
+  async removeSprout(name: string) {
+    await this.barnDb.sprouts.findOne({ selector: { name } }).remove();
   }
 
-  removeSeed(name: string) {
-    this.barn.update(barn => {
-      const { [name]: _, ...seeds } = barn.seeds;
+  async updateSprout(name: string, newData: Partial<DbSprout>) {
+    await this.barnDb.sprouts.findOne({ selector: { name } }).modify(sprout => ({ ...sprout, ...newData }));
+  }
 
-      return { ...barn, seeds: seeds };
+  // https://github.com/pubkey/rxdb/issues/6188
+  private convertToSignal<T>(observable$: Observable<T>) {
+    return toSignal(observable$, {
+      initialValue: undefined,
+      injector: this.injector,
+      rejectErrors: true,
     });
   }
 
-  updateSeed(name: string, newData: Partial<Seed>) {
-    this.barn.update(barn => {
-      const { [name]: seed, ...seeds } = barn.seeds;
-      const newName = newData.name ?? name;
+  private async migrateOldBarn() {
+    const oldBarn = localStorage.getItem(oldBarnStorageKey);
 
-      return {
-        ...barn,
-        seeds: {
-          ...seeds,
-          [newName]: { ...seed, ...newData },
-        },
-      };
-    });
-  }
-
-  removeSprout(name: string) {
-    this.barn.update(barn => ({
-      ...barn,
-      sprouts: barn.sprouts.filter(sprout => sprout.name !== name),
-    }));
-  }
-
-  updateSprout(name: string, newData: Partial<Sprout>) {
-    this.barn.update(barn => ({
-      ...barn,
-      sprouts: barn.sprouts.map(sprout => (sprout.name === name ? { ...sprout, ...newData } : sprout)),
-    }));
-  }
-
-  private addSprout(name: string) {
-    this.barn.update(barn => ({
-      ...barn,
-      sprouts: [...barn.sprouts, { name, addedAt: Date.now() }],
-    }));
-  }
-
-  private initStorage() {
-    const barn = localStorage.getItem(barnStorageKey);
-
-    if (barn) {
-      this.barn.set(JSON.parse(barn));
+    if (!oldBarn) {
+      return;
     }
 
-    effect(() => {
-      const barn = this.barn();
+    const barn: {
+      seeds: Record<string, OldBarnSeed>;
+      sprouts: OldBarnSprout[];
+    } = JSON.parse(oldBarn);
 
-      localStorage.setItem(barnStorageKey, JSON.stringify(barn));
-    });
+    for (const seed of Object.values(barn.seeds)) {
+      await this.barnDb.seeds.insert({
+        id: nanoid(),
+        name: seed.name,
+        count: seed.count,
+        addedAt: new Date(seed.addedAt ?? Date.now()).toISOString(),
+        lastAddedAt: new Date(seed.lastAddedAt ?? Date.now()).toISOString(),
+      });
+    }
+
+    for (const sprout of barn.sprouts) {
+      await this.barnDb.sprouts.insert({
+        id: nanoid(),
+        name: sprout.name,
+        addedAt: new Date(sprout.addedAt ?? Date.now()).toISOString(),
+      });
+    }
+
+    localStorage.removeItem(oldBarnStorageKey);
   }
 }
 
-const barnStorageKey = 'barn';
 const seedPlantingTreshold = 5;
+
+const oldBarnStorageKey = 'barn';
+
+export interface OldBarnSeed {
+  name: string;
+  count: number;
+  addedAt?: number;
+  lastAddedAt?: number;
+}
+
+export interface OldBarnSprout {
+  name: string;
+  addedAt?: number;
+}
