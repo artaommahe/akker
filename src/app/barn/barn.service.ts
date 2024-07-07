@@ -14,10 +14,6 @@ export class BarnService {
   seeds = this.convertToSignal(this.barnDb.seeds.find().$);
   sprouts = this.convertToSignal(this.barnDb.sprouts.find().$);
 
-  constructor() {
-    this.migrateOldBarn();
-  }
-
   async addSeed(name: string) {
     const sprout = await this.barnDb.sprouts.findOne({ selector: { name } }).exec();
 
@@ -87,53 +83,6 @@ export class BarnService {
       rejectErrors: true,
     });
   }
-
-  private async migrateOldBarn() {
-    const oldBarn = localStorage.getItem(oldBarnStorageKey);
-
-    if (!oldBarn) {
-      return;
-    }
-
-    const barn: {
-      seeds: Record<string, OldBarnSeed>;
-      sprouts: OldBarnSprout[];
-    } = JSON.parse(oldBarn);
-
-    for (const seed of Object.values(barn.seeds)) {
-      await this.barnDb.seeds.insert({
-        id: nanoid(),
-        name: seed.name,
-        count: seed.count,
-        addedAt: new Date(seed.addedAt ?? Date.now()).toISOString(),
-        lastAddedAt: new Date(seed.lastAddedAt ?? Date.now()).toISOString(),
-      });
-    }
-
-    for (const sprout of barn.sprouts) {
-      await this.barnDb.sprouts.insert({
-        id: nanoid(),
-        name: sprout.name,
-        addedAt: new Date(sprout.addedAt ?? Date.now()).toISOString(),
-      });
-    }
-
-    localStorage.removeItem(oldBarnStorageKey);
-  }
 }
 
 const seedPlantingTreshold = 5;
-
-const oldBarnStorageKey = 'barn';
-
-export interface OldBarnSeed {
-  name: string;
-  count: number;
-  addedAt?: number;
-  lastAddedAt?: number;
-}
-
-export interface OldBarnSprout {
-  name: string;
-  addedAt?: number;
-}
