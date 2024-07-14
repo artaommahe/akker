@@ -6,5 +6,9 @@ export const routes: Routes = [
     path: 'cultivating',
     loadChildren: () => import('./cultivating/cultivating.routes').then(m => m.cultivatingRoutes),
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./settings/settings.routes').then(m => m.settingsRoutes),
+  },
   { path: '', redirectTo: '/planting', pathMatch: 'full' },
 ];

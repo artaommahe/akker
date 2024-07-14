@@ -9,8 +9,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <ng-content />
       </main>
 
-      <nav class="shrink-0 border-t border-primary/10">
-        <ul class="flex gap-2">
+      <nav class="shrink-0 border-t border-primary/10 px-2">
+        <ul class="flex justify-between gap-2">
           @for (link of navigationLinks; track link.path) {
             <li>
               <!-- TODO: fix important usage -->
@@ -31,5 +31,6 @@ export class LayoutComponent {
   navigationLinks = [
     { path: '/planting', label: 'Planting' },
     { path: '/cultivating', label: 'Cultivating' },
+    { path: '/settings', label: 'Settings' },
   ];
 }
