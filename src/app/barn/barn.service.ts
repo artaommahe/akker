@@ -15,39 +15,23 @@ export class BarnService {
   sprouts = this.convertToSignal(this.barnDb.sprouts.find().$);
 
   async addSeed(name: string) {
-    const sprout = await this.barnDb.sprouts.findOne({ selector: { name } }).exec();
-
-    // if the seed is already sprouted, don't add it to the seeds
-    if (sprout) {
-      return;
-    }
-
-    const seed = await this.barnDb.seeds.findOne({ selector: { name } }).exec();
-
-    // if the count of this seed is greater than or equal to the treshold, convert it to a sprout
-    if (seed?.count && seed.count >= seedPlantingTreshold - 1) {
-      await this.addSprout(name);
-      await this.removeSeed(name);
-
-      return;
-    }
-
-    if (seed) {
-      await seed.patch({ count: seed.count + 1, lastAddedAt: new Date().toISOString() });
-    } else {
-      await this.barnDb.seeds.insert({
-        id: nanoid(),
-        name,
-        count: 1,
-        addedAt: new Date().toISOString(),
-        lastAddedAt: new Date().toISOString(),
-      });
-    }
+    this.addMultipleSeeds([name]);
   }
 
   async addMultipleSeeds(names: string[]) {
-    for (const name of names) {
-      await this.addSeed(name);
+    const { seedsToAdd, seedsToUpdate, newSprouts } = await this.prepareNewSeeds(names);
+
+    // add new or update existing seeds
+    if (seedsToAdd.length || seedsToUpdate.length) {
+      await this.barnDb.seeds.bulkUpsert([...seedsToAdd, ...seedsToUpdate]);
+    }
+
+    // add new sprouts
+    if (newSprouts.length) {
+      for (const name of newSprouts) {
+        await this.addSprout(name);
+        await this.removeSeed(name);
+      }
     }
   }
 
@@ -82,6 +66,53 @@ export class BarnService {
       injector: this.injector,
       rejectErrors: true,
     });
+  }
+
+  private async prepareNewSeeds(names: string[]) {
+    const existingSprouts = await this.barnDb.sprouts.find({ selector: { name: { $in: names } } }).exec();
+
+    const newSeeds = names.reduce(
+      (result, name) =>
+        // if the seed is already sprouted, skip it
+        existingSprouts.find(sprout => sprout.name === name)
+          ? result
+          : { ...result, [name]: result[name] ? result[name] + 1 : 1 },
+      {} as Record<string, number>,
+    );
+
+    const existingSeeds = await this.barnDb.seeds.find({ selector: { name: { $in: Object.keys(newSeeds) } } }).exec();
+
+    const { seedsToUpdate, newSprouts } = existingSeeds.reduce(
+      (result, seed) => {
+        if (!newSeeds[seed.name]) {
+          return result;
+        }
+
+        const count = seed.count + newSeeds[seed.name];
+
+        if (count >= seedPlantingTreshold) {
+          return { ...result, newSprouts: [...result.newSprouts, seed.name] };
+        }
+
+        return {
+          ...result,
+          seedsToUpdate: [...result.seedsToUpdate, { ...seed.toJSON(), count, lastAddedAt: new Date().toISOString() }],
+        };
+      },
+      { seedsToUpdate: [] as DbSeed[], newSprouts: [] as string[] },
+    );
+
+    const seedsToAdd = Object.keys(newSeeds)
+      .filter(name => !existingSeeds.some(seed => seed.name === name))
+      .map(name => ({
+        id: nanoid(),
+        name,
+        count: newSeeds[name],
+        addedAt: new Date().toISOString(),
+        lastAddedAt: new Date().toISOString(),
+      }));
+
+    return { seedsToAdd, seedsToUpdate, newSprouts };
   }
 }
 
