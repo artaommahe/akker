@@ -15,10 +15,10 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "ESNext",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": ["ES2022", "dom", "ESNext.Array"],
+    "lib": ["dom", "ESNext"],
     "verbatimModuleSyntax": true
   },
   "angularCompilerOptions": {
