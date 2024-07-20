@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
 import { InputDirective } from '../../ui/input/input';
-import plus from './assets/plus.svg';
 import multilineInput from './assets/multiline-input.svg';
 import input from './assets/input.svg';
 import { IconComponent } from '../../ui/icon/icon';
@@ -43,12 +42,12 @@ import { provideIcons } from '../../ui/icon/provide-icons';
       }
 
       <button class="mt-2" [title]="mode() === 'single' ? 'Add seed' : 'Add seeds'" (click)="onAdd()">
-        <app-icon class="size-6 text-action-primary" name="plus" />
+        <app-icon class="size-6 text-action-primary" name="plusInCircle" />
       </button>
     </div>
   `,
   imports: [InputDirective, IconComponent],
-  providers: [provideIcons({ plus, multilineInput, input })],
+  providers: [provideIcons({ multilineInput, input })],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-details/sprout-details.component';
-import { provideIcons } from '../ui/icon/provide-icons';
-import cross from '../ui/modal/assets/cross.svg';
 import { IconComponent } from '../ui/icon/icon';
 import { BarnService } from '../barn/barn.service';
 
@@ -17,7 +15,7 @@ import { BarnService } from '../barn/barn.service';
         <div class="fixed inset-0 bg-primary p-5">
           <!-- TODO: ui/button -->
           <button class="absolute right-2 top-2 p-2" (click)="sproutDetails.set(null)">
-            <app-icon class="size-6 text-secondary" name="cross" />
+            <app-icon class="size-6 text-secondary" name="crossInCircle" />
           </button>
           <app-sprout-details
             [sprout]="sprout"
@@ -30,7 +28,6 @@ import { BarnService } from '../barn/barn.service';
     </div>
   `,
   imports: [SproutsListComponent, SproutDetailsComponent, IconComponent],
-  providers: [provideIcons({ cross })],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

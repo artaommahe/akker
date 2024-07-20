@@ -1,8 +1,8 @@
 import { InjectionToken, Optional, type Provider, SkipSelf, inject } from '@angular/core';
 
-type Icons = Record<string, string>;
+type Icons = Record<string, string | (() => Promise<typeof import('*.svg')>)>;
 
-const iconsToken = new InjectionToken<Icons[]>('icon');
+const iconsToken = new InjectionToken<(Icons | undefined)[]>('icon');
 
 export const provideIcons = (icons: Icons) =>
   ({

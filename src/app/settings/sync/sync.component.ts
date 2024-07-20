@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { ButtonDirective } from '../../ui/button/button';
 import { BarnDbService } from '../../barn/barnDb.service';
 import { IconComponent } from '../../ui/icon/icon';
-import cross from '../../ui/modal/assets/cross.svg';
-import { provideIcons } from '../../ui/icon/provide-icons';
 
 @Component({
   selector: 'app-sync',
@@ -18,7 +16,7 @@ import { provideIcons } from '../../ui/icon/provide-icons';
       <div class="fixed inset-0 bg-primary p-5">
         <!-- TODO: ui/button -->
         <button class="absolute right-2 top-2 p-2" (click)="showRestoreDialog.set(false)">
-          <app-icon class="size-6 text-secondary" name="cross" />
+          <app-icon class="size-6 text-secondary" name="crossInCircle" />
         </button>
 
         <div class="flex h-full flex-col gap-6 pt-8">
@@ -41,7 +39,6 @@ import { provideIcons } from '../../ui/icon/provide-icons';
     }
   `,
   imports: [ButtonDirective, IconComponent],
-  providers: [provideIcons({ cross })],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -3,8 +3,6 @@ import { NewSeedComponent } from './new-seed/new-seed.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
 import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
 import { IconComponent } from '../ui/icon/icon';
-import { provideIcons } from '../ui/icon/provide-icons';
-import cross from '../ui/modal/assets/cross.svg';
 import { BarnService } from '../barn/barn.service';
 
 @Component({
@@ -19,7 +17,7 @@ import { BarnService } from '../barn/barn.service';
         <div class="fixed inset-0 bg-primary p-5">
           <!-- TODO: ui/button -->
           <button class="absolute right-2 top-2 p-2" (click)="seedDetails.set(null)">
-            <app-icon class="size-6 text-secondary" name="cross" />
+            <app-icon class="size-6 text-secondary" name="crossInCircle" />
           </button>
           <app-seed-details
             [seed]="seed"
@@ -32,7 +30,6 @@ import { BarnService } from '../barn/barn.service';
     </div>
   `,
   imports: [NewSeedComponent, SeedsListComponent, SeedDetailsComponent, IconComponent],
-  providers: [provideIcons({ cross })],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
