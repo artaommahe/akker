@@ -1,6 +1,14 @@
 # Akker
 
-...
+Flashcards-like pet project for learning words in new languages.
+
+### Tech stack
+
+- Angular
+  - Signals
+  - Vite
+- TailwindCSS
+- RxDB
 
 ### Dev
 
