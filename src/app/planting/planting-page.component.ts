@@ -2,34 +2,29 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { NewSeedComponent } from './new-seed/new-seed.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
 import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
-import { IconComponent } from '../ui/icon/icon';
 import { BarnService } from '../barn/barn.service';
+import { DialogComponent } from '../ui/dialog/dialog.component';
 
 @Component({
   selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-new-seed (onNewSeed)="onNewSeed($event)" (onNewSeedsList)="onNewSeedsList($event)" />
-      <app-seeds-list [seeds]="seeds() ?? []" (onShowDetails)="seedDetails.set($event)" />
+      <app-new-seed (addSeeds)="onAddSeeds($event)" />
+      <app-seeds-list [seeds]="seeds() ?? []" (showDetails)="seedDetails.set($event)" />
 
-      <!-- TODO: ui/dialog -->
       @if (seedDetails(); as seed) {
-        <div class="fixed inset-0 bg-primary p-5">
-          <!-- TODO: ui/button -->
-          <button class="absolute right-2 top-2 p-2" (click)="seedDetails.set(null)">
-            <app-icon class="size-6 text-secondary" name="crossInCircle" />
-          </button>
+        <app-dialog (close)="seedDetails.set(null)">
           <app-seed-details
             [seed]="seed"
-            (onCancel)="seedDetails.set(null)"
-            (onRemove)="onRemoveSeed(seed.name)"
-            (onUpdate)="onUpdateSeed(seed.name, $event)"
+            (cancel)="seedDetails.set(null)"
+            (remove)="onRemoveSeed(seed.name)"
+            (update)="onUpdateSeed(seed.name, $event)"
           />
-        </div>
+        </app-dialog>
       }
     </div>
   `,
-  imports: [NewSeedComponent, SeedsListComponent, SeedDetailsComponent, IconComponent],
+  imports: [NewSeedComponent, SeedsListComponent, SeedDetailsComponent, DialogComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -39,12 +34,8 @@ export class PlantingPageComponent {
   seeds = this.barnService.seeds;
   seedDetails = signal<SeedDetailsSeed | null>(null);
 
-  onNewSeed(name: string) {
-    this.barnService.addSeed(name);
-  }
-
-  onNewSeedsList(names: string[]) {
-    this.barnService.addMultipleSeeds(names);
+  onAddSeeds(names: string[]) {
+    this.barnService.addSeeds(names);
   }
 
   onRemoveSeed(name: string) {

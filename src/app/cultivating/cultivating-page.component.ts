@@ -1,33 +1,30 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-details/sprout-details.component';
-import { IconComponent } from '../ui/icon/icon';
 import { BarnService } from '../barn/barn.service';
+import { DialogComponent } from '../ui/dialog/dialog.component';
 
 @Component({
   selector: 'app-cultivating-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-sprouts-list [sprouts]="sprouts() ?? []" (onShowDetails)="sproutDetails.set($event)" />
+      <app-sprouts-list [sprouts]="sprouts() ?? []" (showDetails)="sproutDetails.set($event)" />
 
-      <!-- TODO: ui/dialog -->
+      @let sprout = sproutDetails();
+
       @if (sproutDetails(); as sprout) {
-        <div class="fixed inset-0 bg-primary p-5">
-          <!-- TODO: ui/button -->
-          <button class="absolute right-2 top-2 p-2" (click)="sproutDetails.set(null)">
-            <app-icon class="size-6 text-secondary" name="crossInCircle" />
-          </button>
+        <app-dialog (close)="sproutDetails.set(null)">
           <app-sprout-details
             [sprout]="sprout"
-            (onCancel)="sproutDetails.set(null)"
-            (onRemove)="onRemoveSprout(sprout.name)"
-            (onUpdate)="onUpdateSprout(sprout.name, $event)"
+            (cancel)="sproutDetails.set(null)"
+            (remove)="onRemoveSprout(sprout.name)"
+            (update)="onUpdateSprout(sprout.name, $event)"
           />
-        </div>
+        </app-dialog>
       }
     </div>
   `,
-  imports: [SproutsListComponent, SproutDetailsComponent, IconComponent],
+  imports: [SproutsListComponent, SproutDetailsComponent, DialogComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
