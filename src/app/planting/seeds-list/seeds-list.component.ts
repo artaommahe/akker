@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { SeedsListItemComponent, type SeedsListItemSeed } from './seeds-list-item.component';
+import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
 
 @Component({
   selector: 'app-seeds-list',
@@ -33,21 +34,20 @@ import { SeedsListItemComponent, type SeedsListItemSeed } from './seeds-list-ite
         </section>
       </div>
 
-      <!-- TODO: ui/expansion-panel -->
-      <details>
-        <summary class="text-lg">All seeds</summary>
+      <app-expansion-panel>
+        <ng-container>All seeds ({{ sortedSeeds().length }})</ng-container>
 
-        <ul class="flex flex-col gap-2">
+        <ng-template #content>
           @for (seed of sortedSeeds(); track seed.name) {
             <li>
               <app-seeds-list-item [seed]="seed" (onShowDetails)="onShowDetails.emit($event)" />
             </li>
           }
-        </ul>
-      </details>
+        </ng-template>
+      </app-expansion-panel>
     </div>
   `,
-  imports: [SeedsListItemComponent],
+  imports: [SeedsListItemComponent, ExpansionPanelComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

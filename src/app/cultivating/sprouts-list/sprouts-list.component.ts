@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { SproutsListItemComponent, type SproutsListItemSprout } from './sprouts-list-item.component';
+import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
 
 @Component({
   selector: 'app-sprouts-list',
@@ -18,22 +19,21 @@ import { SproutsListItemComponent, type SproutsListItemSprout } from './sprouts-
       </section>
 
       @if (restSprouts().length) {
-        <!-- TODO: ui/expansion-panel -->
-        <details>
-          <summary class="text-lg">Rest</summary>
+        <app-expansion-panel>
+          <ng-container>Rest ({{ restSprouts().length }})</ng-container>
 
-          <ul class="flex flex-col gap-2">
+          <ng-template #content>
             @for (sprout of restSprouts(); track sprout.name) {
               <li>
                 <app-sprouts-list-item [sprout]="sprout" (onShowDetails)="onShowDetails.emit($event)" />
               </li>
             }
-          </ul>
-        </details>
+          </ng-template>
+        </app-expansion-panel>
       }
     </div>
   `,
-  imports: [SproutsListItemComponent],
+  imports: [SproutsListItemComponent, ExpansionPanelComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
