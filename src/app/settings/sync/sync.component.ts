@@ -26,7 +26,7 @@ import { DialogComponent } from '../../ui/dialog/dialog.component';
 
           <div class="mt-auto flex items-center justify-end gap-4">
             <button appButton (click)="showRestoreDialog.set(false)">Cancel</button>
-            <button appButton appButtonType="warning" (click)="restore(backupFile)">Restore</button>
+            <button appButton appButtonSemantic="warning" (click)="restore(backupFile)">Restore</button>
           </div>
         </div>
       </app-dialog>

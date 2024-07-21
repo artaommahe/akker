@@ -13,7 +13,13 @@ import { ButtonDirective } from '../../ui/button/button';
       </label>
 
       <div class="mt-auto flex gap-4">
-        <button class="mr-auto text-secondary" appButton appButtonType="warning" type="button" (click)="remove.emit()">
+        <button
+          class="mr-auto text-secondary"
+          appButton
+          appButtonSemantic="warning"
+          type="button"
+          (click)="remove.emit()"
+        >
           Remove
         </button>
         <button type="button" appButton (click)="cancel.emit()">Cancel</button>

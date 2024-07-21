@@ -10,8 +10,9 @@ module.exports = {
         secondary: '#9a90b4',
       },
       semantic: {
+        success: '#8db14b',
         warning: '#fca321',
-        error: '#dd452e',
+        danger: '#dd452e',
       },
     },
     fontFamily: {
