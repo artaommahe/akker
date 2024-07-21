@@ -14,11 +14,7 @@ export class BarnService {
   seeds = this.convertToSignal(this.barnDb.seeds.find().$);
   sprouts = this.convertToSignal(this.barnDb.sprouts.find().$);
 
-  async addSeed(name: string) {
-    this.addMultipleSeeds([name]);
-  }
-
-  async addMultipleSeeds(names: string[]) {
+  async addSeeds(names: string[]) {
     const { seedsToAdd, seedsToUpdate, newSprouts } = await this.prepareNewSeeds(names);
 
     // add new or update existing seeds

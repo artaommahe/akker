@@ -52,8 +52,7 @@ import { provideIcons } from '../../ui/icon/provide-icons';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewSeedComponent {
-  onNewSeed = output<string>();
-  onNewSeedsList = output<string[]>();
+  addSeeds = output<string[]>();
 
   mode = signal<'single' | 'multiple'>('single');
   newSeed = signal('');
@@ -81,7 +80,7 @@ export class NewSeedComponent {
       return;
     }
 
-    this.onNewSeed.emit(seed);
+    this.addSeeds.emit([seed]);
     this.newSeed.set('');
   }
 
@@ -101,7 +100,7 @@ export class NewSeedComponent {
       return;
     }
 
-    this.onNewSeedsList.emit(newSeeds);
+    this.addSeeds.emit(newSeeds);
     this.newSeed.set('');
   }
 }

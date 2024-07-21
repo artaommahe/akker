@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 @Component({
   selector: 'app-sprouts-list-item',
   template: `
-    <button class="flex w-full items-center gap-2 px-2 py-1 text-left" (click)="onShowDetails.emit(sprout())">
+    <button class="flex w-full items-center gap-2 px-2 py-1 text-left" (click)="showDetails.emit(sprout())">
       <span class="line-clamp-1 grow">{{ sprout().name }}</span>
     </button>
   `,
@@ -13,7 +13,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 })
 export class SproutsListItemComponent {
   sprout = input.required<SproutsListItemSprout>();
-  onShowDetails = output<SproutsListItemSprout>();
+  showDetails = output<SproutsListItemSprout>();
 }
 
 export interface SproutsListItemSprout {

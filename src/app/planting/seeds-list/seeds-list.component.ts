@@ -13,7 +13,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
           <ul class="flex flex-col gap-2">
             @for (seed of topSeeds(); track seed.name) {
               <li>
-                <app-seeds-list-item [seed]="seed" (onShowDetails)="onShowDetails.emit($event)" />
+                <app-seeds-list-item [seed]="seed" (showDetails)="showDetails.emit($event)" />
               </li>
             }
           </ul>
@@ -27,7 +27,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
           <ul class="flex flex-col gap-2">
             @for (seed of lastAddedSeeds(); track seed.name) {
               <li>
-                <app-seeds-list-item [seed]="seed" (onShowDetails)="onShowDetails.emit($event)" />
+                <app-seeds-list-item [seed]="seed" (showDetails)="showDetails.emit($event)" />
               </li>
             }
           </ul>
@@ -40,7 +40,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
         <ng-template #content>
           @for (seed of sortedSeeds(); track seed.name) {
             <li>
-              <app-seeds-list-item [seed]="seed" (onShowDetails)="onShowDetails.emit($event)" />
+              <app-seeds-list-item [seed]="seed" (showDetails)="showDetails.emit($event)" />
             </li>
           }
         </ng-template>
@@ -53,7 +53,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
 })
 export class SeedsListComponent {
   seeds = input.required<SeedsListSeed[]>();
-  onShowDetails = output<SeedsListItemSeed>();
+  showDetails = output<SeedsListItemSeed>();
 
   sortedSeeds = computed(() =>
     this.seeds().toSorted((a, b) => b.count - a.count || b.lastAddedAt.localeCompare(a.lastAddedAt)),

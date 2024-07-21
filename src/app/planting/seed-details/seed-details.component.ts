@@ -13,16 +13,10 @@ import { ButtonDirective } from '../../ui/button/button';
       </label>
 
       <div class="mt-auto flex gap-4">
-        <button
-          class="mr-auto text-secondary"
-          appButton
-          appButtonType="warning"
-          type="button"
-          (click)="onRemove.emit()"
-        >
+        <button class="mr-auto text-secondary" appButton appButtonType="warning" type="button" (click)="remove.emit()">
           Remove
         </button>
-        <button type="button" appButton (click)="onCancel.emit()">Cancel</button>
+        <button type="button" appButton (click)="cancel.emit()">Cancel</button>
         <button type="submit" appButton appButtonType="primary">Save</button>
       </div>
     </form>
@@ -33,9 +27,9 @@ import { ButtonDirective } from '../../ui/button/button';
 })
 export class SeedDetailsComponent implements OnInit {
   seed = input.required<SeedDetailsSeed>();
-  onRemove = output<void>();
-  onCancel = output<void>();
-  onUpdate = output<SeedDetailsSeed>();
+  remove = output<void>();
+  cancel = output<void>();
+  update = output<SeedDetailsSeed>();
 
   form = inject(NonNullableFormBuilder).group({
     // TODO: ? check that name is not used by other seeds
@@ -51,7 +45,7 @@ export class SeedDetailsComponent implements OnInit {
       return;
     }
 
-    this.onUpdate.emit(this.form.getRawValue());
+    this.update.emit(this.form.getRawValue());
   }
 }
 

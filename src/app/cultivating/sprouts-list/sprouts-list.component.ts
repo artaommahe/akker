@@ -12,7 +12,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
         <ul class="flex flex-col gap-2">
           @for (sprout of newSprouts(); track sprout.name) {
             <li>
-              <app-sprouts-list-item [sprout]="sprout" (onShowDetails)="onShowDetails.emit($event)" />
+              <app-sprouts-list-item [sprout]="sprout" (showDetails)="showDetails.emit($event)" />
             </li>
           }
         </ul>
@@ -25,7 +25,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
           <ng-template #content>
             @for (sprout of restSprouts(); track sprout.name) {
               <li>
-                <app-sprouts-list-item [sprout]="sprout" (onShowDetails)="onShowDetails.emit($event)" />
+                <app-sprouts-list-item [sprout]="sprout" (showDetails)="showDetails.emit($event)" />
               </li>
             }
           </ng-template>
@@ -39,7 +39,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
 })
 export class SproutsListComponent {
   sprouts = input.required<SproutsListSprout[]>();
-  onShowDetails = output<SproutsListItemSprout>();
+  showDetails = output<SproutsListItemSprout>();
 
   sortedSprouts = computed(() => this.sprouts().toSorted((a, b) => b.addedAt.localeCompare(a.addedAt)));
   newSprouts = computed(() => this.sortedSprouts().slice(0, newSproutsAmount));

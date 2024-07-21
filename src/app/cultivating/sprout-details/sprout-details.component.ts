@@ -13,16 +13,10 @@ import { ButtonDirective } from '../../ui/button/button';
       </label>
 
       <div class="mt-auto flex gap-4">
-        <button
-          class="mr-auto text-secondary"
-          type="button"
-          appButton
-          appButtonType="warning"
-          (click)="onRemove.emit()"
-        >
+        <button class="mr-auto text-secondary" type="button" appButton appButtonType="warning" (click)="remove.emit()">
           Remove
         </button>
-        <button type="button" appButton (click)="onCancel.emit()">Cancel</button>
+        <button type="button" appButton (click)="cancel.emit()">Cancel</button>
         <button type="submit" appButton appButtonType="primary">Save</button>
       </div>
     </form>
@@ -33,9 +27,9 @@ import { ButtonDirective } from '../../ui/button/button';
 })
 export class SproutDetailsComponent implements OnInit {
   sprout = input.required<SproutDetailsSprout>();
-  onRemove = output<void>();
-  onCancel = output<void>();
-  onUpdate = output<SproutDetailsSprout>();
+  remove = output<void>();
+  cancel = output<void>();
+  update = output<SproutDetailsSprout>();
 
   form = inject(NonNullableFormBuilder).group({
     // TODO: ? check that name is not used by other sprouts
@@ -51,7 +45,7 @@ export class SproutDetailsComponent implements OnInit {
       return;
     }
 
-    this.onUpdate.emit(this.form.getRawValue());
+    this.update.emit(this.form.getRawValue());
   }
 }
 
