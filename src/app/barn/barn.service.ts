@@ -64,6 +64,7 @@ export class BarnService {
     });
   }
 
+  // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
     const existingSprouts = await this.barnDb.sprouts.find({ selector: { name: { $in: names } } }).exec();
 
@@ -98,6 +99,8 @@ export class BarnService {
       { seedsToUpdate: [] as DbSeed[], newSprouts: [] as string[] },
     );
 
+    // TODO: when count is more than seedPlantingTreshold
+    // shoult be added to newSprouts
     const seedsToAdd = Object.keys(newSeeds)
       .filter(name => !existingSeeds.some(seed => seed.name === name))
       .map(name => ({

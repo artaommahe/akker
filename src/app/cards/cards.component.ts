@@ -16,9 +16,9 @@ import { ButtonDirective } from '../ui/button/button';
         </div>
       </div>
 
-      <div class="flex grow items-center justify-center rounded border border-primary/10">
+      <div class="flex grow items-center justify-center rounded border border-primary/10 p-8">
         @if (currentCard(); as currentCard) {
-          <span class="text-primary">{{ currentCard.name }}</span>
+          <span class="break-all text-2xl text-primary">{{ currentCard.name }}</span>
         } @else {
           <span class="text-secondary">Done!</span>
         }
