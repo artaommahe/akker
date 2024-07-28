@@ -25,6 +25,7 @@
     "nanoid": "^5.0.7",
     "rxdb": "^15.28.0",
     "rxjs": "~7.8.0",
+    "ts-fsrs": "^4.0.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
