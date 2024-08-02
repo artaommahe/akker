@@ -20,11 +20,11 @@ import { ButtonDirective } from '../ui/button/button';
         @if (currentCard(); as currentCard) {
           <span class="break-all text-2xl text-primary">{{ currentCard.name }}</span>
         } @else {
-          <span class="text-secondary">Done!</span>
+          <span class="text-2xl text-secondary">Done!</span>
         }
       </div>
 
-      <div class="flex items-center justify-around">
+      <div class="flex items-center justify-around" [class.invisible]="!currentCard()">
         <button appButton appButtonSemantic="warning" (click)="updateStatus('learning')">-</button>
         <button appButton appButtonSemantic="success" (click)="updateStatus('know')">+</button>
       </div>
