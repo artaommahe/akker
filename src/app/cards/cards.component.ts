@@ -1,18 +1,23 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { ButtonDirective } from '../ui/button/button';
 
+// TODO: add tests
 @Component({
   selector: 'app-cards',
   template: `
     <div class="flex h-full flex-col gap-4 py-16">
       <div class="flex items-center justify-between text-secondary">
         <div>
-          <span class="text-semantic-warning">({{ learningCards().length }})</span>
-          learning
+          to go
+          <span class="text-action-primary">({{ status().toGo }})</span>
         </div>
         <div>
-          know
-          <span class="text-semantic-success">({{ knownCards().length }})</span>
+          to repeat
+          <span class="text-semantic-warning">({{ status().toRepeat }})</span>
+        </div>
+        <div>
+          learning
+          <span class="text-semantic-success">({{ status().learning }})</span>
         </div>
       </div>
 
@@ -25,8 +30,10 @@ import { ButtonDirective } from '../ui/button/button';
       </div>
 
       <div class="flex items-center justify-around" [class.invisible]="!currentCard()">
-        <button appButton appButtonSemantic="warning" (click)="updateStatus('learning')">-</button>
-        <button appButton appButtonSemantic="success" (click)="updateStatus('know')">+</button>
+        <button appButton appButtonSemantic="danger" (click)="rate('again')">Again</button>
+        <button appButton appButtonSemantic="warning" (click)="rate('hard')">Hard</button>
+        <button appButton appButtonSemantic="success" (click)="rate('good')">Good</button>
+        <button appButton (click)="rate('easy')">Easy</button>
       </div>
     </div>
   `,
@@ -34,31 +41,33 @@ import { ButtonDirective } from '../ui/button/button';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardsComponent implements OnInit {
+export class CardsComponent {
   cards = input.required<Card[]>();
 
-  cardsWithData = signal<CardWithData[]>([]);
-  currentCard = computed(
-    () =>
-      this.cardsWithData()
-        .filter(card => card.status === null)
-        .at(0) ?? null,
-  );
-  learningCards = computed(() => this.cardsWithData().filter(card => card.status === 'learning'));
-  knownCards = computed(() => this.cardsWithData().filter(card => card.status === 'know'));
+  rateCard = output<{ id: string; rate: CardRate }>();
+  cardsToRate = computed(() => [
+    ...this.cards().filter(card => !this.cardsRate()[card.id]),
+    // TODO: fix that going over 'again' cards is stuck on a card that was rated 'again' again
+    ...this.cards().filter(card => this.cardsRate()[card.id] === 'again'),
+  ]);
+  currentCard = computed(() => this.cardsToRate().at(0) ?? null);
+  status = computed(() => ({
+    toGo: this.cards().filter(card => !this.cardsRate()[card.id]).length,
+    toRepeat: Object.values(this.cardsRate()).filter(rate => ['again'].includes(rate)).length,
+    learning: Object.values(this.cardsRate()).filter(rate => ['hard', 'good', 'easy'].includes(rate)).length,
+  }));
 
-  ngOnInit() {
-    this.cardsWithData.set(this.cards().map(card => ({ ...card, status: null })));
-  }
+  private cardsRate = signal<Record<string, CardRate>>({});
 
-  updateStatus(status: CardStatus) {
+  rate(rate: CardRate) {
     const currentCard = this.currentCard();
 
     if (!currentCard) {
       return;
     }
 
-    this.cardsWithData.update(cards => cards.map(card => (card.id === currentCard.id ? { ...card, status } : card)));
+    this.cardsRate.set({ ...this.cardsRate(), [currentCard.id]: rate });
+    this.rateCard.emit({ id: currentCard.id, rate });
   }
 }
 
@@ -67,8 +76,4 @@ export interface Card {
   name: string;
 }
 
-type CardStatus = 'learning' | 'know';
-
-interface CardWithData extends Card {
-  status: CardStatus | null;
-}
+type CardRate = 'again' | 'hard' | 'good' | 'easy';
