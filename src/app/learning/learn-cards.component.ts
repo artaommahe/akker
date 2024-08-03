@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { CardsComponent, type Card } from '../cards/cards.component';
+import { CardsComponent, type Card } from './cards/cards.component';
 import { BarnService } from '../barn/barn.service';
 import { LearningService } from './learning';
 import { ButtonDirective } from '../ui/button/button';
