@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^18.1.0",
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
+    "@sentry/angular": "^8.22.0",
     "clsx": "^2.1.1",
     "nanoid": "^5.0.7",
     "rxdb": "^15.28.0",
