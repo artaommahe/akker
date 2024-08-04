@@ -1,11 +1,13 @@
 import { addRxPlugin, createRxDatabase, type RxCollection, type RxReactivityFactory } from 'rxdb';
-import { type DbSeed, seedSchemaLiteral } from './schema/seed';
+import { type DbSeed, seedsCollection } from './schema/seeds';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression';
-import { type DbSprout, sproutSchemaLiteral } from './schema/sprout';
+import { type DbSprout, sproutsCollection } from './schema/sprouts';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
+import { RxDBMigrationSchemaPlugin } from 'rxdb/plugins/migration-schema';
 
 addRxPlugin(RxDBJsonDumpPlugin);
+addRxPlugin(RxDBMigrationSchemaPlugin);
 
 export interface BarnDbCollections<Reactivity> {
   seeds: RxCollection<DbSeed, unknown, unknown, unknown, Reactivity>;
@@ -30,12 +32,8 @@ export const createBarnDb = async <Reactivity>({ reactivity }: CreateBarnBdOptio
   });
 
   await barnDb.addCollections({
-    seeds: {
-      schema: seedSchemaLiteral,
-    },
-    sprouts: {
-      schema: sproutSchemaLiteral,
-    },
+    seeds: seedsCollection,
+    sprouts: sproutsCollection,
   });
 
   return barnDb;

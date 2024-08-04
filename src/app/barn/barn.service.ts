@@ -3,8 +3,8 @@ import { BarnDbService } from './barnDb.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import type { Observable } from 'rxjs';
 import { nanoid } from 'nanoid';
-import type { DbSeed } from './rxdb/schema/seed';
-import type { DbSprout } from './rxdb/schema/sprout';
+import type { DbSeed } from './rxdb/schema/seeds';
+import type { DbSprout } from './rxdb/schema/sprouts';
 
 @Injectable({ providedIn: 'root' })
 export class BarnService {
