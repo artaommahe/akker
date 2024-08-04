@@ -30,10 +30,10 @@ import { ButtonDirective } from '../../ui/button/button';
       </div>
 
       <div class="flex items-center justify-around" [class.invisible]="!currentCard()">
-        <button appButton appButtonSemantic="danger" (click)="rate('again')">Again</button>
-        <button appButton appButtonSemantic="warning" (click)="rate('hard')">Hard</button>
-        <button appButton appButtonSemantic="success" (click)="rate('good')">Good</button>
-        <button appButton (click)="rate('easy')">Easy</button>
+        <button appButton appButtonSemantic="danger" (click)="rate(CardGrade.Again)">Again</button>
+        <button appButton appButtonSemantic="warning" (click)="rate(CardGrade.Hard)">Hard</button>
+        <button appButton appButtonSemantic="success" (click)="rate(CardGrade.Good)">Good</button>
+        <button appButton (click)="rate(CardGrade.Easy)">Easy</button>
       </div>
     </div>
   `,
@@ -43,31 +43,34 @@ import { ButtonDirective } from '../../ui/button/button';
 })
 export class CardsComponent {
   cards = input.required<Card[]>();
+  rateCard = output<{ id: string; grade: CardGrade }>();
 
-  rateCard = output<{ id: string; rate: CardRate }>();
   cardsToRate = computed(() => [
     ...this.cards().filter(card => !this.cardsRate()[card.id]),
     // TODO: fix that going over 'again' cards is stuck on a card that was rated 'again' again
-    ...this.cards().filter(card => this.cardsRate()[card.id] === 'again'),
+    ...this.cards().filter(card => this.cardsRate()[card.id] === CardGrade.Again),
   ]);
   currentCard = computed(() => this.cardsToRate().at(0) ?? null);
   status = computed(() => ({
     toGo: this.cards().filter(card => !this.cardsRate()[card.id]).length,
-    toRepeat: Object.values(this.cardsRate()).filter(rate => ['again'].includes(rate)).length,
-    learning: Object.values(this.cardsRate()).filter(rate => ['hard', 'good', 'easy'].includes(rate)).length,
+    toRepeat: Object.values(this.cardsRate()).filter(rate => [CardGrade.Again].includes(rate)).length,
+    learning: Object.values(this.cardsRate()).filter(rate =>
+      [CardGrade.Hard, CardGrade.Good, CardGrade.Easy].includes(rate),
+    ).length,
   }));
+  CardGrade = CardGrade;
 
-  private cardsRate = signal<Record<string, CardRate>>({});
+  private cardsRate = signal<Record<string, CardGrade>>({});
 
-  rate(rate: CardRate) {
+  rate(grade: CardGrade) {
     const currentCard = this.currentCard();
 
     if (!currentCard) {
       return;
     }
 
-    this.cardsRate.set({ ...this.cardsRate(), [currentCard.id]: rate });
-    this.rateCard.emit({ id: currentCard.id, rate });
+    this.cardsRate.set({ ...this.cardsRate(), [currentCard.id]: grade });
+    this.rateCard.emit({ id: currentCard.id, grade });
   }
 }
 
@@ -76,4 +79,9 @@ export interface Card {
   name: string;
 }
 
-type CardRate = 'again' | 'hard' | 'good' | 'easy';
+export enum CardGrade {
+  Again = 1,
+  Hard = 2,
+  Good = 3,
+  Easy = 4,
+}
