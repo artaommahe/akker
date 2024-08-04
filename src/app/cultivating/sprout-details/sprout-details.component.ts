@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, type OnInit, inject, input, output 
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputDirective } from '../../ui/input/input';
 import { ButtonDirective } from '../../ui/button/button';
+import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
+import { CardStatsComponent, type CardStats } from '../../learning/card-stats/card-stats.component';
 
 @Component({
   selector: 'app-sprout-details',
@@ -11,6 +13,18 @@ import { ButtonDirective } from '../../ui/button/button';
         Name
         <input appInput type="text" formControlName="name" minlength="1" required />
       </label>
+
+      <app-expansion-panel class="mt-4">
+        <span class="text-secondary">FSRS stats</span>
+
+        <ng-template #content>
+          @if (sprout().fsrs; as fsrs) {
+            <app-card-stats [fsrs]="fsrs" />
+          } @else {
+            <span class="text-secondary">empty</span>
+          }
+        </ng-template>
+      </app-expansion-panel>
 
       <div class="mt-auto flex gap-4">
         <button
@@ -27,7 +41,7 @@ import { ButtonDirective } from '../../ui/button/button';
       </div>
     </form>
   `,
-  imports: [ReactiveFormsModule, InputDirective, ButtonDirective],
+  imports: [ReactiveFormsModule, InputDirective, ButtonDirective, ExpansionPanelComponent, CardStatsComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -57,4 +71,5 @@ export class SproutDetailsComponent implements OnInit {
 
 export interface SproutDetailsSprout {
   name: string;
+  fsrs?: CardStats;
 }

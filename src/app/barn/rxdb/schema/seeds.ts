@@ -1,4 +1,4 @@
-import { type RxJsonSchema } from 'rxdb';
+import { type MigrationStrategies, type RxCollectionCreator, type RxJsonSchema } from 'rxdb';
 
 export interface DbSeed {
   id: string;
@@ -8,9 +8,9 @@ export interface DbSeed {
   lastAddedAt: string;
 }
 
-export const seedSchemaLiteral: RxJsonSchema<DbSeed> = {
-  title: 'seed schema',
-  version: 0,
+const seedsSchemaLiteral: RxJsonSchema<DbSeed> = {
+  title: 'seeds schema',
+  version: 2,
   type: 'object',
   keyCompression: true,
   primaryKey: 'id',
@@ -27,13 +27,23 @@ export const seedSchemaLiteral: RxJsonSchema<DbSeed> = {
     },
     addedAt: {
       type: 'string',
-      maxLength: 30,
+      format: 'date-time',
     },
     lastAddedAt: {
       type: 'string',
-      maxLength: 30,
+      format: 'date-time',
     },
   },
   required: ['id', 'name', 'count', 'addedAt', 'lastAddedAt'],
   indexes: ['name'],
+};
+
+const seedsSchemaMigrationStrategies: MigrationStrategies = {
+  1: oldDoc => oldDoc,
+  2: oldDoc => oldDoc,
+};
+
+export const seedsCollection: RxCollectionCreator<DbSeed> = {
+  schema: seedsSchemaLiteral,
+  migrationStrategies: seedsSchemaMigrationStrategies,
 };
