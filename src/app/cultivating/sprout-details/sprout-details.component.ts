@@ -9,9 +9,17 @@ import { CardStatsComponent, type CardStats } from '../../learning/card-stats/ca
   selector: 'app-sprout-details',
   template: `
     <form class="flex h-full flex-col gap-2" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <label>
-        Name
-        <input appInput type="text" formControlName="name" minlength="1" required />
+      <label class="flex flex-col">
+        Term
+        <input appInput type="text" formControlName="term" minlength="1" required />
+      </label>
+      <label class="flex flex-col">
+        Full term (optional)
+        <input appInput type="text" formControlName="fullTerm" />
+      </label>
+      <label class="flex flex-col">
+        Definition
+        <textarea appInput type="text" rows="4" formControlName="definition"></textarea>
       </label>
 
       <app-expansion-panel class="mt-4">
@@ -52,12 +60,18 @@ export class SproutDetailsComponent implements OnInit {
   update = output<SproutDetailsSprout>();
 
   form = inject(NonNullableFormBuilder).group({
-    // TODO: ? check that name is not used by other sprouts
-    name: ['', [Validators.minLength(1), Validators.required]],
+    // TODO: ? check that term is not used by other sprouts
+    term: ['', [Validators.minLength(1), Validators.required]],
+    fullTerm: [''],
+    definition: [''],
   });
 
   ngOnInit(): void {
-    this.form.setValue({ name: this.sprout().name });
+    this.form.setValue({
+      term: this.sprout().term,
+      fullTerm: this.sprout().fullTerm ?? '',
+      definition: this.sprout().definition,
+    });
   }
 
   onSubmit() {
@@ -65,11 +79,14 @@ export class SproutDetailsComponent implements OnInit {
       return;
     }
 
-    this.update.emit(this.form.getRawValue());
+    this.update.emit({ ...this.form.getRawValue(), id: this.sprout().id });
   }
 }
 
 export interface SproutDetailsSprout {
-  name: string;
+  id: string;
+  term: string;
+  fullTerm?: string;
+  definition: string;
   fsrs?: CardStats;
 }

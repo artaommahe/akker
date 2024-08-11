@@ -39,20 +39,21 @@ export class BarnService {
     await this.barnDb.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
   }
 
-  async addSprout(name: string) {
+  async addSprout(term: string) {
     await this.barnDb.sprouts.insert({
       id: nanoid(),
-      name,
+      term,
+      definition: '',
       addedAt: new Date().toISOString(),
     });
   }
 
-  async removeSprout(name: string) {
-    await this.barnDb.sprouts.findOne({ selector: { name } }).remove();
+  async removeSprout(id: string) {
+    await this.barnDb.sprouts.findOne({ selector: { id } }).remove();
   }
 
-  async updateSprout(name: string, newData: Partial<DbSprout>) {
-    await this.barnDb.sprouts.findOne({ selector: { name } }).modify(sprout => ({ ...sprout, ...newData }));
+  async updateSprout(id: string, newData: Partial<DbSprout>) {
+    await this.barnDb.sprouts.findOne({ selector: { id } }).modify(sprout => ({ ...sprout, ...newData }));
   }
 
   // https://github.com/pubkey/rxdb/issues/6188
@@ -66,12 +67,12 @@ export class BarnService {
 
   // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
-    const existingSprouts = await this.barnDb.sprouts.find({ selector: { name: { $in: names } } }).exec();
+    const existingSprouts = await this.barnDb.sprouts.find({ selector: { term: { $in: names } } }).exec();
 
     const newSeeds = names.reduce(
       (result, name) =>
         // if the seed is already sprouted, skip it
-        existingSprouts.find(sprout => sprout.name === name)
+        existingSprouts.find(sprout => sprout.term === name)
           ? result
           : { ...result, [name]: result[name] ? result[name] + 1 : 1 },
       {} as Record<string, number>,

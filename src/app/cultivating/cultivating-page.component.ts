@@ -11,15 +11,15 @@ import { LearnCardsComponent } from '../learning/learn-cards.component';
     <div class="flex flex-col items-start gap-4">
       <app-learn-cards />
 
-      <app-sprouts-list [sprouts]="sprouts() ?? []" (showDetails)="sproutDetails.set($event)" />
+      <app-sprouts-list [sprouts]="sprouts() ?? []" (showDetails)="onShowDetails($event)" />
 
       @if (sproutDetails(); as sprout) {
         <app-dialog (close)="sproutDetails.set(null)">
           <app-sprout-details
             [sprout]="sprout"
             (cancel)="sproutDetails.set(null)"
-            (remove)="onRemoveSprout(sprout.name)"
-            (update)="onUpdateSprout(sprout.name, $event)"
+            (remove)="onRemoveSprout(sprout.id)"
+            (update)="onUpdateSprout(sprout.id, $event)"
           />
         </app-dialog>
       }
@@ -35,13 +35,23 @@ export class CultivatingPageComponent {
   sprouts = this.barnService.sprouts;
   sproutDetails = signal<SproutDetailsSprout | null>(null);
 
-  onRemoveSprout(name: string) {
-    this.barnService.removeSprout(name);
+  onShowDetails(sproutId: string) {
+    const sprout = this.sprouts()?.find(sprout => sprout.id === sproutId);
+
+    if (!sprout) {
+      throw new Error(`Sprout with id ${sproutId} not found`);
+    }
+
+    this.sproutDetails.set(sprout);
+  }
+
+  onRemoveSprout(id: string) {
+    this.barnService.removeSprout(id);
     this.sproutDetails.set(null);
   }
 
-  onUpdateSprout(name: string, value: Partial<SproutDetailsSprout>) {
-    this.barnService.updateSprout(name, value);
+  onUpdateSprout(id: string, value: Partial<SproutDetailsSprout>) {
+    this.barnService.updateSprout(id, value);
     this.sproutDetails.set(null);
   }
 }
