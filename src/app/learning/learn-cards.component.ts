@@ -33,10 +33,7 @@ export class LearnCardsComponent {
       return;
     }
 
-    const cards = this.learningService.selectCardsToLearn(sprouts, cardsToLearnAmount).map(sprout => ({
-      id: sprout.id,
-      name: sprout.name,
-    }));
+    const cards = this.learningService.selectCardsToLearn(sprouts, cardsToLearnAmount);
 
     this.cardsToLearn.set(cards);
   }
@@ -53,7 +50,7 @@ export class LearnCardsComponent {
 
     const newCard = this.learningService.rateCard({ card: sprout.fsrs?.card, grade });
 
-    await this.barnService.updateSprout(sprout.name, {
+    await this.barnService.updateSprout(sprout.id, {
       fsrs: { ...sprout.fsrs, card: newCard },
     });
   }

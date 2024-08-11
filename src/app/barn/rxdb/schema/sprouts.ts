@@ -3,7 +3,9 @@ import { type Card } from 'ts-fsrs';
 
 export interface DbSprout {
   id: string;
-  name: string;
+  term: string;
+  fullTerm?: string;
+  definition: string;
   addedAt: string;
   fsrs?: {
     card: Omit<Card, 'due' | 'last_review'> & {
@@ -15,7 +17,7 @@ export interface DbSprout {
 
 const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
   title: 'sprouts schema',
-  version: 1,
+  version: 2,
   type: 'object',
   keyCompression: true,
   primaryKey: 'id',
@@ -24,7 +26,13 @@ const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
       type: 'string',
       maxLength: 10,
     },
-    name: {
+    term: {
+      type: 'string',
+    },
+    fullTerm: {
+      type: 'string',
+    },
+    definition: {
       type: 'string',
     },
     addedAt: {
@@ -52,15 +60,35 @@ const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
       },
     },
   },
-  required: ['id', 'name', 'addedAt'],
-  indexes: ['name'],
+  required: ['id', 'term', 'addedAt'],
+  indexes: ['term'],
 };
 
 const sproutsSchemaMigrationStrategies: MigrationStrategies = {
   1: oldDoc => oldDoc,
+  2: (oldDoc: DbSproutV1) => ({
+    id: oldDoc.id,
+    term: oldDoc.name,
+    fullTerm: '',
+    definition: '',
+    addedAt: oldDoc.addedAt,
+    fsrs: oldDoc.fsrs,
+  }),
 };
 
 export const sproutsCollection: RxCollectionCreator<DbSprout> = {
   schema: sproutsSchemaLiteral,
   migrationStrategies: sproutsSchemaMigrationStrategies,
 };
+
+interface DbSproutV1 {
+  id: string;
+  name: string;
+  addedAt: string;
+  fsrs?: {
+    card: Omit<Card, 'due' | 'last_review'> & {
+      due: string;
+      last_review?: string;
+    };
+  };
+}

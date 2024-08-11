@@ -21,13 +21,23 @@ import { ButtonDirective } from '../../ui/button/button';
         </div>
       </div>
 
-      <div class="flex grow items-center justify-center rounded border border-primary/10 p-8">
+      <button
+        class="flex grow flex-col items-center justify-center gap-2 rounded border border-primary/10 p-8"
+        (click)="onCardClick()"
+      >
         @if (currentCard(); as currentCard) {
-          <span class="break-all text-2xl text-primary">{{ currentCard.name }}</span>
+          @if (showCardDefinition()) {
+            <span class="break-all text-2xl text-primary">{{ currentCard.fullTerm || currentCard.term }}</span>
+            @if (currentCard.definition) {
+              <p class="text-left text-secondary">{{ currentCard.definition }}</p>
+            }
+          } @else {
+            <span class="break-all text-2xl text-primary">{{ currentCard.term }}</span>
+          }
         } @else {
           <span class="text-2xl text-secondary">Done!</span>
         }
-      </div>
+      </button>
 
       <div class="flex items-center justify-around" [class.invisible]="!currentCard()">
         <button appButton appButtonSemantic="danger" (click)="rate(CardGrade.Again)">Again</button>
@@ -59,8 +69,19 @@ export class CardsComponent {
     ).length,
   }));
   CardGrade = CardGrade;
+  showCardDefinition = signal(false);
 
   private cardsRate = signal<Record<string, CardGrade>>({});
+
+  onCardClick() {
+    const currentCard = this.currentCard();
+
+    if (!currentCard?.definition && !currentCard?.fullTerm) {
+      return;
+    }
+
+    this.showCardDefinition.update(showCardDefinition => !showCardDefinition);
+  }
 
   rate(grade: CardGrade) {
     const currentCard = this.currentCard();
@@ -76,7 +97,9 @@ export class CardsComponent {
 
 export interface Card {
   id: string;
-  name: string;
+  term: string;
+  fullTerm?: string;
+  definition: string;
 }
 
 export enum CardGrade {
