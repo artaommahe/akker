@@ -2,9 +2,6 @@ name: Lint
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,4 +15,4 @@ jobs:
         uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - name: Run linters
-        run: LINT_CHECK=true npx lint-staged
+        run: LINT_CHECK=true npx lint-staged --diff="main...${{ github.head_ref || github.ref_name }}"
