@@ -49,11 +49,5 @@
     "typescript": "~5.5.3",
     "typescript-eslint": "8.0.0-alpha.20",
     "vitest": "^2.0.5"
-  },
-  "lint-staged": {
-    "*": [
-      "eslint --fix",
-      "prettier --write --ignore-unknown"
-    ]
   }
 }
