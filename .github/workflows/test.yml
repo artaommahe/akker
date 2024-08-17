@@ -17,5 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - uses: ./.github/actions/setup
+      - name: Install browsers
+        run: npx playwright install chromium --with-deps
       - name: Run tests
         run: npm test
