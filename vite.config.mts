@@ -14,6 +14,13 @@ export default defineConfig(({ mode }) => {
       setupFiles: ['src/test-setup.ts'],
       include: ['**/*.spec.ts'],
       reporters: ['default'],
+      pool: 'threads',
+      browser: {
+        enabled: true,
+        provider: 'playwright',
+        name: 'chromium',
+        headless: true,
+      },
     },
     define: {
       'import.meta.vitest': mode !== 'production',
