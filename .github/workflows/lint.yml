@@ -13,6 +13,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: $(( ${{ github.event.pull_request.commits }} + 1 ))
+      - name: Fetch main with enough history for a common merge-base commit
+        run: git fetch origin ${{ github.event.pull_request.base.ref }}
       - uses: ./.github/actions/setup
       - name: Run linters
-        run: LINT_CHECK=true npx lint-staged --diff="main...${{ github.head_ref || github.ref_name }}"
+        run: LINT_CHECK=true npx lint-staged --diff="origin/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}" --verbose
