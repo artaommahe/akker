@@ -11,4 +11,5 @@ runs:
   using: composite
   steps:
     - name: Build
+      shell: bash
       run: npm run build -- --base-href=/${{ inputs.base-href }}/
