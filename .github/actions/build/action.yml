@@ -1,0 +1,14 @@
+name: Build
+description: Build the app
+
+inputs:
+  base-href:
+    description: 'base-href for angular builder'
+    required: false
+    default: '/'
+
+runs:
+  using: composite
+  steps:
+    - name: Build
+      run: npm run build -- --base-href=/${{ inputs.base-href }}/
