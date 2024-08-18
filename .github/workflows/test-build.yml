@@ -1,0 +1,19 @@
+name: Test build
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build
+        uses: ./.github/actions/build
