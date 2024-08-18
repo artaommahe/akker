@@ -25,9 +25,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
+      - name: Setup
+        uses: ./.github/actions/setup
       - name: Build
-        run: npm run build -- --base-href=/${{ github.event.repository.name }}/
+        uses: ./.github/actions/build
+        with:
+          base-href: /${{ github.event.repository.name }}/
       - name: Prepare
         run: cp ./dist/${{ github.event.repository.name }}/browser/index.html ./dist/${{ github.event.repository.name }}/browser/404.html
       - name: Upload artifact
