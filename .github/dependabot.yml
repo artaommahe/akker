@@ -1,0 +1,26 @@
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'saturday'
+      time: '08:00'
+    commit-message:
+      prefix: 'chore(libs)'
+    groups:
+      everything:
+        pattern: '*'
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'saturday'
+      time: '08:00'
+    commit-message:
+      prefix: 'chore(actions)'
+    groups:
+      everything:
+        pattern: '*'
