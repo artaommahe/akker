@@ -1,8 +1,9 @@
 import { InjectionToken, Injector, type Signal, untracked } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import type { RxDatabase, RxReactivityFactory } from 'rxdb';
+
 import { provideAsync } from '../utils/provideAsync';
 import type { BarnDbCollections } from './rxdb/rxdb';
-import type { RxDatabase, RxReactivityFactory } from 'rxdb';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 export type BarnDb = RxDatabase<BarnDbCollections<Signal<unknown>>, unknown, unknown, Signal<unknown>>;
 

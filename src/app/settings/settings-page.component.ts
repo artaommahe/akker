@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { SyncComponent } from './sync/sync.component';
 
 @Component({

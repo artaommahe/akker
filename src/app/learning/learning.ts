@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createEmptyCard, State, type Card, fsrs } from 'ts-fsrs';
+import { type Card, State, createEmptyCard, fsrs } from 'ts-fsrs';
+
 import type { DbSprout } from '../barn/rxdb/schema/sprouts';
 import type { CardGrade } from './cards/cards.component';
 

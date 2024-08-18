@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, input, output, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, type OnInit, inject, input, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputDirective } from '../../ui/input/input';
+
 import { ButtonDirective } from '../../ui/button/button';
+import { InputDirective } from '../../ui/input/input';
 
 @Component({
   selector: 'app-seed-details',

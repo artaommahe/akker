@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ButtonDirective } from '../../ui/button/button';
+
 import { BarnDbService } from '../../barn/barnDb.service';
+import { ButtonDirective } from '../../ui/button/button';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
 
 @Component({

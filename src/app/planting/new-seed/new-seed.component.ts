@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
-import { InputDirective } from '../../ui/input/input';
-import multilineInput from './assets/multiline-input.svg';
-import input from './assets/input.svg';
+
 import { IconComponent } from '../../ui/icon/icon';
 import { provideIcons } from '../../ui/icon/provide-icons';
+import { InputDirective } from '../../ui/input/input';
+import input from './assets/input.svg';
+import multilineInput from './assets/multiline-input.svg';
 
 @Component({
   selector: 'app-new-seed',

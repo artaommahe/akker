@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, contentChild, signal, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, signal } from '@angular/core';
 
 @Component({
   selector: 'app-expansion-panel',

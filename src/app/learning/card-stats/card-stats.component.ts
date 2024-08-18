@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import type { DbSprout } from '../../barn/rxdb/schema/sprouts';
 import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
+import type { DbSprout } from '../../barn/rxdb/schema/sprouts';
 
 @Component({
   selector: 'app-card-stats',

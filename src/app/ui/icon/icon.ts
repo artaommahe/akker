@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { injectIcons } from './provide-icons';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import clsx from 'clsx';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs';
+
 import { globalIcons } from './global-icons';
+import { injectIcons } from './provide-icons';
 
 @Component({
   selector: 'app-icon',

@@ -1,10 +1,11 @@
-import { addRxPlugin, createRxDatabase, type RxCollection, type RxReactivityFactory } from 'rxdb';
-import { type DbSeed, seedsCollection } from './schema/seeds';
-import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression';
-import { type DbSprout, sproutsCollection } from './schema/sprouts';
+import { type RxCollection, type RxReactivityFactory, addRxPlugin, createRxDatabase } from 'rxdb';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
+import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression';
 import { RxDBMigrationSchemaPlugin } from 'rxdb/plugins/migration-schema';
+import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
+
+import { type DbSeed, seedsCollection } from './schema/seeds';
+import { type DbSprout, sproutsCollection } from './schema/sprouts';
 
 addRxPlugin(RxDBJsonDumpPlugin);
 addRxPlugin(RxDBMigrationSchemaPlugin);

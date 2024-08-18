@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, ApplicationInitStatus, inject, InjectionToken, Injector, type Provider } from '@angular/core';
+import { APP_INITIALIZER, ApplicationInitStatus, InjectionToken, Injector, type Provider, inject } from '@angular/core';
 
 // https://github.com/angular/angular/issues/23279#issuecomment-1165030809
 export function provideAsync<T>(

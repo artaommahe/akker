@@ -1,8 +1,9 @@
-import { inject, Injectable, Injector } from '@angular/core';
-import { BarnDbService } from './barnDb.service';
+import { Injectable, Injector, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import type { Observable } from 'rxjs';
 import { nanoid } from 'nanoid';
+import type { Observable } from 'rxjs';
+
+import { BarnDbService } from './barnDb.service';
 import type { DbSeed } from './rxdb/schema/seeds';
 import type { DbSprout } from './rxdb/schema/sprouts';
 
