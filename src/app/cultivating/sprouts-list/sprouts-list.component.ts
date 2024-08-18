@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { SproutsListItemComponent, type SproutsListItemSprout } from './sprouts-list-item.component';
+
 import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
+import { SproutsListItemComponent, type SproutsListItemSprout } from './sprouts-list-item.component';
 
 @Component({
   selector: 'app-sprouts-list',

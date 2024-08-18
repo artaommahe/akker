@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, type OnInit, inject, input, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputDirective } from '../../ui/input/input';
+
+import { type CardStats, CardStatsComponent } from '../../learning/card-stats/card-stats.component';
 import { ButtonDirective } from '../../ui/button/button';
 import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
-import { CardStatsComponent, type CardStats } from '../../learning/card-stats/card-stats.component';
+import { InputDirective } from '../../ui/input/input';
 
 @Component({
   selector: 'app-sprout-details',

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { CardGrade, CardsComponent, type Card } from './cards/cards.component';
+
 import { BarnService } from '../barn/barn.service';
-import { LearningService } from './learning';
 import { ButtonDirective } from '../ui/button/button';
 import { DialogComponent } from '../ui/dialog/dialog.component';
+import { type Card, CardGrade, CardsComponent } from './cards/cards.component';
+import { LearningService } from './learning';
 
 @Component({
   selector: 'app-learn-cards',

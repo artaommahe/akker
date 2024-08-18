@@ -17,5 +17,9 @@ module.exports = {
     },
   ],
   tailwindFunctions: ['clsx'],
-  plugins: ['prettier-plugin-tailwindcss'],
+  importOrder: ['<THIRD_PARTY_MODULES>', '^[./]'],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+  importOrderParserPlugins: ['typescript', 'decorators'],
+  plugins: ['prettier-plugin-tailwindcss', '@trivago/prettier-plugin-sort-imports'],
 };

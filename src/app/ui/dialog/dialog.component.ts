@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+
 import { IconComponent } from '../icon/icon';
 
 @Component({

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { NewSeedComponent } from './new-seed/new-seed.component';
-import { SeedsListComponent } from './seeds-list/seeds-list.component';
-import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
+
 import { BarnService } from '../barn/barn.service';
 import { DialogComponent } from '../ui/dialog/dialog.component';
+import { NewSeedComponent } from './new-seed/new-seed.component';
+import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
+import { SeedsListComponent } from './seeds-list/seeds-list.component';
 
 @Component({
   selector: 'app-planting-page',

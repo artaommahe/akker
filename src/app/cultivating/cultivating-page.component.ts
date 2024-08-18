@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
-import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-details/sprout-details.component';
+
 import { BarnService } from '../barn/barn.service';
-import { DialogComponent } from '../ui/dialog/dialog.component';
 import { LearnCardsComponent } from '../learning/learn-cards.component';
+import { DialogComponent } from '../ui/dialog/dialog.component';
+import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-details/sprout-details.component';
+import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 
 @Component({
   selector: 'app-cultivating-page',
