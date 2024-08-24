@@ -14,7 +14,9 @@ import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 
       <app-sprouts-list [sprouts]="sprouts() ?? []" (showDetails)="onShowDetails($event)" />
 
-      <app-sprout-details-dialog [sprout]="sproutDetails()" (close)="sproutDetails.set(null)" />
+      @if (sproutDetails(); as sprout) {
+        <app-sprout-details-dialog [sprout]="sprout" (close)="sproutDetails.set(null)" />
+      }
     </div>
   `,
   imports: [SproutsListComponent, SproutDetailsDialogComponent, LearnCardsComponent],

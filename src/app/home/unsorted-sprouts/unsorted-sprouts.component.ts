@@ -22,7 +22,9 @@ import { type SproutDetailsSprout } from '../../cultivating/sprout-details/sprou
         </ul>
       </section>
 
-      <app-sprout-details-dialog [sprout]="sproutDetails()" (close)="sproutDetails.set(null)" />
+      @if (sproutDetails(); as sprout) {
+        <app-sprout-details-dialog [sprout]="sprout" (close)="sproutDetails.set(null)" />
+      }
     }
   `,
   imports: [SproutDetailsDialogComponent],
