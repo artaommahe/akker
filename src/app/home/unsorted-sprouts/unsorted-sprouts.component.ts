@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
 import { BarnService } from '../../barn/barn.service';
-import {
-  SproutDetailsComponent,
-  type SproutDetailsSprout,
-} from '../../cultivating/sprout-details/sprout-details.component';
-import { DialogComponent } from '../../ui/dialog/dialog.component';
+import { SproutDetailsDialogComponent } from '../../cultivating/sprout-details-dialog/sprout-details-dialog.component';
+import { type SproutDetailsSprout } from '../../cultivating/sprout-details/sprout-details.component';
 
 @Component({
   selector: 'app-unsorted-sprouts',
@@ -25,14 +22,10 @@ import { DialogComponent } from '../../ui/dialog/dialog.component';
         </ul>
       </section>
 
-      @if (sproutDetails(); as sprout) {
-        <app-dialog (close)="sproutDetails.set(null)">
-          <app-sprout-details [sprout]="sprout" (cancel)="sproutDetails.set(null)" />
-        </app-dialog>
-      }
+      <app-sprout-details-dialog [sprout]="sproutDetails()" (close)="sproutDetails.set(null)" />
     }
   `,
-  imports: [DialogComponent, SproutDetailsComponent],
+  imports: [SproutDetailsDialogComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

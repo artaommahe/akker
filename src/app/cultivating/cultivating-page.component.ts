@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 
 import { BarnService } from '../barn/barn.service';
 import { LearnCardsComponent } from '../learning/learn-cards.component';
-import { DialogComponent } from '../ui/dialog/dialog.component';
-import { SproutDetailsComponent, type SproutDetailsSprout } from './sprout-details/sprout-details.component';
+import { SproutDetailsDialogComponent } from './sprout-details-dialog/sprout-details-dialog.component';
+import { type SproutDetailsSprout } from './sprout-details/sprout-details.component';
 import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 
 @Component({
@@ -14,19 +14,10 @@ import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
 
       <app-sprouts-list [sprouts]="sprouts() ?? []" (showDetails)="onShowDetails($event)" />
 
-      @if (sproutDetails(); as sprout) {
-        <app-dialog (close)="sproutDetails.set(null)">
-          <app-sprout-details
-            [sprout]="sprout"
-            (cancel)="sproutDetails.set(null)"
-            (remove)="onRemoveSprout(sprout.id)"
-            (update)="onUpdateSprout(sprout.id, $event)"
-          />
-        </app-dialog>
-      }
+      <app-sprout-details-dialog [sprout]="sproutDetails()" (close)="sproutDetails.set(null)" />
     </div>
   `,
-  imports: [SproutsListComponent, SproutDetailsComponent, DialogComponent, LearnCardsComponent],
+  imports: [SproutsListComponent, SproutDetailsDialogComponent, LearnCardsComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -44,15 +35,5 @@ export class CultivatingPageComponent {
     }
 
     this.sproutDetails.set(sprout);
-  }
-
-  onRemoveSprout(id: string) {
-    this.barnService.removeSprout(id);
-    this.sproutDetails.set(null);
-  }
-
-  onUpdateSprout(id: string, value: Partial<SproutDetailsSprout>) {
-    this.barnService.updateSprout(id, value);
-    this.sproutDetails.set(null);
   }
 }
