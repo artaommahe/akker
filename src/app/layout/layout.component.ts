@@ -14,7 +14,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           @for (link of navigationLinks; track link.path) {
             <li>
               <!-- TODO: fix important usage -->
-              <a class="block p-3 text-secondary" [routerLink]="link.path" routerLinkActive="!text-primary">
+              <a
+                class="block p-3 text-secondary"
+                [routerLink]="link.path"
+                routerLinkActive="!text-primary"
+                [routerLinkActiveOptions]="link.options ?? { exact: false }"
+              >
                 {{ link.label }}
               </a>
             </li>
@@ -29,6 +34,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class LayoutComponent {
   navigationLinks = [
+    { path: '/', label: 'Home', options: { exact: true } },
     { path: '/planting', label: 'Planting' },
     { path: '/cultivating', label: 'Cultivating' },
     { path: '/settings', label: 'Settings' },
