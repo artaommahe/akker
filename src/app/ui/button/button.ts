@@ -17,7 +17,7 @@ export class ButtonDirective {
       'rounded-lg border px-3 py-2 outline-none',
 
       this.type() === 'primary' && [
-        'border-transparent bg-action-primary',
+        'border-transparent bg-action-primary text-primary',
         'hover:bg-inverse hover:text-inverse',
         'active:bg-tertiary active:text-primary',
         'focus-visible:border-primary',
@@ -25,7 +25,7 @@ export class ButtonDirective {
 
       this.type() === 'secondary' && [
         !this.semantic() && [
-          'border-secondary',
+          'border-secondary text-primary',
           'hover:bg-inverse hover:text-inverse',
           'active:border-transparent active:bg-tertiary active:text-primary',
           'focus-visible:border-primary',
