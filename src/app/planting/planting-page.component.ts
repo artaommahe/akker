@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 
 import { BarnService } from '../barn/barn.service';
 import { DialogComponent } from '../ui/dialog/dialog.component';
-import { NewSeedComponent } from './new-seed/new-seed.component';
 import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
 
@@ -10,7 +9,6 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
   selector: 'app-planting-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-new-seed (addSeeds)="onAddSeeds($event)" />
       <app-seeds-list [seeds]="seeds() ?? []" (showDetails)="seedDetails.set($event)" />
 
       @if (seedDetails(); as seed) {
@@ -25,7 +23,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
       }
     </div>
   `,
-  imports: [NewSeedComponent, SeedsListComponent, SeedDetailsComponent, DialogComponent],
+  imports: [SeedsListComponent, SeedDetailsComponent, DialogComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -34,10 +32,6 @@ export class PlantingPageComponent {
 
   seeds = this.barnService.seeds;
   seedDetails = signal<SeedDetailsSeed | null>(null);
-
-  onAddSeeds(names: string[]) {
-    this.barnService.addSeeds(names);
-  }
 
   onRemoveSeed(name: string) {
     this.barnService.removeSeed(name);
