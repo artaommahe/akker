@@ -8,7 +8,6 @@ export default defineConfig(({ mode }) => {
     plugins: [angular()],
     test: {
       globals: true,
-      environment: 'jsdom',
       setupFiles: ['src/test-setup.ts'],
       include: ['**/*.spec.ts'],
       reporters: ['default'],

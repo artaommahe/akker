@@ -10,5 +10,11 @@ export const routes: Routes = [
     path: 'settings',
     loadChildren: () => import('./settings/settings.routes').then(m => m.settingsRoutes),
   },
-  { path: '', redirectTo: '/planting', pathMatch: 'full' },
+  {
+    path: '',
+    loadChildren: () => import('./home/home.routes').then(m => m.homeRoutes),
+  },
+
+  // rest
+  { path: '**', redirectTo: '/' },
 ];

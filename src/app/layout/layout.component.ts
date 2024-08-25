@@ -5,21 +5,22 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-layout',
   template: `
     <div class="flex h-dvh flex-col overflow-hidden bg-primary text-primary">
-      <main class="grow overflow-y-auto p-5">
+      <main class="relative grow overflow-y-auto p-5">
         <ng-content />
       </main>
 
-      <nav class="shrink-0 border-t border-primary/10 px-2">
-        <ul class="flex justify-between gap-2">
-          @for (link of navigationLinks; track link.path) {
-            <li>
-              <!-- TODO: fix important usage -->
-              <a class="block p-3 text-secondary" [routerLink]="link.path" routerLinkActive="!text-primary">
-                {{ link.label }}
-              </a>
-            </li>
-          }
-        </ul>
+      <nav class="flex shrink-0 justify-between gap-2 border-t border-primary/10 px-2">
+        @for (link of navigationLinks; track link.path) {
+          <!-- TODO: fix important usage -->
+          <a
+            class="block p-3 text-secondary"
+            [routerLink]="link.path"
+            routerLinkActive="!text-primary"
+            [routerLinkActiveOptions]="link.options ?? { exact: false }"
+          >
+            {{ link.label }}
+          </a>
+        }
       </nav>
     </div>
   `,
@@ -29,6 +30,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class LayoutComponent {
   navigationLinks = [
+    { path: '/', label: 'Home', options: { exact: true } },
     { path: '/planting', label: 'Planting' },
     { path: '/cultivating', label: 'Cultivating' },
     { path: '/settings', label: 'Settings' },
