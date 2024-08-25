@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { LearnCardsComponent } from '../learning/learn-cards.component';
 import { IconComponent } from '../ui/icon/icon';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
+import { LastSeedsListComponent } from './last-seeds-list/last-seeds-list.component';
 import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.component';
 
 @Component({
@@ -13,6 +14,8 @@ import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.co
 
       <app-learn-cards />
 
+      <app-last-seeds-list />
+
       <button class="absolute bottom-6 right-6" title="Add" (click)="showAddDialog.set(true)">
         <app-icon class="size-10 text-action-primary" name="plusInCircle" />
       </button>
@@ -22,7 +25,7 @@ import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.co
       }
     </div>
   `,
-  imports: [UnsortedSproutsComponent, LearnCardsComponent, IconComponent, AddDialogComponent],
+  imports: [UnsortedSproutsComponent, LearnCardsComponent, IconComponent, AddDialogComponent, LastSeedsListComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
