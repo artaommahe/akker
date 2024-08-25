@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { LearnCardsComponent } from '../learning/learn-cards.component';
-import { IconComponent } from '../ui/icon/icon';
-import { AddDialogComponent } from './add-dialog/add-dialog.component';
+import { AddTermsButtonComponent } from './add-terms-button/add-terms-button.component';
 import { LastSeedsListComponent } from './last-seeds-list/last-seeds-list.component';
 import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.component';
 
@@ -16,19 +15,11 @@ import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.co
 
       <app-last-seeds-list />
 
-      <button class="absolute bottom-6 right-6" title="Add" (click)="showAddDialog.set(true)">
-        <app-icon class="size-10 text-action-primary" name="plusInCircle" />
-      </button>
-
-      @if (showAddDialog()) {
-        <app-add-dialog (close)="showAddDialog.set(false)" />
-      }
+      <app-add-terms-button />
     </div>
   `,
-  imports: [UnsortedSproutsComponent, LearnCardsComponent, IconComponent, AddDialogComponent, LastSeedsListComponent],
+  imports: [UnsortedSproutsComponent, LearnCardsComponent, AddTermsButtonComponent, LastSeedsListComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePageComponent {
-  showAddDialog = signal(false);
-}
+export class HomePageComponent {}

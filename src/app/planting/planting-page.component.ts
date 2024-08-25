@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
 import { BarnService } from '../barn/barn.service';
+import { AddTermsButtonComponent } from '../home/add-terms-button/add-terms-button.component';
 import { DialogComponent } from '../ui/dialog/dialog.component';
 import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
@@ -10,6 +11,8 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
   template: `
     <div class="flex flex-col gap-4">
       <app-seeds-list [seeds]="seeds() ?? []" (showDetails)="seedDetails.set($event)" />
+
+      <app-add-terms-button />
 
       @if (seedDetails(); as seed) {
         <app-dialog (close)="seedDetails.set(null)">
@@ -23,7 +26,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
       }
     </div>
   `,
-  imports: [SeedsListComponent, SeedDetailsComponent, DialogComponent],
+  imports: [SeedsListComponent, SeedDetailsComponent, DialogComponent, AddTermsButtonComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

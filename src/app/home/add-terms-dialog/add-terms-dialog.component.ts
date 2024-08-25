@@ -5,9 +5,8 @@ import { ButtonDirective } from '../../ui/button/button';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
 import { InputDirective } from '../../ui/input/input';
 
-// TODO: fix naming
 @Component({
-  selector: 'app-add-dialog',
+  selector: 'app-add-terms-dialog',
   template: `
     <app-dialog (close)="close.emit()">
       <div class="flex h-full flex-col gap-8 pt-10">
@@ -31,7 +30,7 @@ import { InputDirective } from '../../ui/input/input';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddDialogComponent {
+export class AddTermsDialogComponent {
   private barnService = inject(BarnService);
 
   close = output();

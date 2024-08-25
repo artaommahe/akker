@@ -9,22 +9,18 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <ng-content />
       </main>
 
-      <nav class="shrink-0 border-t border-primary/10 px-2">
-        <ul class="flex justify-between gap-2">
-          @for (link of navigationLinks; track link.path) {
-            <li>
-              <!-- TODO: fix important usage -->
-              <a
-                class="block p-3 text-secondary"
-                [routerLink]="link.path"
-                routerLinkActive="!text-primary"
-                [routerLinkActiveOptions]="link.options ?? { exact: false }"
-              >
-                {{ link.label }}
-              </a>
-            </li>
-          }
-        </ul>
+      <nav class="flex shrink-0 justify-between gap-2 border-t border-primary/10 px-2">
+        @for (link of navigationLinks; track link.path) {
+          <!-- TODO: fix important usage -->
+          <a
+            class="block p-3 text-secondary"
+            [routerLink]="link.path"
+            routerLinkActive="!text-primary"
+            [routerLinkActiveOptions]="link.options ?? { exact: false }"
+          >
+            {{ link.label }}
+          </a>
+        }
       </nav>
     </div>
   `,
