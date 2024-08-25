@@ -1,23 +1,33 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, type OnInit, output, viewChild } from '@angular/core';
 
 import { IconComponent } from '../icon/icon';
 
 @Component({
   selector: 'app-dialog',
   template: `
-    <div class="fixed inset-0 bg-primary p-5">
+    <dialog
+      class="m-0 h-full w-full bg-primary p-5 text-primary [max-block-size:unset] [max-inline-size:unset]"
+      (close)="close.emit()"
+      #dialog
+    >
       <!-- TODO: ui/button -->
-      <button class="absolute right-2 top-2 p-2" (click)="close.emit()">
+      <button class="absolute right-2 top-2 p-2" (click)="dialog.close()">
         <app-icon class="size-6 text-secondary" name="crossInCircle" />
       </button>
 
       <ng-content></ng-content>
-    </div>
+    </dialog>
   `,
   imports: [IconComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
   close = output();
+
+  dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+
+  ngOnInit() {
+    this.dialogRef().nativeElement.showModal();
+  }
 }
