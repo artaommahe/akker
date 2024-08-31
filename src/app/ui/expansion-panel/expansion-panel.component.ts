@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, signal }
 
       <ul class="flex flex-col gap-2">
         @if (isOpen()) {
-          <ng-container *ngTemplateOutlet="content() ?? null"></ng-container>
+          <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
         }
       </ul>
     </details>
@@ -19,7 +19,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, signal }
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpansionPanelComponent {
-  content = contentChild<TemplateRef<unknown>>('content');
+  contentRef = contentChild.required(TemplateRef);
 
   isOpen = signal(false);
 }

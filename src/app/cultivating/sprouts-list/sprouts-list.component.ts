@@ -23,7 +23,7 @@ import { SproutsListItemComponent, type SproutsListItemSprout } from '../sprouts
         <app-expansion-panel>
           <ng-container>Rest ({{ restSprouts().length }})</ng-container>
 
-          <ng-template #content>
+          <ng-template>
             @for (sprout of restSprouts(); track sprout.id) {
               <li>
                 <app-sprouts-list-item [sprout]="sprout" (showDetails)="showDetails.emit($event.id)" />
