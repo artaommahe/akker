@@ -49,6 +49,9 @@ module.exports = tseslint.config(
   {
     files: ['**/*.html'],
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
-    rules: {},
+    rules: {
+      // we're using autofocus inside dialogs
+      '@angular-eslint/template/no-autofocus': 'off',
+    },
   },
 );

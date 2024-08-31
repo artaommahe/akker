@@ -6,12 +6,12 @@ import { IconComponent } from '../icon/icon';
   selector: 'app-dialog',
   template: `
     <dialog
-      class="m-0 h-full w-full bg-primary p-5 text-primary [max-block-size:unset] [max-inline-size:unset]"
+      class="m-0 h-full w-full bg-primary p-5 pt-16 text-primary [max-block-size:unset] [max-inline-size:unset]"
       (close)="close.emit()"
       #dialog
     >
       <!-- TODO: ui/button -->
-      <button class="absolute right-2 top-2 p-2" (click)="dialog.close()">
+      <button class="absolute right-2 top-2 flex p-2" (click)="dialog.close()">
         <app-icon class="size-6 text-secondary" name="crossInCircle" />
       </button>
 
