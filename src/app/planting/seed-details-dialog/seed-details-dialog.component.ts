@@ -24,7 +24,6 @@ export class SeedDetailsDialogComponent {
   private barnService = inject(BarnService);
 
   seed = input.required<SeedDetailsSeed>();
-
   close = output();
 
   onRemoveSeed(name: string) {
