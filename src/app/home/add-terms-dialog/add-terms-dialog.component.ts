@@ -9,12 +9,13 @@ import { InputDirective } from '../../ui/input/input';
   selector: 'app-add-terms-dialog',
   template: `
     <app-dialog (close)="close.emit()">
-      <div class="flex h-full flex-col gap-8 pt-10">
+      <div class="flex h-full flex-col gap-8">
         <textarea
           class="grow"
           appInput
           placeholder="One seed a line"
           autocapitalize="off"
+          autofocus
           [value]="newSeed()"
           (input)="updateSeed($event)"
         ></textarea>
