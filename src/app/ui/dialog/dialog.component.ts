@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, ElementRef, type OnInit, output, viewChild } from '@angular/core';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  TemplateRef,
+  contentChild,
+  effect,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 
 import { IconComponent } from '../icon/icon';
 
@@ -6,7 +17,12 @@ import { IconComponent } from '../icon/icon';
   selector: 'app-dialog',
   template: `
     <dialog
-      class="m-0 h-full w-full bg-primary p-5 pt-16 text-primary [max-block-size:unset] [max-inline-size:unset]"
+      [ngClass]="[
+        'fixed m-0 grid h-full w-full bg-primary p-5 pt-16 text-primary [max-block-size:unset] [max-inline-size:unset]',
+        '[&:not([open])]:pointer-events-none [&:not([open])]:translate-x-full',
+        'transition-transform duration-300',
+      ]"
+      [inert]="!open()"
       (close)="close.emit()"
       #dialog
     >
@@ -15,19 +31,27 @@ import { IconComponent } from '../icon/icon';
         <app-icon class="size-6 text-secondary" name="crossInCircle" />
       </button>
 
-      <ng-content></ng-content>
+      <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
     </dialog>
   `,
-  imports: [IconComponent],
+  imports: [IconComponent, NgTemplateOutlet, NgClass],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent {
+  open = input(false);
   close = output();
 
   dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+  contentRef = contentChild.required(TemplateRef);
 
-  ngOnInit() {
-    this.dialogRef().nativeElement.showModal();
+  constructor() {
+    effect(() => {
+      if (this.open()) {
+        this.dialogRef().nativeElement.showModal();
+      } else {
+        this.dialogRef().nativeElement.close();
+      }
+    });
   }
 }
