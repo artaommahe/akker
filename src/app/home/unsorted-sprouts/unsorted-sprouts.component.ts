@@ -8,7 +8,7 @@ import { type SproutDetailsSprout } from '../../cultivating/sprout-details/sprou
   selector: 'app-unsorted-sprouts',
   template: `
     @if (someUnsortedSprouts().length > 0) {
-      <section class="min-w-0 flex-grow">
+      <section>
         <h2 class="text-lg text-secondary">Unsorted sprouts ({{ unsortedSproutsAmount() }})</h2>
 
         <ul class="columns-2 gap-4">

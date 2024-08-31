@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 
 import { BarnService } from '../barn/barn.service';
 import { AddTermsButtonComponent } from '../home/add-terms-button/add-terms-button.component';
-import { DialogComponent } from '../ui/dialog/dialog.component';
-import { SeedDetailsComponent, type SeedDetailsSeed } from './seed-details/seed-details.component';
+import { SeedDetailsDialogComponent } from './seed-details-dialog/seed-details-dialog.component';
+import type { SeedDetailsSeed } from './seed-details/seed-details.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
 
 @Component({
@@ -15,18 +15,11 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
       <app-add-terms-button />
 
       @if (seedDetails(); as seed) {
-        <app-dialog (close)="seedDetails.set(null)">
-          <app-seed-details
-            [seed]="seed"
-            (cancel)="seedDetails.set(null)"
-            (remove)="onRemoveSeed(seed.name)"
-            (update)="onUpdateSeed(seed.name, $event)"
-          />
-        </app-dialog>
+        <app-seed-details-dialog [seed]="seed" (close)="seedDetails.set(null)" />
       }
     </div>
   `,
-  imports: [SeedsListComponent, SeedDetailsComponent, DialogComponent, AddTermsButtonComponent],
+  imports: [SeedsListComponent, SeedDetailsDialogComponent, AddTermsButtonComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -35,14 +28,4 @@ export class PlantingPageComponent {
 
   seeds = this.barnService.seeds;
   seedDetails = signal<SeedDetailsSeed | null>(null);
-
-  onRemoveSeed(name: string) {
-    this.barnService.removeSeed(name);
-    this.seedDetails.set(null);
-  }
-
-  onUpdateSeed(name: string, value: Partial<SeedDetailsSeed>) {
-    this.barnService.updateSeed(name, value);
-    this.seedDetails.set(null);
-  }
 }

@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
-import { SeedsListItemComponent, type SeedsListItemSeed } from './seeds-list-item.component';
+import { SeedsListItemComponent, type SeedsListItemSeed } from '../seeds-list-item/seeds-list-item.component';
 
 @Component({
   selector: 'app-seeds-list',
   template: `
     <div class="div flex flex-col gap-6">
       <div class="div flex gap-4">
-        <section class="min-w-0 flex-grow">
+        <section class="min-w-0 flex-1">
           <h2 class="text-lg text-secondary">Top</h2>
 
           <ul class="flex flex-col gap-2">
@@ -22,7 +22,7 @@ import { SeedsListItemComponent, type SeedsListItemSeed } from './seeds-list-ite
 
         <div class="w-px self-stretch border-l border-l-primary/10"></div>
 
-        <section class="min-w-0 flex-grow">
+        <section class="min-w-0 flex-1">
           <h2 class="text-lg text-secondary">Last</h2>
 
           <ul class="flex flex-col gap-2">
