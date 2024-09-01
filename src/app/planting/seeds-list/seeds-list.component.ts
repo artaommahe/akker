@@ -38,7 +38,7 @@ import { SeedsListItemComponent, type SeedsListItemSeed } from '../seeds-list-it
       <app-expansion-panel>
         <ng-container>All seeds ({{ sortedSeeds().length }})</ng-container>
 
-        <ng-template #content>
+        <ng-template>
           @for (seed of sortedSeeds(); track seed.name) {
             <li>
               <app-seeds-list-item [seed]="seed" (showDetails)="showDetails.emit($event)" />

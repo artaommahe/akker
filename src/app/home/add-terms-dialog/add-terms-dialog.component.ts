@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 
 import { BarnService } from '../../barn/barn.service';
 import { ButtonDirective } from '../../ui/button/button';
@@ -8,23 +8,25 @@ import { InputDirective } from '../../ui/input/input';
 @Component({
   selector: 'app-add-terms-dialog',
   template: `
-    <app-dialog (close)="close.emit()">
-      <div class="flex h-full flex-col gap-8">
-        <textarea
-          class="grow"
-          appInput
-          placeholder="One seed a line"
-          autocapitalize="off"
-          autofocus
-          [value]="newSeed()"
-          (input)="updateSeed($event)"
-        ></textarea>
+    <app-dialog [open]="open()" (close)="close.emit()">
+      <ng-template>
+        <div class="flex h-full flex-col gap-8">
+          <textarea
+            class="grow"
+            appInput
+            placeholder="One seed a line"
+            autocapitalize="off"
+            autofocus
+            [value]="newSeed()"
+            (input)="updateSeed($event)"
+          ></textarea>
 
-        <div class="mt-auto flex shrink-0 justify-end gap-4">
-          <button appButton (click)="close.emit()">Cancel</button>
-          <button appButton appButtonType="primary" (click)="add()">Add</button>
+          <div class="mt-auto flex shrink-0 justify-end gap-4">
+            <button appButton (click)="close.emit()">Cancel</button>
+            <button appButton appButtonType="primary" (click)="add()">Add</button>
+          </div>
         </div>
-      </div>
+      </ng-template>
     </app-dialog>
   `,
   imports: [DialogComponent, ButtonDirective, InputDirective],
@@ -34,6 +36,7 @@ import { InputDirective } from '../../ui/input/input';
 export class AddTermsDialogComponent {
   private barnService = inject(BarnService);
 
+  open = input.required<boolean>();
   close = output();
 
   newSeed = signal('');

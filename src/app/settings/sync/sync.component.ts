@@ -12,8 +12,8 @@ import { DialogComponent } from '../../ui/dialog/dialog.component';
       <button appButton (click)="showRestoreDialog.set(true)">Restore backup</button>
     </div>
 
-    @if (showRestoreDialog()) {
-      <app-dialog (close)="showRestoreDialog.set(false)">
+    <app-dialog [open]="showRestoreDialog()" (close)="showRestoreDialog.set(false)">
+      <ng-template>
         <div class="flex h-full flex-col gap-6 pt-8">
           <p class="text-lg">
             <span class="text-semantic-warning">WARNING:</span>
@@ -30,8 +30,8 @@ import { DialogComponent } from '../../ui/dialog/dialog.component';
             <button appButton appButtonSemantic="warning" (click)="restore(backupFile)">Restore</button>
           </div>
         </div>
-      </app-dialog>
-    }
+      </ng-template>
+    </app-dialog>
   `,
   imports: [ButtonDirective, DialogComponent],
   standalone: true,

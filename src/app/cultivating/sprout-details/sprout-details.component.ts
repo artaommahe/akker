@@ -26,7 +26,7 @@ import { InputDirective } from '../../ui/input/input';
       <app-expansion-panel class="mt-4">
         <span class="text-secondary">FSRS stats</span>
 
-        <ng-template #content>
+        <ng-template>
           @if (sprout().fsrs; as fsrs) {
             <app-card-stats [fsrs]="fsrs" />
           } @else {
