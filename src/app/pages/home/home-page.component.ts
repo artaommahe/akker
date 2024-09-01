@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { LearnCardsComponent } from '../learning/learn-cards.component';
-import { AddTermsButtonComponent } from './add-terms-button/add-terms-button.component';
-import { LastCardsListComponent } from './last-cards-list/last-cards-list.component';
-import { LastSeedsListComponent } from './last-seeds-list/last-seeds-list.component';
-import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.component';
+import { AddTermsButtonComponent } from '../../home/add-terms-button/add-terms-button.component';
+import { LastCardsListComponent } from '../../home/last-cards-list/last-cards-list.component';
+import { LastSeedsListComponent } from '../../home/last-seeds-list/last-seeds-list.component';
+import { UnsortedCardsComponent } from '../../home/unsorted-cards/unsorted-cards.component';
+import { LearnCardsComponent } from '../../learning/learn-cards.component';
 
 @Component({
   selector: 'app-home-page',

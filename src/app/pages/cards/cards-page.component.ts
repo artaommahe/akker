@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { BarnService } from '../barn/barn.service';
-import { LearnCardsComponent } from '../learning/learn-cards.component';
-import { CardDetailsDialogComponent } from './card-details-dialog/card-details-dialog.component';
-import { type CardDetailsCard } from './card-details/card-details.component';
-import { CardsListComponent } from './cards-list/cards-list.component';
+import { BarnService } from '../../barn/barn.service';
+import { CardDetailsDialogComponent } from '../../cultivating/card-details-dialog/card-details-dialog.component';
+import type { CardDetailsCard } from '../../cultivating/card-details/card-details.component';
+import { CardsListComponent } from '../../cultivating/cards-list/cards-list.component';
+import { LearnCardsComponent } from '../../learning/learn-cards.component';
 
 @Component({
-  selector: 'app-cultivating-page',
+  selector: 'app-cards-page',
   template: `
     <div class="flex flex-col items-start gap-4">
       <app-learn-cards />
@@ -25,7 +25,7 @@ import { CardsListComponent } from './cards-list/cards-list.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CultivatingPageComponent {
+export class CardsPageComponent {
   private barnService = inject(BarnService);
 
   cards = this.barnService.cards;

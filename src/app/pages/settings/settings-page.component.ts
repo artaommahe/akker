@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { SyncComponent } from './sync/sync.component';
+import { SyncComponent } from '../../settings/sync/sync.component';
 
 @Component({
   selector: 'app-settings-page',
