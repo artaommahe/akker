@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
 import { BarnService } from '../../../barn/barn.service';
-import { CardDetailsDialogComponent } from '../../../cultivating/card-details-dialog/card-details-dialog.component';
-import { type CardDetailsCard } from '../../../cultivating/card-details/card-details.component';
+import { CardDetailsDialogComponent } from '../../../cards/card-details-dialog/card-details-dialog.component';
+import { type CardDetailsCard } from '../../../cards/card-details/card-details.component';
 
 @Component({
   selector: 'app-unsorted-cards',
