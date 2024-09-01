@@ -9,7 +9,7 @@ import { type CardDetailsCard } from '../../../cards/card-details/card-details.c
   template: `
     @if (someUnsortedCards().length > 0) {
       <section>
-        <h2 class="text-lg text-secondary">Unsorted cards ({{ unsortedCardsAmount() }})</h2>
+        <h2 class="text-lg text-secondary">Unsorted cards ({{ unsortedCardsCount() }})</h2>
 
         <ul class="columns-2 gap-4">
           @for (card of someUnsortedCards(); track card.id) {
@@ -37,8 +37,8 @@ export class UnsortedCardsComponent {
   private barnService = inject(BarnService);
   private unsortedCards = computed(() => this.barnService.cards()?.filter(card => !card.definition));
 
-  unsortedCardsAmount = computed(() => this.unsortedCards()?.length ?? 0);
-  someUnsortedCards = computed(() => this.unsortedCards()?.slice(0, someUnsortedCardsAmount) ?? []);
+  unsortedCardsCount = computed(() => this.unsortedCards()?.length ?? 0);
+  someUnsortedCards = computed(() => this.unsortedCards()?.slice(0, someUnsortedCardsCount) ?? []);
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
@@ -47,4 +47,4 @@ export class UnsortedCardsComponent {
   }
 }
 
-const someUnsortedCardsAmount = 10;
+const someUnsortedCardsCount = 10;

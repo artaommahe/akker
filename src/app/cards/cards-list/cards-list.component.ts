@@ -43,11 +43,11 @@ export class CardsListComponent {
   showDetails = output<string>();
 
   sortedCards = computed(() => this.cards().toSorted((a, b) => b.addedAt.localeCompare(a.addedAt)));
-  newCards = computed(() => this.sortedCards().slice(0, newCardsAmount));
-  restCards = computed(() => this.sortedCards().slice(newCardsAmount));
+  newCards = computed(() => this.sortedCards().slice(0, newCardsCount));
+  restCards = computed(() => this.sortedCards().slice(newCardsCount));
 }
 
-const newCardsAmount = 10;
+const newCardsCount = 10;
 
 export interface CardsListCard extends CardsListItemCard {
   addedAt: string;

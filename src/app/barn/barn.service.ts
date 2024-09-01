@@ -89,7 +89,7 @@ export class BarnService {
 
         const count = seed.count + newSeeds[seed.name];
 
-        if (count >= seedPlantingTreshold) {
+        if (count >= seedToCardTreshold) {
           return { ...result, newCards: [...result.newCards, seed.name] };
         }
 
@@ -117,4 +117,4 @@ export class BarnService {
   }
 }
 
-const seedPlantingTreshold = 5;
+const seedToCardTreshold = 5;

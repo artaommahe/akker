@@ -37,7 +37,7 @@ export class LastCardsListComponent {
     this.barnService
       .cards()
       ?.toSorted((a, b) => b.addedAt.localeCompare(a.addedAt))
-      .slice(0, lastCardsAmount),
+      .slice(0, lastCardsCount),
   );
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
@@ -46,4 +46,4 @@ export class LastCardsListComponent {
   }
 }
 
-const lastCardsAmount = 10;
+const lastCardsCount = 10;

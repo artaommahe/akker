@@ -36,7 +36,7 @@ export class LearnCardsComponent {
       return;
     }
 
-    const cardsToLearn = this.learningService.selectCardsToLearn(cards, cardsToLearnAmount);
+    const cardsToLearn = this.learningService.selectCardsToLearn(cards, cardsToLearnCount);
 
     this.cardsToLearnDialog.set({ open: true, cards: cardsToLearn });
   }
@@ -63,4 +63,4 @@ export class LearnCardsComponent {
   }
 }
 
-const cardsToLearnAmount = 15;
+const cardsToLearnCount = 15;
