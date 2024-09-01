@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
-import { AddTermsButtonComponent } from '../../planting/add-terms-button/add-terms-button.component';
+import { AddTermsButtonComponent } from '../../seeds/add-terms-button/add-terms-button.component';
 import { LastCardsListComponent } from './last-cards-list/last-cards-list.component';
 import { LastSeedsListComponent } from './last-seeds-list/last-seeds-list.component';
 import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.component';
