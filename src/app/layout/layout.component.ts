@@ -31,8 +31,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class LayoutComponent {
   navigationLinks = [
     { path: '/', label: 'Home', options: { exact: true } },
-    { path: '/planting', label: 'Planting' },
-    { path: '/cultivating', label: 'Cultivating' },
+    { path: '/seeds', label: 'Seeds' },
+    { path: '/cards', label: 'Cards' },
     { path: '/settings', label: 'Settings' },
   ];
 }
