@@ -18,9 +18,9 @@ import { IconComponent } from '../icon/icon';
   template: `
     <dialog
       [ngClass]="[
-        'fixed m-0 grid h-full w-full bg-primary p-5 pt-16 text-primary [max-block-size:unset] [max-inline-size:unset]',
-        '[&:not([open])]:pointer-events-none [&:not([open])]:translate-x-full',
-        'transition-transform duration-300',
+        'fixed top-0 grid h-full w-full bg-primary p-5 pt-16 text-primary [max-block-size:unset] [max-inline-size:unset]',
+        '[&:not([open])]:pointer-events-none',
+        'transition-transform duration-300 [&:not([open])]:translate-x-full',
       ]"
       [inert]="!open()"
       (close)="close.emit()"
