@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { BarnDbService } from '../../barn/barnDb.service';
-import { ButtonDirective } from '../../ui/button/button';
-import { DialogComponent } from '../../ui/dialog/dialog.component';
+import { BarnDbService } from '../../../barn/barnDb.service';
+import { ButtonDirective } from '../../../ui/button/button';
+import { DialogComponent } from '../../../ui/dialog/dialog.component';
 
 @Component({
   selector: 'app-sync',

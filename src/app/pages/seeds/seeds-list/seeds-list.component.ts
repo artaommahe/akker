@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
-import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
-import { SeedsListItemComponent, type SeedsListItemSeed } from '../seeds-list-item/seeds-list-item.component';
+import {
+  SeedsListItemComponent,
+  type SeedsListItemSeed,
+} from '../../../seeds/seeds-list-item/seeds-list-item.component';
+import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-panel.component';
 
 @Component({
   selector: 'app-seeds-list',

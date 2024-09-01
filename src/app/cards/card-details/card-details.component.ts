@@ -7,7 +7,7 @@ import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-pane
 import { InputDirective } from '../../ui/input/input';
 
 @Component({
-  selector: 'app-sprout-details',
+  selector: 'app-card-details',
   template: `
     <form class="flex h-full flex-col gap-2" [formGroup]="form" (ngSubmit)="onSubmit()">
       <label class="flex flex-col">
@@ -27,7 +27,7 @@ import { InputDirective } from '../../ui/input/input';
         <span class="text-secondary">FSRS stats</span>
 
         <ng-template>
-          @if (sprout().fsrs; as fsrs) {
+          @if (card().fsrs; as fsrs) {
             <app-card-stats [fsrs]="fsrs" />
           } @else {
             <span class="text-secondary">empty</span>
@@ -54,14 +54,14 @@ import { InputDirective } from '../../ui/input/input';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SproutDetailsComponent implements OnInit {
-  sprout = input.required<SproutDetailsSprout>();
+export class CardDetailsComponent implements OnInit {
+  card = input.required<CardDetailsCard>();
   remove = output<void>();
   cancel = output<void>();
-  update = output<SproutDetailsSprout>();
+  update = output<CardDetailsCard>();
 
   form = inject(NonNullableFormBuilder).group({
-    // TODO: ? check that term is not used by other sprouts
+    // TODO: ? check that term is not used by other cards
     term: ['', [Validators.minLength(1), Validators.required]],
     fullTerm: [''],
     definition: [''],
@@ -69,9 +69,9 @@ export class SproutDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.setValue({
-      term: this.sprout().term,
-      fullTerm: this.sprout().fullTerm ?? '',
-      definition: this.sprout().definition,
+      term: this.card().term,
+      fullTerm: this.card().fullTerm ?? '',
+      definition: this.card().definition,
     });
   }
 
@@ -80,11 +80,11 @@ export class SproutDetailsComponent implements OnInit {
       return;
     }
 
-    this.update.emit({ ...this.form.getRawValue(), id: this.sprout().id });
+    this.update.emit({ ...this.form.getRawValue(), id: this.card().id });
   }
 }
 
-export interface SproutDetailsSprout {
+export interface CardDetailsCard {
   id: string;
   term: string;
   fullTerm?: string;

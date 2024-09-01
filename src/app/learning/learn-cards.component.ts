@@ -30,15 +30,15 @@ export class LearnCardsComponent {
   cardsToLearnDialog = signal<{ open: boolean; cards: Card[] | null }>({ open: false, cards: null });
 
   learnCards() {
-    const sprouts = this.barnService.sprouts()?.map(sprout => sprout.toJSON());
+    const cards = this.barnService.cards()?.map(cards => cards.toJSON());
 
-    if (!sprouts) {
+    if (!cards) {
       return;
     }
 
-    const cards = this.learningService.selectCardsToLearn(sprouts, cardsToLearnAmount);
+    const cardsToLearn = this.learningService.selectCardsToLearn(cards, cardsToLearnCount);
 
-    this.cardsToLearnDialog.set({ open: true, cards });
+    this.cardsToLearnDialog.set({ open: true, cards: cardsToLearn });
   }
 
   closeCardsDialog() {
@@ -46,21 +46,21 @@ export class LearnCardsComponent {
   }
 
   async onRateCard({ id, grade }: { id: string; grade: CardGrade }) {
-    const sprout = this.barnService
-      .sprouts()
-      ?.find(sprout => sprout.id === id)
+    const card = this.barnService
+      .cards()
+      ?.find(card => card.id === id)
       ?.toJSON();
 
-    if (!sprout) {
+    if (!card) {
       return;
     }
 
-    const newCard = this.learningService.rateCard({ card: sprout.fsrs?.card, grade });
+    const newFsrsCard = this.learningService.rateFsrsCard({ card: card.fsrs?.card, grade });
 
-    await this.barnService.updateSprout(sprout.id, {
-      fsrs: { ...sprout.fsrs, card: newCard },
+    await this.barnService.updateCard(card.id, {
+      fsrs: { ...card.fsrs, card: newFsrsCard },
     });
   }
 }
 
-const cardsToLearnAmount = 15;
+const cardsToLearnCount = 15;

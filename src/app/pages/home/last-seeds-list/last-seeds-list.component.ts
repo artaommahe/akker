@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
-import { BarnService } from '../../barn/barn.service';
-import { SeedDetailsDialogComponent } from '../../planting/seed-details-dialog/seed-details-dialog.component';
-import { type SeedDetailsSeed } from '../../planting/seed-details/seed-details.component';
-import { SeedsListItemComponent } from '../../planting/seeds-list-item/seeds-list-item.component';
+import { BarnService } from '../../../barn/barn.service';
+import { SeedDetailsDialogComponent } from '../../../seeds/seed-details-dialog/seed-details-dialog.component';
+import { type SeedDetailsSeed } from '../../../seeds/seed-details/seed-details.component';
+import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-list-item.component';
 
 @Component({
   selector: 'app-last-seeds-list',

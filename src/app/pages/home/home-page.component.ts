@@ -1,22 +1,22 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { LearnCardsComponent } from '../learning/learn-cards.component';
-import { AddTermsButtonComponent } from './add-terms-button/add-terms-button.component';
+import { LearnCardsComponent } from '../../learning/learn-cards.component';
+import { AddTermsButtonComponent } from '../../seeds/add-terms-button/add-terms-button.component';
+import { LastCardsListComponent } from './last-cards-list/last-cards-list.component';
 import { LastSeedsListComponent } from './last-seeds-list/last-seeds-list.component';
-import { LastSproutsListComponent } from './last-sprouts-list/last-sprouts-list.component';
-import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.component';
+import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.component';
 
 @Component({
   selector: 'app-home-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-unsorted-sprouts />
+      <app-unsorted-cards />
 
       <app-learn-cards />
 
       <div class="div flex gap-4">
         <div class="flex-1">
-          <app-last-sprouts-list />
+          <app-last-cards-list />
         </div>
 
         <div class="w-px self-stretch border-l border-l-primary/10"></div>
@@ -30,11 +30,11 @@ import { UnsortedSproutsComponent } from './unsorted-sprouts/unsorted-sprouts.co
     </div>
   `,
   imports: [
-    UnsortedSproutsComponent,
+    UnsortedCardsComponent,
     LearnCardsComponent,
     AddTermsButtonComponent,
     LastSeedsListComponent,
-    LastSproutsListComponent,
+    LastCardsListComponent,
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
