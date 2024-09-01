@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { BarnService } from '../../barn/barn.service';
 import { CardDetailsDialogComponent } from '../../cards/card-details-dialog/card-details-dialog.component';
 import type { CardDetailsCard } from '../../cards/card-details/card-details.component';
-import { CardsListComponent } from '../../cards/cards-list/cards-list.component';
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
+import { CardsListComponent } from './cards-list/cards-list.component';
 
 @Component({
   selector: 'app-cards-page',

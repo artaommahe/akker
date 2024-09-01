@@ -4,7 +4,7 @@ import { BarnService } from '../../barn/barn.service';
 import { AddTermsButtonComponent } from '../../seeds/add-terms-button/add-terms-button.component';
 import { SeedDetailsDialogComponent } from '../../seeds/seed-details-dialog/seed-details-dialog.component';
 import type { SeedDetailsSeed } from '../../seeds/seed-details/seed-details.component';
-import { SeedsListComponent } from '../../seeds/seeds-list/seeds-list.component';
+import { SeedsListComponent } from './seeds-list/seeds-list.component';
 
 @Component({
   selector: 'app-seeds-page',

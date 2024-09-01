@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
-import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
-import { type CardsListItemCard, CardsListItemComponent } from '../cards-list-item/cards-list-item.component';
+import {
+  type CardsListItemCard,
+  CardsListItemComponent,
+} from '../../../cards/cards-list-item/cards-list-item.component';
+import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-panel.component';
 
 @Component({
   selector: 'app-cards-list',
