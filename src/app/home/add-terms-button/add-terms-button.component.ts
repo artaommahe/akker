@@ -6,8 +6,12 @@ import { AddTermsDialogComponent } from '../add-terms-dialog/add-terms-dialog.co
 @Component({
   selector: 'app-add-terms-button',
   template: `
-    <button class="fixed bottom-16 right-6 flex" title="Add" (click)="showAddTermsDialog.set(true)">
-      <app-icon class="size-10 text-action-primary" name="plusInCircle" />
+    <button
+      class="fixed bottom-16 right-6 flex items-center justify-center rounded-full bg-action-primary shadow-md"
+      title="Add"
+      (click)="showAddTermsDialog.set(true)"
+    >
+      <app-icon class="size-10 text-primary" name="plusInCircle" />
     </button>
 
     <app-add-terms-dialog [open]="showAddTermsDialog()" (close)="showAddTermsDialog.set(false)" />

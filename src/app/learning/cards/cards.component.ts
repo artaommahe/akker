@@ -6,7 +6,7 @@ import { ButtonDirective } from '../../ui/button/button';
 @Component({
   selector: 'app-cards',
   template: `
-    <div class="flex h-full flex-col gap-4 py-16">
+    <div class="flex h-full flex-col gap-4 pb-16">
       <div class="flex items-center justify-between text-secondary">
         <div>
           to go
