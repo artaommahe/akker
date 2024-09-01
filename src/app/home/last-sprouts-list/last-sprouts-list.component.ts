@@ -14,15 +14,17 @@ import { SproutsListItemComponent } from '../../cultivating/sprouts-list-item/sp
       <ul class="flex flex-col gap-2">
         @for (sprout of lastSprouts(); track sprout.id) {
           <li>
-            <app-sprouts-list-item [sprout]="sprout" (showDetails)="sproutDetails.set(sprout)" />
+            <app-sprouts-list-item [sprout]="sprout" (showDetails)="sproutDetailsDialog.set({ open: true, sprout })" />
           </li>
         }
       </ul>
     </section>
 
-    @if (sproutDetails(); as sprout) {
-      <app-sprout-details-dialog [sprout]="sprout" (close)="sproutDetails.set(null)" />
-    }
+    <app-sprout-details-dialog
+      [open]="sproutDetailsDialog().open"
+      [sprout]="sproutDetailsDialog().sprout"
+      (close)="closeSproutDetailsDialog()"
+    />
   `,
   imports: [SproutsListItemComponent, SproutDetailsDialogComponent],
   standalone: true,
@@ -37,7 +39,11 @@ export class LastSproutsListComponent {
       ?.toSorted((a, b) => b.addedAt.localeCompare(a.addedAt))
       .slice(0, lastSproutsAmount),
   );
-  sproutDetails = signal<SproutDetailsSprout | null>(null);
+  sproutDetailsDialog = signal<{ open: boolean; sprout: SproutDetailsSprout | null }>({ open: false, sprout: null });
+
+  closeSproutDetailsDialog() {
+    this.sproutDetailsDialog.update(value => ({ ...value, open: false }));
+  }
 }
 
 const lastSproutsAmount = 10;

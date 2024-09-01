@@ -14,7 +14,10 @@ import { type SproutDetailsSprout } from '../../cultivating/sprout-details/sprou
         <ul class="columns-2 gap-4">
           @for (sprout of someUnsortedSprouts(); track sprout.id) {
             <li>
-              <button class="w-full truncate px-2 py-1 text-left" (click)="sproutDetails.set(sprout)">
+              <button
+                class="w-full truncate px-2 py-1 text-left"
+                (click)="sproutDetailsDialog.set({ open: true, sprout })"
+              >
                 {{ sprout.term }}
               </button>
             </li>
@@ -22,9 +25,11 @@ import { type SproutDetailsSprout } from '../../cultivating/sprout-details/sprou
         </ul>
       </section>
 
-      @if (sproutDetails(); as sprout) {
-        <app-sprout-details-dialog [sprout]="sprout" (close)="sproutDetails.set(null)" />
-      }
+      <app-sprout-details-dialog
+        [open]="sproutDetailsDialog().open"
+        [sprout]="sproutDetailsDialog().sprout"
+        (close)="closeSproutDetailsDialog()"
+      />
     }
   `,
   imports: [SproutDetailsDialogComponent],
@@ -38,7 +43,11 @@ export class UnsortedSproutsComponent {
   unsortedSproutsAmount = computed(() => this.unsortedSprouts()?.length ?? 0);
   someUnsortedSprouts = computed(() => this.unsortedSprouts()?.slice(0, someUnsortedSproutsAmount) ?? []);
 
-  sproutDetails = signal<SproutDetailsSprout | null>(null);
+  sproutDetailsDialog = signal<{ open: boolean; sprout: SproutDetailsSprout | null }>({ open: false, sprout: null });
+
+  closeSproutDetailsDialog() {
+    this.sproutDetailsDialog.update(value => ({ ...value, open: false }));
+  }
 }
 
 const someUnsortedSproutsAmount = 10;

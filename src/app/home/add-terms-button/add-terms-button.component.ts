@@ -10,9 +10,7 @@ import { AddTermsDialogComponent } from '../add-terms-dialog/add-terms-dialog.co
       <app-icon class="size-10 text-action-primary" name="plusInCircle" />
     </button>
 
-    @if (showAddTermsDialog()) {
-      <app-add-terms-dialog (close)="showAddTermsDialog.set(false)" />
-    }
+    <app-add-terms-dialog [open]="showAddTermsDialog()" (close)="showAddTermsDialog.set(false)" />
   `,
   imports: [IconComponent, AddTermsDialogComponent],
   standalone: true,

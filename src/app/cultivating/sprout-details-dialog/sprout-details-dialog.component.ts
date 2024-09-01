@@ -7,13 +7,17 @@ import { SproutDetailsComponent, type SproutDetailsSprout } from '../sprout-deta
 @Component({
   selector: 'app-sprout-details-dialog',
   template: `
-    <app-dialog (close)="close.emit()">
-      <app-sprout-details
-        [sprout]="sprout()"
-        (cancel)="close.emit()"
-        (remove)="onRemoveSprout(sprout().id)"
-        (update)="onUpdateSprout(sprout().id, $event)"
-      />
+    <app-dialog [open]="open()" (close)="close.emit()">
+      <ng-template>
+        @if (sprout(); as sprout) {
+          <app-sprout-details
+            [sprout]="sprout"
+            (cancel)="close.emit()"
+            (remove)="onRemoveSprout(sprout.id)"
+            (update)="onUpdateSprout(sprout.id, $event)"
+          />
+        }
+      </ng-template>
     </app-dialog>
   `,
   imports: [DialogComponent, SproutDetailsComponent],
@@ -23,8 +27,8 @@ import { SproutDetailsComponent, type SproutDetailsSprout } from '../sprout-deta
 export class SproutDetailsDialogComponent {
   private barnService = inject(BarnService);
 
-  sprout = input.required<SproutDetailsSprout>();
-
+  open = input.required<boolean>();
+  sprout = input.required<SproutDetailsSprout | null>();
   close = output();
 
   onRemoveSprout(id: string) {

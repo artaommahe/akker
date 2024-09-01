@@ -14,15 +14,17 @@ import { SeedsListItemComponent } from '../../planting/seeds-list-item/seeds-lis
       <ul class="flex flex-col gap-2">
         @for (seed of lastAddedSeeds(); track seed.name) {
           <li>
-            <app-seeds-list-item [seed]="seed" (showDetails)="seedDetails.set(seed)" />
+            <app-seeds-list-item [seed]="seed" (showDetails)="seedDetailsDialog.set({ open: true, seed })" />
           </li>
         }
       </ul>
     </section>
 
-    @if (seedDetails(); as seed) {
-      <app-seed-details-dialog [seed]="seed" (close)="seedDetails.set(null)" />
-    }
+    <app-seed-details-dialog
+      [open]="seedDetailsDialog().open"
+      [seed]="seedDetailsDialog().seed"
+      (close)="closeSeedDetailsDialog()"
+    />
   `,
   imports: [SeedDetailsDialogComponent, SeedsListItemComponent],
   standalone: true,
@@ -37,7 +39,11 @@ export class LastSeedsListComponent {
       ?.toSorted((a, b) => b.lastAddedAt.localeCompare(a.lastAddedAt))
       .slice(0, lastSeedsCount),
   );
-  seedDetails = signal<SeedDetailsSeed | null>(null);
+  seedDetailsDialog = signal<{ open: boolean; seed: SeedDetailsSeed | null }>({ open: false, seed: null });
+
+  closeSeedDetailsDialog() {
+    this.seedDetailsDialog.update(value => ({ ...value, open: false }));
+  }
 }
 
 const lastSeedsCount = 10;

@@ -11,9 +11,9 @@ import { LearningService } from './learning';
   template: `
     <button appButton (click)="learnCards()">Learn</button>
 
-    <app-dialog [open]="cardsToLearnModal().show" (close)="closeCardsModal()">
+    <app-dialog [open]="cardsToLearnDialog().open" (close)="closeCardsDialog()">
       <ng-template>
-        @if (cardsToLearnModal().cards; as cards) {
+        @if (cardsToLearnDialog().cards; as cards) {
           <app-cards [cards]="cards" (rateCard)="onRateCard($event)" />
         }
       </ng-template>
@@ -27,7 +27,7 @@ export class LearnCardsComponent {
   private barnService = inject(BarnService);
   private learningService = inject(LearningService);
 
-  cardsToLearnModal = signal<{ show: boolean; cards: Card[] | null }>({ show: false, cards: null });
+  cardsToLearnDialog = signal<{ open: boolean; cards: Card[] | null }>({ open: false, cards: null });
 
   learnCards() {
     const sprouts = this.barnService.sprouts()?.map(sprout => sprout.toJSON());
@@ -38,11 +38,11 @@ export class LearnCardsComponent {
 
     const cards = this.learningService.selectCardsToLearn(sprouts, cardsToLearnAmount);
 
-    this.cardsToLearnModal.set({ show: true, cards });
+    this.cardsToLearnDialog.set({ open: true, cards });
   }
 
-  closeCardsModal() {
-    this.cardsToLearnModal.update(value => ({ ...value, show: false }));
+  closeCardsDialog() {
+    this.cardsToLearnDialog.update(value => ({ ...value, open: false }));
   }
 
   async onRateCard({ id, grade }: { id: string; grade: CardGrade }) {
