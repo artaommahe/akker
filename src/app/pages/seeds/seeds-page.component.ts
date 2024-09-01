@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
 import { BarnService } from '../../barn/barn.service';
-import { AddTermsButtonComponent } from '../../home/add-terms-button/add-terms-button.component';
+import { AddTermsButtonComponent } from '../../planting/add-terms-button/add-terms-button.component';
 import { SeedDetailsDialogComponent } from '../../planting/seed-details-dialog/seed-details-dialog.component';
 import type { SeedDetailsSeed } from '../../planting/seed-details/seed-details.component';
 import { SeedsListComponent } from '../../planting/seeds-list/seeds-list.component';

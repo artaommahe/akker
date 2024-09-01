@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
-import { BarnService } from '../../barn/barn.service';
-import { CardDetailsDialogComponent } from '../../cultivating/card-details-dialog/card-details-dialog.component';
-import type { CardDetailsCard } from '../../cultivating/card-details/card-details.component';
-import { CardsListItemComponent } from '../../cultivating/cards-list-item/cards-list-item.component';
+import { BarnService } from '../../../barn/barn.service';
+import { CardDetailsDialogComponent } from '../../../cultivating/card-details-dialog/card-details-dialog.component';
+import type { CardDetailsCard } from '../../../cultivating/card-details/card-details.component';
+import { CardsListItemComponent } from '../../../cultivating/cards-list-item/cards-list-item.component';
 
 @Component({
   selector: 'app-last-cards-list',
