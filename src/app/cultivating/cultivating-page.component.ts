@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 
 import { BarnService } from '../barn/barn.service';
 import { LearnCardsComponent } from '../learning/learn-cards.component';
-import { SproutDetailsDialogComponent } from './sprout-details-dialog/sprout-details-dialog.component';
-import { type SproutDetailsSprout } from './sprout-details/sprout-details.component';
-import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
+import { CardDetailsDialogComponent } from './card-details-dialog/card-details-dialog.component';
+import { type CardDetailsCard } from './card-details/card-details.component';
+import { CardsListComponent } from './cards-list/cards-list.component';
 
 @Component({
   selector: 'app-cultivating-page',
@@ -12,36 +12,36 @@ import { SproutsListComponent } from './sprouts-list/sprouts-list.component';
     <div class="flex flex-col items-start gap-4">
       <app-learn-cards />
 
-      <app-sprouts-list [sprouts]="sprouts() ?? []" (showDetails)="onShowDetails($event)" />
+      <app-cards-list [cards]="cards() ?? []" (showDetails)="onShowDetails($event)" />
 
-      <app-sprout-details-dialog
-        [open]="sproutDetailsDialog().open"
-        [sprout]="sproutDetailsDialog().sprout"
-        (close)="closeSproutDetailsDialog()"
+      <app-card-details-dialog
+        [open]="cardDetailsDialog().open"
+        [card]="cardDetailsDialog().card"
+        (close)="closeCardDetailsDialog()"
       />
     </div>
   `,
-  imports: [SproutsListComponent, SproutDetailsDialogComponent, LearnCardsComponent],
+  imports: [CardsListComponent, CardDetailsDialogComponent, LearnCardsComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CultivatingPageComponent {
   private barnService = inject(BarnService);
 
-  sprouts = this.barnService.sprouts;
-  sproutDetailsDialog = signal<{ open: boolean; sprout: SproutDetailsSprout | null }>({ open: false, sprout: null });
+  cards = this.barnService.cards;
+  cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
-  onShowDetails(sproutId: string) {
-    const sprout = this.sprouts()?.find(sprout => sprout.id === sproutId);
+  onShowDetails(cardId: string) {
+    const card = this.cards()?.find(card => card.id === cardId);
 
-    if (!sprout) {
-      throw new Error(`Sprout with id ${sproutId} not found`);
+    if (!card) {
+      throw new Error(`Card with id ${cardId} not found`);
     }
 
-    this.sproutDetailsDialog.set({ open: true, sprout });
+    this.cardDetailsDialog.set({ open: true, card });
   }
 
-  closeSproutDetailsDialog() {
-    this.sproutDetailsDialog.update(value => ({ ...value, open: false }));
+  closeCardDetailsDialog() {
+    this.cardDetailsDialog.update(value => ({ ...value, open: false }));
   }
 }

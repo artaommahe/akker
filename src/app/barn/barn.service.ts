@@ -13,21 +13,21 @@ export class BarnService {
   private injector = inject(Injector);
 
   seeds = this.convertToSignal(this.barnDb.seeds.find().$);
-  sprouts = this.convertToSignal(this.barnDb.sprouts.find().$);
+  cards = this.convertToSignal(this.barnDb.sprouts.find().$);
 
   async addSeeds(names: string[]) {
-    const { seedsToAdd, seedsToUpdate, newSprouts } = await this.prepareNewSeeds(names);
+    const { seedsToAdd, seedsToUpdate, newCards } = await this.prepareNewSeeds(names);
 
     // add new or update existing seeds
     if (seedsToAdd.length || seedsToUpdate.length) {
       await this.barnDb.seeds.bulkUpsert([...seedsToAdd, ...seedsToUpdate]);
     }
 
-    // add new sprouts
-    if (newSprouts.length) {
-      for (const name of newSprouts) {
-        await this.addSprout(name);
-        await this.removeSeed(name);
+    // add new cards
+    if (newCards.length) {
+      for (const term of newCards) {
+        await this.addCard(term);
+        await this.removeSeed(term);
       }
     }
   }
@@ -40,7 +40,7 @@ export class BarnService {
     await this.barnDb.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
   }
 
-  async addSprout(term: string) {
+  async addCard(term: string) {
     await this.barnDb.sprouts.insert({
       id: nanoid(),
       term,
@@ -49,12 +49,12 @@ export class BarnService {
     });
   }
 
-  async removeSprout(id: string) {
+  async removeCard(id: string) {
     await this.barnDb.sprouts.findOne({ selector: { id } }).remove();
   }
 
-  async updateSprout(id: string, newData: Partial<DbSprout>) {
-    await this.barnDb.sprouts.findOne({ selector: { id } }).modify(sprout => ({ ...sprout, ...newData }));
+  async updateCard(id: string, newData: Partial<DbSprout>) {
+    await this.barnDb.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
   }
 
   // https://github.com/pubkey/rxdb/issues/6188
@@ -68,12 +68,12 @@ export class BarnService {
 
   // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
-    const existingSprouts = await this.barnDb.sprouts.find({ selector: { term: { $in: names } } }).exec();
+    const existingCards = await this.barnDb.sprouts.find({ selector: { term: { $in: names } } }).exec();
 
     const newSeeds = names.reduce(
       (result, name) =>
-        // if the seed is already sprouted, skip it
-        existingSprouts.find(sprout => sprout.term === name)
+        // skip the term if we already have a card for it
+        existingCards.find(card => card.term === name)
           ? result
           : { ...result, [name]: result[name] ? result[name] + 1 : 1 },
       {} as Record<string, number>,
@@ -81,7 +81,7 @@ export class BarnService {
 
     const existingSeeds = await this.barnDb.seeds.find({ selector: { name: { $in: Object.keys(newSeeds) } } }).exec();
 
-    const { seedsToUpdate, newSprouts } = existingSeeds.reduce(
+    const { seedsToUpdate, newCards } = existingSeeds.reduce(
       (result, seed) => {
         if (!newSeeds[seed.name]) {
           return result;
@@ -90,7 +90,7 @@ export class BarnService {
         const count = seed.count + newSeeds[seed.name];
 
         if (count >= seedPlantingTreshold) {
-          return { ...result, newSprouts: [...result.newSprouts, seed.name] };
+          return { ...result, newCards: [...result.newCards, seed.name] };
         }
 
         return {
@@ -98,11 +98,11 @@ export class BarnService {
           seedsToUpdate: [...result.seedsToUpdate, { ...seed.toJSON(), count, lastAddedAt: new Date().toISOString() }],
         };
       },
-      { seedsToUpdate: [] as DbSeed[], newSprouts: [] as string[] },
+      { seedsToUpdate: [] as DbSeed[], newCards: [] as string[] },
     );
 
     // TODO: when count is more than seedPlantingTreshold
-    // shoult be added to newSprouts
+    // shoult be added to newCards
     const seedsToAdd = Object.keys(newSeeds)
       .filter(name => !existingSeeds.some(seed => seed.name === name))
       .map(name => ({
@@ -113,7 +113,7 @@ export class BarnService {
         lastAddedAt: new Date().toISOString(),
       }));
 
-    return { seedsToAdd, seedsToUpdate, newSprouts };
+    return { seedsToAdd, seedsToUpdate, newCards };
   }
 }
 

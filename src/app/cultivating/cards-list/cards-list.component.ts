@@ -1,0 +1,54 @@
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+
+import { ExpansionPanelComponent } from '../../ui/expansion-panel/expansion-panel.component';
+import { type CardsListItemCard, CardsListItemComponent } from '../cards-list-item/cards-list-item.component';
+
+@Component({
+  selector: 'app-cards-list',
+  template: `
+    <div class="flex flex-col gap-4">
+      <section class="flex flex-col gap-2">
+        <h2 class="text-lg text-secondary">New cards</h2>
+
+        <ul class="flex flex-col gap-2">
+          @for (card of newCards(); track card.id) {
+            <li>
+              <app-cards-list-item [card]="card" (showDetails)="showDetails.emit($event.id)" />
+            </li>
+          }
+        </ul>
+      </section>
+
+      @if (restCards().length) {
+        <app-expansion-panel>
+          <ng-container>Rest ({{ restCards().length }})</ng-container>
+
+          <ng-template>
+            @for (card of restCards(); track card.id) {
+              <li>
+                <app-cards-list-item [card]="card" (showDetails)="showDetails.emit($event.id)" />
+              </li>
+            }
+          </ng-template>
+        </app-expansion-panel>
+      }
+    </div>
+  `,
+  imports: [CardsListItemComponent, ExpansionPanelComponent],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class CardsListComponent {
+  cards = input.required<CardsListCard[]>();
+  showDetails = output<string>();
+
+  sortedCards = computed(() => this.cards().toSorted((a, b) => b.addedAt.localeCompare(a.addedAt)));
+  newCards = computed(() => this.sortedCards().slice(0, newCardsAmount));
+  restCards = computed(() => this.sortedCards().slice(newCardsAmount));
+}
+
+const newCardsAmount = 10;
+
+export interface CardsListCard extends CardsListItemCard {
+  addedAt: string;
+}

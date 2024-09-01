@@ -33,7 +33,7 @@ export class LearningService {
     return [...newCards, ...learning, ...review].slice(0, limit);
   }
 
-  rateCard({ card, grade }: { card?: NonNullable<DbSprout['fsrs']>['card']; grade: CardGrade }) {
+  rateFsrsCard({ card, grade }: { card?: NonNullable<DbSprout['fsrs']>['card']; grade: CardGrade }) {
     const fsrsCard = card ? convertDbCardToFsrsCard(card) : createEmptyCard<Card>(new Date());
 
     const recordLog = this.f.repeat(fsrsCard, fsrsCard.due);
