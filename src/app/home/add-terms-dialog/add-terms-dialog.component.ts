@@ -16,7 +16,6 @@ import { InputDirective } from '../../ui/input/input';
             appInput
             placeholder="One seed a line"
             autocapitalize="off"
-            autofocus
             [value]="newSeed()"
             (input)="updateSeed($event)"
           ></textarea>
