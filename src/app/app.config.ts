@@ -1,3 +1,4 @@
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { type ApplicationConfig, ErrorHandler, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { createErrorHandler } from '@sentry/angular';
@@ -14,5 +15,6 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useValue: createErrorHandler({ showDialog: false }),
     },
+    { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { dateFormat: 'MMM d, y, HH:mm:ss' } },
   ],
 };

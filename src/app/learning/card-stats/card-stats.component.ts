@@ -10,9 +10,9 @@ import type { DbSprout } from '../../barn/rxdb/schema/sprouts';
       <p>State</p>
       <p>{{ fsrs().card.state }}</p>
       <p>Next review</p>
-      <p>{{ fsrs().card.due | date: 'medium' }}</p>
+      <p>{{ fsrs().card.due | date }}</p>
       <p>Last review</p>
-      <p>{{ fsrs().card.last_review | date: 'medium' }}</p>
+      <p>{{ fsrs().card.last_review | date }}</p>
       <p>Repetitions</p>
       <p>{{ fsrs().card.reps }}</p>
       <p>Lapses</p>
