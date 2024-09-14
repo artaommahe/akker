@@ -35,6 +35,9 @@ module.exports = {
         secondary: '#a5a096',
         transparent: 'transparent',
       },
+      caretColor: {
+        primary: '#f7f5f1',
+      },
     },
   },
   plugins: [],
