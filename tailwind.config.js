@@ -3,6 +3,9 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     colors: {
       action: {
@@ -34,6 +37,9 @@ module.exports = {
         primary: '#f7f5f1',
         secondary: '#a5a096',
         transparent: 'transparent',
+      },
+      caretColor: {
+        primary: '#f7f5f1',
       },
     },
   },

@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { BarnService } from '../barn/barn.service';
 import { ButtonDirective } from '../ui/button/button';
 import { DialogComponent } from '../ui/dialog/dialog.component';
-import { type Card, CardGrade, CardsComponent } from './cards/cards.component';
-import { LearningService } from './learning';
+import { type Card, CardsComponent } from './cards/cards.component';
+import { type CardGrade, LearningService } from './learning.service';
 
 @Component({
   selector: 'app-learn-cards',

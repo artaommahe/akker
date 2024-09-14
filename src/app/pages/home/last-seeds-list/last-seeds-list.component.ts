@@ -8,7 +8,7 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
 @Component({
   selector: 'app-last-seeds-list',
   template: `
-    <section>
+    <section class="flex flex-col gap-2">
       <h2 class="text-lg text-secondary">Last seeds</h2>
 
       <ul class="flex flex-col gap-2">
