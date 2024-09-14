@@ -14,14 +14,14 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
 
       <app-learn-cards />
 
-      <div class="div flex gap-4">
-        <div class="flex-1">
+      <div class="flex gap-4">
+        <div class="min-w-0 flex-1">
           <app-last-cards-list />
         </div>
 
         <div class="w-px self-stretch border-l border-l-primary/10"></div>
 
-        <div class="flex-1">
+        <div class="min-w-0 flex-1">
           <app-last-seeds-list />
         </div>
       </div>
