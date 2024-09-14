@@ -4,10 +4,12 @@ import {
   Component,
   ElementRef,
   TemplateRef,
+  computed,
   contentChild,
   effect,
   input,
   output,
+  signal,
   viewChild,
 } from '@angular/core';
 
@@ -22,8 +24,10 @@ import { IconComponent } from '../icon/icon';
         '[&:not([open])]:pointer-events-none',
         'transition-transform duration-300 [&:not([open])]:translate-x-full',
       ]"
-      [inert]="!open()"
+      [inert]="!isOpen()"
       (close)="close.emit()"
+      (transitionstart)="dialogAnimationIsRunning.set(true)"
+      (transitionend)="dialogAnimationIsRunning.set(false)"
       #dialog
     >
       <!-- TODO: ui/button -->
@@ -31,7 +35,9 @@ import { IconComponent } from '../icon/icon';
         <app-icon class="size-6 text-secondary" name="crossInCircle" />
       </button>
 
-      <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
+      @if (isOpen()) {
+        <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
+      }
     </dialog>
   `,
   imports: [IconComponent, NgTemplateOutlet, NgClass],
@@ -39,15 +45,19 @@ import { IconComponent } from '../icon/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogComponent {
-  open = input(false);
+  openInput = input(false, { alias: 'open' });
   close = output();
 
   dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   contentRef = contentChild.required(TemplateRef);
 
+  // have to wait for close animation to finish before removing dialog's content from the DOM
+  dialogAnimationIsRunning = signal(false);
+  isOpen = computed(() => (this.openInput() ? true : this.dialogAnimationIsRunning()));
+
   constructor() {
     effect(() => {
-      if (this.open()) {
+      if (this.openInput()) {
         this.dialogRef().nativeElement.showModal();
       } else {
         this.dialogRef().nativeElement.close();
