@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 
 import { ButtonDirective } from '../../ui/button/button';
+import { CardGrade } from '../learning.service';
 
 // TODO: add tests
 @Component({
@@ -102,11 +103,4 @@ export interface Card {
   term: string;
   fullTerm?: string;
   definition: string;
-}
-
-export enum CardGrade {
-  Again = 1,
-  Hard = 2,
-  Good = 3,
-  Easy = 4,
 }

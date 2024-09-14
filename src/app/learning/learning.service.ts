@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { type Card, State, createEmptyCard, fsrs } from 'ts-fsrs';
 
 import type { DbSprout } from '../barn/rxdb/schema/sprouts';
-import type { CardGrade } from './cards/cards.component';
 
 @Injectable({ providedIn: 'root' })
 export class LearningService {
@@ -10,12 +9,12 @@ export class LearningService {
 
   // TODO: add tests
   selectCardsToLearn<T extends { id: string; fsrs?: DbSprout['fsrs'] }>(cards: T[], limit: number): T[] {
-    let { newCards, learning, review } = cards.reduce(
+    const { newCards, learning, review } = cards.reduce(
       (acc, card) => {
         const type =
-          card.fsrs?.card.state === State.New
+          card.fsrs?.card.state === undefined || card.fsrs.card.state === State.New
             ? 'newCards'
-            : card.fsrs?.card.state === State.Review
+            : card.fsrs.card.state === State.Review
               ? 'review'
               : 'learning';
 
@@ -24,19 +23,18 @@ export class LearningService {
       { newCards: [] as T[], learning: [] as T[], review: [] as T[] },
     );
 
-    newCards = newCards.toSorted(() => Math.random() - 0.5);
-    learning = learning.toSorted((a, b) => a.fsrs?.card.due.localeCompare(b.fsrs?.card.due ?? '') ?? 0);
-    review = review
-      .filter(card => (card.fsrs?.card.due.localeCompare(new Date().toISOString()) ?? 0) <= 0)
-      .toSorted((a, b) => a.fsrs?.card.due.localeCompare(b.fsrs?.card.due ?? '') ?? 0);
+    const startedDueCards = [...learning, ...review].filter(
+      card => card.fsrs && card.fsrs.card.due < new Date().toISOString(),
+    );
+    const cardsToLearn = [...newCards, ...startedDueCards].toSorted(() => Math.random() - 0.5).slice(0, limit);
 
-    return [...newCards, ...learning, ...review].slice(0, limit);
+    return cardsToLearn;
   }
 
   rateFsrsCard({ card, grade }: { card?: NonNullable<DbSprout['fsrs']>['card']; grade: CardGrade }) {
     const fsrsCard = card ? convertDbCardToFsrsCard(card) : createEmptyCard<Card>(new Date());
 
-    const recordLog = this.f.repeat(fsrsCard, fsrsCard.due);
+    const recordLog = this.f.repeat(fsrsCard, new Date());
     const newCard = recordLog[grade].card;
 
     return convertFsrsCardToDbCard(newCard);
@@ -54,3 +52,10 @@ const convertFsrsCardToDbCard = (card: Card): NonNullable<DbSprout['fsrs']>['car
   due: card.due.toISOString(),
   last_review: card.last_review?.toISOString(),
 });
+
+export enum CardGrade {
+  Again = 1,
+  Hard = 2,
+  Good = 3,
+  Easy = 4,
+}
