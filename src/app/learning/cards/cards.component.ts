@@ -93,6 +93,7 @@ export class CardsComponent {
 
     this.cardsRate.set({ ...this.cardsRate(), [currentCard.id]: grade });
     this.rateCard.emit({ id: currentCard.id, grade });
+    this.showCardDefinition.set(false);
   }
 }
 
