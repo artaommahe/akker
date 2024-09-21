@@ -32,7 +32,7 @@ export class SeedDetailsDialogComponent {
   close = output();
 
   onRemoveSeed(name: string) {
-    this.barnService.removeSeed(name);
+    this.barnService.removeSeeds([name]);
     this.close.emit();
   }
 
