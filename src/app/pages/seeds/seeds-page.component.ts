@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
 import { BarnService } from '../../barn/barn.service';
-import { AddTermsButtonComponent } from '../../seeds/add-terms-button/add-terms-button.component';
+import { AddSeedsButtonComponent } from '../../seeds/add-seeds-button/add-seeds-button.component';
 import { SeedDetailsDialogComponent } from '../../seeds/seed-details-dialog/seed-details-dialog.component';
 import type { SeedDetailsSeed } from '../../seeds/seed-details/seed-details.component';
 import { SeedsListComponent } from './seeds-list/seeds-list.component';
@@ -12,7 +12,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
     <div class="flex flex-col gap-4">
       <app-seeds-list [seeds]="seeds() ?? []" (showDetails)="seedDetailsDialog.set({ open: true, seed: $event })" />
 
-      <app-add-terms-button />
+      <app-add-seeds-button />
 
       <app-seed-details-dialog
         [open]="seedDetailsDialog().open"
@@ -21,7 +21,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
       />
     </div>
   `,
-  imports: [SeedsListComponent, SeedDetailsDialogComponent, AddTermsButtonComponent],
+  imports: [SeedsListComponent, SeedDetailsDialogComponent, AddSeedsButtonComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

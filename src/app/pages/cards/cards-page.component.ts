@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
 import { BarnService } from '../../barn/barn.service';
+import { AddCardsButtonComponent } from '../../cards/add-cards-button/add-cards-button.component';
 import { CardDetailsDialogComponent } from '../../cards/card-details-dialog/card-details-dialog.component';
 import type { CardDetailsCard } from '../../cards/card-details/card-details.component';
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
@@ -19,9 +20,11 @@ import { CardsListComponent } from './cards-list/cards-list.component';
         [card]="cardDetailsDialog().card"
         (close)="closeCardDetailsDialog()"
       />
+
+      <app-add-cards-button />
     </div>
   `,
-  imports: [CardsListComponent, CardDetailsDialogComponent, LearnCardsComponent],
+  imports: [CardsListComponent, CardDetailsDialogComponent, LearnCardsComponent, AddCardsButtonComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

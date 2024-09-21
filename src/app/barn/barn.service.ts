@@ -25,28 +25,39 @@ export class BarnService {
 
     // add new cards
     if (newCards.length) {
-      for (const term of newCards) {
-        await this.addCard(term);
-        await this.removeSeed(term);
-      }
+      await this.addCards(newCards.map(term => ({ term })));
+      await this.removeSeeds(newCards);
     }
   }
 
-  async removeSeed(name: string) {
-    await this.barnDb.seeds.findOne({ selector: { name } }).remove();
+  async removeSeeds(names: string[]) {
+    await this.barnDb.seeds.find({ selector: { name: { $in: names } } }).remove();
   }
 
   async updateSeed(name: string, newData: Partial<DbSeed>) {
     await this.barnDb.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
   }
 
-  async addCard(term: string) {
-    await this.barnDb.sprouts.insert({
-      id: nanoid(),
-      term,
-      definition: '',
-      addedAt: new Date().toISOString(),
-    });
+  async addCards(cardsToAdd: CardToAdd[]) {
+    const existingCards = this.cards() ?? [];
+    const newCards = cardsToAdd
+      // filter out cards that already exist or are duplicates
+      .filter(
+        (card, index, self) =>
+          !existingCards.some(existingCard => existingCard.term === card.term) &&
+          self.findIndex(c => c.term === card.term) === index,
+      )
+      .map(card => ({
+        id: nanoid(),
+        term: card.term,
+        definition: card.definition ?? '',
+        fullTerm: card.fullTerm ?? undefined,
+        addedAt: new Date().toISOString(),
+      }));
+
+    if (newCards.length) {
+      await this.barnDb.sprouts.bulkInsert(newCards);
+    }
   }
 
   async removeCard(id: string) {
@@ -118,3 +129,9 @@ export class BarnService {
 }
 
 const seedToCardTreshold = 5;
+
+interface CardToAdd {
+  term: string;
+  fullTerm?: string;
+  definition?: string;
+}
