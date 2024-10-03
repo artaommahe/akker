@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^18.2.5",
     "@angular/platform-browser-dynamic": "^18.2.5",
     "@angular/router": "^18.2.5",
-    "@sentry/angular": "^8.30.0",
+    "@sentry/angular": "^8.33.1",
     "clsx": "^2.1.1",
     "csv-parse": "^5.5.6",
     "nanoid": "^5.0.7",
