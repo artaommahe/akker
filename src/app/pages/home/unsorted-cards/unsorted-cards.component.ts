@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { BarnService } from '../../../barn/barn.service';
 import { CardDetailsDialogComponent } from '../../../cards/card-details-dialog/card-details-dialog.component';
 import { type CardDetailsCard } from '../../../cards/card-details/card-details.component';
+import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-list-item.component';
 
 @Component({
   selector: 'app-unsorted-cards',
@@ -14,9 +15,7 @@ import { type CardDetailsCard } from '../../../cards/card-details/card-details.c
         <ul class="columns-2 gap-4">
           @for (card of someUnsortedCards(); track card.id) {
             <li>
-              <button class="w-full truncate px-2 py-1 text-left" (click)="cardDetailsDialog.set({ open: true, card })">
-                {{ card.term }}
-              </button>
+              <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />
             </li>
           }
         </ul>
@@ -29,7 +28,7 @@ import { type CardDetailsCard } from '../../../cards/card-details/card-details.c
       />
     }
   `,
-  imports: [CardDetailsDialogComponent],
+  imports: [CardDetailsDialogComponent, CardsListItemComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { MarkdownComponent } from 'ngx-markdown';
 
 import { ButtonDirective } from '../../ui/button/button';
 import { CardGrade } from '../learning.service';
@@ -29,9 +30,13 @@ import { CardGrade } from '../learning.service';
       >
         @if (currentCard(); as currentCard) {
           @if (showCardDefinition()) {
-            <span class="break-all text-2xl text-primary">{{ currentCard.fullTerm || currentCard.term }}</span>
+            <span class="break-all text-2xl text-primary">
+              <markdown [data]="currentCard.fullTerm || currentCard.term" [inline]="true" />
+            </span>
             @if (currentCard.definition) {
-              <p class="text-left text-secondary">{{ currentCard.definition }}</p>
+              <p class="text-left text-secondary">
+                <markdown [data]="currentCard.definition" />
+              </p>
             }
           } @else {
             <span class="break-all text-2xl text-primary">{{ currentCard.term }}</span>
@@ -49,7 +54,7 @@ import { CardGrade } from '../learning.service';
       </div>
     </div>
   `,
-  imports: [ButtonDirective],
+  imports: [ButtonDirective, MarkdownComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

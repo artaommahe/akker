@@ -3,3 +3,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* global markdown styles */
+markdown strong {
+  @apply text-action-secondary;
+}
