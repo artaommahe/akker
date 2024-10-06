@@ -10,7 +10,7 @@ import { CardsListComponent } from './cards-list/cards-list.component';
 @Component({
   selector: 'app-cards-page',
   template: `
-    <div class="flex flex-col items-start gap-4">
+    <div class="flex flex-col gap-4">
       <app-learn-cards />
 
       <app-cards-list [cards]="cards() ?? []" (showDetails)="onShowDetails($event)" />
