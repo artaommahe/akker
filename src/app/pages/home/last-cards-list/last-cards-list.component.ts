@@ -9,7 +9,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
   selector: 'app-last-cards-list',
   template: `
     <section class="flex flex-col gap-2">
-      <h2 class="text-lg text-secondary">Last cards</h2>
+      <h2 class="text-secondary text-lg">Last cards</h2>
 
       <ul class="flex flex-col gap-2">
         @for (card of lastCards(); track card.id) {
@@ -23,7 +23,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
     <app-card-details-dialog
       [open]="cardDetailsDialog().open"
       [card]="cardDetailsDialog().card"
-      (close)="closeCardDetailsDialog()"
+      (dismiss)="closeCardDetailsDialog()"
     />
   `,
   imports: [CardsListItemComponent, CardDetailsDialogComponent],

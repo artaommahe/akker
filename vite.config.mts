@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+/// <reference types="@vitest/browser/providers/playwright" />
 import angular from '@analogjs/vite-plugin-angular';
 import { defineConfig } from 'vite';
 
@@ -12,15 +13,8 @@ export default defineConfig(({ mode }) => {
       include: ['**/*.spec.ts'],
       reporters: ['default'],
       pool: 'threads',
-      browser: {
-        enabled: true,
-        provider: 'playwright',
-        name: 'chromium',
-        headless: true,
-      },
+      browser: { enabled: true, provider: 'playwright', headless: true, instances: [{ browser: 'chromium' }] },
     },
-    define: {
-      'import.meta.vitest': mode !== 'production',
-    },
+    define: { 'import.meta.vitest': mode !== 'production' },
   };
 });

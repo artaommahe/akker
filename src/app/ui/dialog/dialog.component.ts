@@ -20,17 +20,17 @@ import { IconComponent } from '../icon/icon';
   template: `
     <dialog
       [ngClass]="[
-        'fixed top-0 grid h-full w-full bg-primary p-5 pt-16 text-primary [max-block-size:unset] [max-inline-size:unset]',
+        'bg-primary text-primary fixed top-0 grid h-full w-full p-5 pt-16 [max-block-size:unset] [max-inline-size:unset]',
         '[&:not([open])]:pointer-events-none',
         'transition-transform duration-300 [&:not([open])]:translate-x-full',
       ]"
       [inert]="!isOpen()"
-      (close)="close.emit()"
+      (close)="dismiss.emit()"
       #dialog
     >
       <!-- TODO: ui/button -->
-      <button class="absolute right-2 top-2 flex p-2" (click)="dialog.close()">
-        <app-icon class="size-6 text-secondary" name="crossInCircle" />
+      <button class="absolute top-2 right-2 flex p-2" (click)="dialog.close()">
+        <app-icon class="text-secondary size-6" name="crossInCircle" />
       </button>
 
       @if (isOpen()) {
@@ -42,8 +42,9 @@ import { IconComponent } from '../icon/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogComponent {
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   openInput = input(false, { alias: 'open' });
-  close = output();
+  dismiss = output();
 
   dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   contentRef = contentChild.required(TemplateRef);

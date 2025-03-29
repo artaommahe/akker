@@ -37,7 +37,7 @@ import { InputDirective } from '../../ui/input/input';
 
       <div class="mt-auto flex gap-4">
         <button
-          class="mr-auto text-secondary"
+          class="text-secondary mr-auto"
           type="button"
           appButton
           appButtonSemantic="warning"
@@ -45,7 +45,7 @@ import { InputDirective } from '../../ui/input/input';
         >
           Remove
         </button>
-        <button type="button" appButton (click)="cancel.emit()">Cancel</button>
+        <button type="button" appButton (click)="dismiss.emit()">Cancel</button>
         <button type="submit" appButton appButtonType="primary">Save</button>
       </div>
     </form>
@@ -56,7 +56,7 @@ import { InputDirective } from '../../ui/input/input';
 export class CardDetailsComponent implements OnInit {
   card = input.required<CardDetailsCard>();
   remove = output<void>();
-  cancel = output<void>();
+  dismiss = output<void>();
   update = output<CardDetailsCard>();
 
   form = inject(NonNullableFormBuilder).group({

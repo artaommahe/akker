@@ -12,7 +12,7 @@ import { DialogComponent } from '../../../ui/dialog/dialog.component';
       <button appButton (click)="showRestoreDialog.set(true)">Restore backup</button>
     </div>
 
-    <app-dialog [open]="showRestoreDialog()" (close)="showRestoreDialog.set(false)">
+    <app-dialog [open]="showRestoreDialog()" (dismiss)="showRestoreDialog.set(false)">
       <ng-template>
         <div class="flex h-full flex-col gap-6 pt-8">
           <p class="text-lg">
@@ -20,7 +20,7 @@ import { DialogComponent } from '../../../ui/dialog/dialog.component';
             restored data will be added on top of existing data
           </p>
 
-          <label class="flex flex-col gap-2 text-secondary">
+          <label class="text-secondary flex flex-col gap-2">
             Select backup file
             <input type="file" accept=".json" #backupFile />
           </label>

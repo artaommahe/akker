@@ -6,7 +6,7 @@ import { SyncComponent } from './sync/sync.component';
   selector: 'app-settings-page',
   template: `
     <div class="flex flex-col gap-4">
-      <h2 class="text-lg text-primary">Settings</h2>
+      <h2 class="text-primary text-lg">Settings</h2>
 
       <app-sync />
     </div>

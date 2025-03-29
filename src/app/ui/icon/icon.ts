@@ -10,10 +10,7 @@ import { injectIcons } from './provide-icons';
 @Component({
   selector: 'app-icon',
   template: ``,
-  host: {
-    '[class]': 'defaultClasses',
-    '[innerHTML]': 'iconHtml()',
-  },
+  host: { '[class]': 'defaultClasses', '[innerHTML]': 'iconHtml()' },
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -24,6 +21,7 @@ export class IconComponent {
   name = input.required<string>();
 
   defaultClasses = clsx('inline-block overflow-hidden');
+  // TODO: try to use `resource()` instead of rxjs
   iconHtml = toSignal(
     toObservable(this.name).pipe(
       switchMap(name => {

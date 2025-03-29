@@ -18,7 +18,7 @@ import { CardsListComponent } from './cards-list/cards-list.component';
       <app-card-details-dialog
         [open]="cardDetailsDialog().open"
         [card]="cardDetailsDialog().card"
-        (close)="closeCardDetailsDialog()"
+        (dismiss)="closeCardDetailsDialog()"
       />
 
       <app-add-cards-button />

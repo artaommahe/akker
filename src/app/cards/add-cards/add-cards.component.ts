@@ -18,11 +18,11 @@ import { InputDirective } from '../../ui/input/input';
       ></textarea>
 
       @if (parseError()) {
-        <div class="shrink-0 text-semantic-danger">{{ parseError() }}</div>
+        <div class="text-semantic-danger shrink-0">{{ parseError() }}</div>
       }
 
       <div class="mt-auto flex shrink-0 justify-end gap-4">
-        <button appButton (click)="close.emit()">Cancel</button>
+        <button appButton (click)="dismiss.emit()">Cancel</button>
         <button appButton appButtonType="primary" (click)="add()">Add</button>
       </div>
     </div>
@@ -33,7 +33,7 @@ import { InputDirective } from '../../ui/input/input';
 export class AddCardsComponent {
   private barnService = inject(BarnService);
 
-  close = output();
+  dismiss = output();
 
   newCards = signal('');
   parseError = signal<string | null>(null);
@@ -47,10 +47,7 @@ export class AddCardsComponent {
 
     try {
       const newCards = (
-        parse(this.newCards(), {
-          delimiter: ';',
-          columns: ['term', 'fullTerm', 'definition'],
-        }) as ParsedCard[]
+        parse(this.newCards(), { delimiter: ';', columns: ['term', 'fullTerm', 'definition'] }) as ParsedCard[]
       ).filter(card => !!card.term);
 
       this.barnService.addCards(newCards);
@@ -59,7 +56,7 @@ export class AddCardsComponent {
       return;
     }
 
-    this.close.emit();
+    this.dismiss.emit();
   }
 }
 

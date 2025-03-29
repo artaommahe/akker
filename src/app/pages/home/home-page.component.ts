@@ -19,7 +19,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
           <app-last-cards-list />
         </div>
 
-        <div class="w-px self-stretch border-l border-l-primary/10"></div>
+        <div class="border-l-primary/10 w-px self-stretch border-l"></div>
 
         <div class="min-w-0 flex-1">
           <app-last-seeds-list />

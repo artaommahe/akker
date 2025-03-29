@@ -8,16 +8,16 @@ import { AddCardsComponent } from '../add-cards/add-cards.component';
   selector: 'app-add-cards-button',
   template: `
     <button
-      class="fixed bottom-16 right-6 flex items-center justify-center rounded-full bg-action-primary shadow-md"
+      class="bg-action-primary fixed right-6 bottom-16 flex items-center justify-center rounded-full shadow-md"
       title="Add"
       (click)="showAddCardsDialog.set(true)"
     >
-      <app-icon class="size-10 text-primary" name="plusInCircle" />
+      <app-icon class="text-primary size-10" name="plusInCircle" />
     </button>
 
-    <app-dialog [open]="showAddCardsDialog()" (close)="showAddCardsDialog.set(false)">
+    <app-dialog [open]="showAddCardsDialog()" (dismiss)="showAddCardsDialog.set(false)">
       <ng-template>
-        <app-add-cards (close)="showAddCardsDialog.set(false)" />
+        <app-add-cards (dismiss)="showAddCardsDialog.set(false)" />
       </ng-template>
     </app-dialog>
   `,

@@ -11,7 +11,7 @@ import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-p
   template: `
     <div class="flex flex-col gap-4">
       <section class="flex flex-col gap-2">
-        <h2 class="text-lg text-secondary">New cards</h2>
+        <h2 class="text-secondary text-lg">New cards</h2>
 
         <ul class="flex flex-col gap-2">
           @for (card of newCards(); track card.id) {

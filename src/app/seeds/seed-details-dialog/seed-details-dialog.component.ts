@@ -7,12 +7,12 @@ import { SeedDetailsComponent, type SeedDetailsSeed } from '../seed-details/seed
 @Component({
   selector: 'app-seed-details-dialog',
   template: `
-    <app-dialog [open]="open()" (close)="close.emit()">
+    <app-dialog [open]="open()" (dismiss)="dismiss.emit()">
       <ng-template>
         @if (seed(); as seed) {
           <app-seed-details
             [seed]="seed"
-            (cancel)="close.emit()"
+            (dismiss)="dismiss.emit()"
             (remove)="onRemoveSeed(seed.name)"
             (update)="onUpdateSeed(seed.name, $event)"
           />
@@ -28,15 +28,15 @@ export class SeedDetailsDialogComponent {
 
   open = input.required<boolean>();
   seed = input.required<SeedDetailsSeed | null>();
-  close = output();
+  dismiss = output();
 
   onRemoveSeed(name: string) {
     this.barnService.removeSeeds([name]);
-    this.close.emit();
+    this.dismiss.emit();
   }
 
   onUpdateSeed(name: string, value: Partial<SeedDetailsSeed>) {
     this.barnService.updateSeed(name, value);
-    this.close.emit();
+    this.dismiss.emit();
   }
 }

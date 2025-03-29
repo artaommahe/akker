@@ -17,7 +17,7 @@ import { InputDirective } from '../../ui/input/input';
       ></textarea>
 
       <div class="mt-auto flex shrink-0 justify-end gap-4">
-        <button appButton (click)="close.emit()">Cancel</button>
+        <button appButton (click)="dismiss.emit()">Cancel</button>
         <button appButton appButtonType="primary" (click)="add()">Add</button>
       </div>
     </div>
@@ -28,7 +28,7 @@ import { InputDirective } from '../../ui/input/input';
 export class AddSeedsComponent {
   private barnService = inject(BarnService);
 
-  close = output();
+  dismiss = output();
 
   newSeed = signal('');
 
@@ -46,6 +46,6 @@ export class AddSeedsComponent {
       this.barnService.addSeeds(newSeeds);
     }
 
-    this.close.emit();
+    this.dismiss.emit();
   }
 }

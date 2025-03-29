@@ -17,7 +17,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
       <app-seed-details-dialog
         [open]="seedDetailsDialog().open"
         [seed]="seedDetailsDialog().seed"
-        (close)="closeSeedDetailsDialog()"
+        (dismiss)="closeSeedDetailsDialog()"
       />
     </div>
   `,

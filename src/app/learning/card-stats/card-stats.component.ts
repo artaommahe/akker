@@ -6,7 +6,7 @@ import type { DbSprout } from '../../barn/rxdb/schema/sprouts';
 @Component({
   selector: 'app-card-stats',
   template: `
-    <section class="grid grid-cols-[max-content_auto] gap-2 text-secondary">
+    <section class="text-secondary grid grid-cols-[max-content_auto] gap-2">
       <p>State</p>
       <p>{{ fsrs().card.state }}</p>
       <p>Next review</p>
