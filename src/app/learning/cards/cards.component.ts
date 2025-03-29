@@ -25,7 +25,7 @@ import { CardGrade } from '../learning.service';
       </div>
 
       <button
-        class="border-primary/10 flex grow flex-col items-center justify-center gap-2 rounded border p-8"
+        class="border-primary/10 flex grow flex-col items-center justify-center gap-2 rounded-sm border p-8"
         (click)="onCardClick()"
       >
         @if (currentCard(); as currentCard) {
