@@ -9,7 +9,7 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
   selector: 'app-last-seeds-list',
   template: `
     <section class="flex flex-col gap-2">
-      <h2 class="text-lg text-secondary">Last seeds</h2>
+      <h2 class="text-secondary text-lg">Last seeds</h2>
 
       <ul class="flex flex-col gap-2">
         @for (seed of lastAddedSeeds(); track seed.name) {
@@ -23,11 +23,10 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
     <app-seed-details-dialog
       [open]="seedDetailsDialog().open"
       [seed]="seedDetailsDialog().seed"
-      (close)="closeSeedDetailsDialog()"
+      (dismiss)="closeSeedDetailsDialog()"
     />
   `,
   imports: [SeedDetailsDialogComponent, SeedsListItemComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastSeedsListComponent {

@@ -15,7 +15,7 @@ import { InputDirective } from '../../ui/input/input';
 
       <div class="mt-auto flex gap-4">
         <button
-          class="mr-auto text-secondary"
+          class="text-secondary mr-auto"
           appButton
           appButtonSemantic="warning"
           type="button"
@@ -23,19 +23,18 @@ import { InputDirective } from '../../ui/input/input';
         >
           Remove
         </button>
-        <button type="button" appButton (click)="cancel.emit()">Cancel</button>
+        <button type="button" appButton (click)="dismiss.emit()">Cancel</button>
         <button type="submit" appButton appButtonType="primary">Save</button>
       </div>
     </form>
   `,
   imports: [ReactiveFormsModule, InputDirective, ButtonDirective],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedDetailsComponent implements OnInit {
   seed = input.required<SeedDetailsSeed>();
   remove = output<void>();
-  cancel = output<void>();
+  dismiss = output<void>();
   update = output<SeedDetailsSeed>();
 
   form = inject(NonNullableFormBuilder).group({

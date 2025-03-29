@@ -10,7 +10,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
   template: `
     @if (someUnsortedCards().length > 0) {
       <section>
-        <h2 class="text-lg text-secondary">Unsorted cards ({{ unsortedCardsCount() }})</h2>
+        <h2 class="text-secondary text-lg">Unsorted cards ({{ unsortedCardsCount() }})</h2>
 
         <ul class="columns-2 gap-4">
           @for (card of someUnsortedCards(); track card.id) {
@@ -24,12 +24,11 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
       <app-card-details-dialog
         [open]="cardDetailsDialog().open"
         [card]="cardDetailsDialog().card"
-        (close)="closeCardDetailsDialog()"
+        (dismiss)="closeCardDetailsDialog()"
       />
     }
   `,
   imports: [CardDetailsDialogComponent, CardsListItemComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnsortedCardsComponent {

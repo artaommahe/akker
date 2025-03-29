@@ -11,7 +11,7 @@ import clsx from 'clsx';
 })
 export class InputDirective {
   defaultClasses = clsx(
-    'rounded-lg border border-transparent bg-secondary p-2 outline-none caret-primary',
+    'rounded-lg border border-transparent bg-secondary p-2 outline-hidden caret-primary',
     'focus-visible:border-primary',
     'placeholder:text-secondary',
   );

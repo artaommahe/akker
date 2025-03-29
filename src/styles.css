@@ -1,8 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@source './';
+
+@theme {
+  --font-roboto: 'Roboto', var(--font-sans);
+
+  --color-*: initial;
+  --color-action-primary: #2984a5;
+  --color-action-secondary: #9a90b4;
+  --color-semantic-success: #8db14b;
+  --color-semantic-warning: #fca321;
+  --color-semantic-danger: #dd452e;
+
+  --text-color--*: initial;
+  --text-color-primary: #f7f5f1;
+  --text-color-secondary: #a5a096;
+  --text-color-inverse: #313231;
+
+  --border-color-*: initial;
+  --border-color-primary: #f7f5f1;
+  --border-color-secondary: #a5a096;
+  --border-color-transparent: transparent;
+
+  --background-color-*: initial;
+  --background-color-primary: #313231;
+  --background-color-secondary: #3a3b3b;
+  --background-color-tertiary: #5d6263;
+  --background-color-inverse: #f7f5f1;
+
+  --caret-color-*: initial;
+  --caret-color-primary: #f7f5f1;
+}
+
+@layer base {
+  ::file-selector-button {
+    @apply bg-inverse border-secondary text-inverse border-2 px-1.5;
+  }
+}
 
 /* global markdown styles */
 markdown strong {

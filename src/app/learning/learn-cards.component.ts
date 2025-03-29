@@ -11,7 +11,7 @@ import { type CardGrade, LearningService } from './learning.service';
   template: `
     <button appButton (click)="learnCards()">Learn</button>
 
-    <app-dialog [open]="cardsToLearnDialog().open" (close)="closeCardsDialog()">
+    <app-dialog [open]="cardsToLearnDialog().open" (dismiss)="closeCardsDialog()">
       <ng-template>
         @if (cardsToLearnDialog().cards; as cards) {
           <app-cards [cards]="cards" (rateCard)="onRateCard($event)" />
@@ -20,7 +20,6 @@ import { type CardGrade, LearningService } from './learning.service';
     </app-dialog>
   `,
   imports: [CardsComponent, ButtonDirective, DialogComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LearnCardsComponent {
@@ -57,9 +56,7 @@ export class LearnCardsComponent {
 
     const newFsrsCard = this.learningService.rateFsrsCard({ card: card.fsrs?.card, grade });
 
-    await this.barnService.updateCard(card.id, {
-      fsrs: { ...card.fsrs, card: newFsrsCard },
-    });
+    await this.barnService.updateCard(card.id, { fsrs: { ...card.fsrs, card: newFsrsCard } });
   }
 }
 

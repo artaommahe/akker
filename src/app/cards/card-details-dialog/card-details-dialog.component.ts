@@ -7,12 +7,12 @@ import { type CardDetailsCard, CardDetailsComponent } from '../card-details/card
 @Component({
   selector: 'app-card-details-dialog',
   template: `
-    <app-dialog [open]="open()" (close)="close.emit()">
+    <app-dialog [open]="open()" (dismiss)="dismiss.emit()">
       <ng-template>
         @if (card(); as card) {
           <app-card-details
             [card]="card"
-            (cancel)="close.emit()"
+            (dismiss)="dismiss.emit()"
             (remove)="onRemoveCard(card.id)"
             (update)="onUpdateCard(card.id, $event)"
           />
@@ -21,7 +21,6 @@ import { type CardDetailsCard, CardDetailsComponent } from '../card-details/card
     </app-dialog>
   `,
   imports: [DialogComponent, CardDetailsComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardDetailsDialogComponent {
@@ -29,15 +28,15 @@ export class CardDetailsDialogComponent {
 
   open = input.required<boolean>();
   card = input.required<CardDetailsCard | null>();
-  close = output();
+  dismiss = output();
 
   onRemoveCard(id: string) {
     this.barnService.removeCard(id);
-    this.close.emit();
+    this.dismiss.emit();
   }
 
   onUpdateCard(id: string, value: Partial<CardDetailsCard>) {
     this.barnService.updateCard(id, value);
-    this.close.emit();
+    this.dismiss.emit();
   }
 }

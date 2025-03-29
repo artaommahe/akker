@@ -2,7 +2,7 @@
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
-const eslintConfigPrettier = require('eslint-config-prettier');
+const eslintConfigPrettier = require('eslint-config-prettier/flat');
 
 module.exports = tseslint.config(
   {
@@ -15,22 +15,8 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
-        {
-          type: 'attribute',
-          prefix: 'app',
-          style: 'camelCase',
-        },
-      ],
-      '@angular-eslint/component-selector': [
-        'error',
-        {
-          type: 'element',
-          prefix: 'app',
-          style: 'kebab-case',
-        },
-      ],
+      '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: 'app', style: 'camelCase' }],
+      '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'app', style: 'kebab-case' }],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -43,6 +29,7 @@ module.exports = tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      '@angular-eslint/prefer-signals': ['error', { preferReadonlySignalProperties: false }],
     },
   },
   {

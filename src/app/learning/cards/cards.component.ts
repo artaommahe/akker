@@ -9,7 +9,7 @@ import { CardGrade } from '../learning.service';
   selector: 'app-cards',
   template: `
     <div class="flex h-full flex-col gap-4 pb-16">
-      <div class="flex items-center justify-between text-secondary">
+      <div class="text-secondary flex items-center justify-between">
         <div>
           to go
           <span class="text-action-primary">({{ status().toGo }})</span>
@@ -25,24 +25,24 @@ import { CardGrade } from '../learning.service';
       </div>
 
       <button
-        class="flex grow flex-col items-center justify-center gap-2 rounded border border-primary/10 p-8"
+        class="border-primary/10 flex grow flex-col items-center justify-center gap-2 rounded-sm border p-8"
         (click)="onCardClick()"
       >
         @if (currentCard(); as currentCard) {
           @if (showCardDefinition()) {
-            <span class="break-all text-2xl text-primary">
+            <span class="text-primary text-2xl break-all">
               <markdown [data]="currentCard.fullTerm || currentCard.term" [inline]="true" />
             </span>
             @if (currentCard.definition) {
-              <p class="text-left text-secondary">
+              <p class="text-secondary text-left">
                 <markdown [data]="currentCard.definition" />
               </p>
             }
           } @else {
-            <span class="break-all text-2xl text-primary">{{ currentCard.term }}</span>
+            <span class="text-primary text-2xl break-all">{{ currentCard.term }}</span>
           }
         } @else {
-          <span class="text-2xl text-secondary">Done!</span>
+          <span class="text-secondary text-2xl">Done!</span>
         }
       </button>
 
@@ -55,7 +55,6 @@ import { CardGrade } from '../learning.service';
     </div>
   `,
   imports: [ButtonDirective, MarkdownComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsComponent {

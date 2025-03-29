@@ -18,14 +18,13 @@ import { CardsListComponent } from './cards-list/cards-list.component';
       <app-card-details-dialog
         [open]="cardDetailsDialog().open"
         [card]="cardDetailsDialog().card"
-        (close)="closeCardDetailsDialog()"
+        (dismiss)="closeCardDetailsDialog()"
       />
 
       <app-add-cards-button />
     </div>
   `,
   imports: [CardsListComponent, CardDetailsDialogComponent, LearnCardsComponent, AddCardsButtonComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsPageComponent {
