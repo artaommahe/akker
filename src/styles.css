@@ -2,8 +2,43 @@
 layer(base);
 
 @import 'tailwindcss';
+@source './';
 
-@config '../tailwind.config.js';
+@theme {
+  --font-roboto: 'Roboto', var(--font-sans);
+
+  --color-*: initial;
+  --color-action-primary: #2984a5;
+  --color-action-secondary: #9a90b4;
+  --color-semantic-success: #8db14b;
+  --color-semantic-warning: #fca321;
+  --color-semantic-danger: #dd452e;
+
+  --text-color--*: initial;
+  --text-color-primary: #f7f5f1;
+  --text-color-secondary: #a5a096;
+  --text-color-inverse: #313231;
+
+  --border-color-*: initial;
+  --border-color-primary: #f7f5f1;
+  --border-color-secondary: #a5a096;
+  --border-color-transparent: transparent;
+
+  --background-color-*: initial;
+  --background-color-primary: #313231;
+  --background-color-secondary: #3a3b3b;
+  --background-color-tertiary: #5d6263;
+  --background-color-inverse: #f7f5f1;
+
+  --caret-color-*: initial;
+  --caret-color-primary: #f7f5f1;
+}
+
+@layer base {
+  ::file-selector-button {
+    @apply bg-inverse border-secondary text-inverse border-2 px-1.5;
+  }
+}
 
 /* global markdown styles */
 markdown strong {
