@@ -15,7 +15,6 @@ import { injectIcons } from './provide-icons';
     '[innerHTML]': 'iconHtml()',
   },
   imports: [],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {

@@ -27,7 +27,6 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
     />
   `,
   imports: [CardsListItemComponent, CardDetailsDialogComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastCardsListComponent {

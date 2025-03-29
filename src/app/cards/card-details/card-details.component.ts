@@ -51,7 +51,6 @@ import { InputDirective } from '../../ui/input/input';
     </form>
   `,
   imports: [ReactiveFormsModule, InputDirective, ButtonDirective, ExpansionPanelComponent, CardStatsComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardDetailsComponent implements OnInit {

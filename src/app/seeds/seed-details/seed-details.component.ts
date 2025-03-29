@@ -29,7 +29,6 @@ import { InputDirective } from '../../ui/input/input';
     </form>
   `,
   imports: [ReactiveFormsModule, InputDirective, ButtonDirective],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedDetailsComponent implements OnInit {

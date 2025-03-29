@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
     </button>
   `,
   imports: [],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsListItemComponent {

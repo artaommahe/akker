@@ -34,7 +34,6 @@ import { DialogComponent } from '../../../ui/dialog/dialog.component';
     </app-dialog>
   `,
   imports: [ButtonDirective, DialogComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SyncComponent {

@@ -25,7 +25,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     </div>
   `,
   imports: [RouterLink, RouterLinkActive],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent {

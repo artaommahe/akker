@@ -23,7 +23,6 @@ import { InputDirective } from '../../ui/input/input';
     </div>
   `,
   imports: [ButtonDirective, InputDirective],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddSeedsComponent {

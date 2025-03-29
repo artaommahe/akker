@@ -22,7 +22,6 @@ import { AddCardsComponent } from '../add-cards/add-cards.component';
     </app-dialog>
   `,
   imports: [IconComponent, AddCardsComponent, DialogComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCardsButtonComponent {

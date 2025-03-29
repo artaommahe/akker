@@ -39,7 +39,6 @@ import { IconComponent } from '../icon/icon';
     </dialog>
   `,
   imports: [IconComponent, NgTemplateOutlet, NgClass],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogComponent {

@@ -28,7 +28,6 @@ import type { DbSprout } from '../../barn/rxdb/schema/sprouts';
     </section>
   `,
   imports: [DatePipe],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardStatsComponent {

@@ -12,7 +12,6 @@ import { SyncComponent } from './sync/sync.component';
     </div>
   `,
   imports: [SyncComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPageComponent {}

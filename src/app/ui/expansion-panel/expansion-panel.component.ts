@@ -15,7 +15,6 @@ import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, signal }
     </details>
   `,
   imports: [NgTemplateOutlet],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpansionPanelComponent {

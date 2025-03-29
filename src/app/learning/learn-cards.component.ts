@@ -20,7 +20,6 @@ import { type CardGrade, LearningService } from './learning.service';
     </app-dialog>
   `,
   imports: [CardsComponent, ButtonDirective, DialogComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LearnCardsComponent {

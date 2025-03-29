@@ -36,7 +36,6 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
     LastSeedsListComponent,
     LastCardsListComponent,
   ],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {}

@@ -55,7 +55,6 @@ import { CardGrade } from '../learning.service';
     </div>
   `,
   imports: [ButtonDirective, MarkdownComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsComponent {

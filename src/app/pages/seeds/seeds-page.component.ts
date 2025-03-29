@@ -22,7 +22,6 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
     </div>
   `,
   imports: [SeedsListComponent, SeedDetailsDialogComponent, AddSeedsButtonComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsPageComponent {

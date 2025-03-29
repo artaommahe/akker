@@ -22,7 +22,6 @@ import { AddSeedsComponent } from '../add-seeds/add-seeds.component';
     </app-dialog>
   `,
   imports: [IconComponent, AddSeedsComponent, DialogComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddSeedsButtonComponent {

@@ -11,7 +11,6 @@ import { LayoutComponent } from './layout/layout.component';
     </app-layout>
   `,
   imports: [RouterOutlet, LayoutComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {}

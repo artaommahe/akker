@@ -29,7 +29,6 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
     }
   `,
   imports: [CardDetailsDialogComponent, CardsListItemComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnsortedCardsComponent {

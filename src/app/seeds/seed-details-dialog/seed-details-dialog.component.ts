@@ -21,7 +21,6 @@ import { SeedDetailsComponent, type SeedDetailsSeed } from '../seed-details/seed
     </app-dialog>
   `,
   imports: [DialogComponent, SeedDetailsComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedDetailsDialogComponent {

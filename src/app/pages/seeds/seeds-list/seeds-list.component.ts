@@ -52,7 +52,6 @@ import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-p
     </div>
   `,
   imports: [SeedsListItemComponent, ExpansionPanelComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsListComponent {

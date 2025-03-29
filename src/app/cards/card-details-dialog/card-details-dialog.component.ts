@@ -21,7 +21,6 @@ import { type CardDetailsCard, CardDetailsComponent } from '../card-details/card
     </app-dialog>
   `,
   imports: [DialogComponent, CardDetailsComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardDetailsDialogComponent {

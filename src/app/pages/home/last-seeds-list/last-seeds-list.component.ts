@@ -27,7 +27,6 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
     />
   `,
   imports: [SeedDetailsDialogComponent, SeedsListItemComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastSeedsListComponent {

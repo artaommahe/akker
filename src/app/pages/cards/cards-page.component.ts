@@ -25,7 +25,6 @@ import { CardsListComponent } from './cards-list/cards-list.component';
     </div>
   `,
   imports: [CardsListComponent, CardDetailsDialogComponent, LearnCardsComponent, AddCardsButtonComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsPageComponent {
