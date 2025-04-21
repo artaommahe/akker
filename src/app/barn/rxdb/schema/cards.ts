@@ -17,7 +17,7 @@ export interface DbCard {
 }
 
 const cardsSchemaLiteral: RxJsonSchema<DbCard> = {
-  title: 'sprouts schema',
+  title: 'cards schema',
   version: 3,
   type: 'object',
   keyCompression: true,
