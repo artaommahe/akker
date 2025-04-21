@@ -7,6 +7,7 @@ export interface DbCard {
   fullTerm?: string;
   definition: string;
   addedAt: string;
+  tags: string[];
   fsrs?: {
     card: Omit<Card, 'due' | 'last_review'> & {
       due: string;
@@ -17,7 +18,7 @@ export interface DbCard {
 
 const cardsSchemaLiteral: RxJsonSchema<DbCard> = {
   title: 'sprouts schema',
-  version: 2,
+  version: 3,
   type: 'object',
   keyCompression: true,
   primaryKey: 'id',
@@ -38,6 +39,12 @@ const cardsSchemaLiteral: RxJsonSchema<DbCard> = {
     addedAt: {
       type: 'string',
       format: 'date-time',
+    },
+    tags: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
     },
     fsrs: {
       type: 'object',
@@ -74,6 +81,10 @@ const cardsSchemaMigrationStrategies: MigrationStrategies = {
     addedAt: oldDoc.addedAt,
     fsrs: oldDoc.fsrs,
   }),
+  3: (oldDoc: DbCardV2) => ({
+    ...oldDoc,
+    tags: [],
+  }),
 };
 
 export const cardsCollection: RxCollectionCreator<DbCard> = {
@@ -85,6 +96,21 @@ interface DbCardV1 {
   id: string;
   name: string;
   addedAt: string;
+  fsrs?: {
+    card: Omit<Card, 'due' | 'last_review'> & {
+      due: string;
+      last_review?: string;
+    };
+  };
+}
+
+interface DbCardV2 {
+  id: string;
+  term: string;
+  fullTerm?: string;
+  definition: string;
+  addedAt: string;
+  tags: string[];
   fsrs?: {
     card: Omit<Card, 'due' | 'last_review'> & {
       due: string;

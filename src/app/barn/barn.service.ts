@@ -53,6 +53,7 @@ export class BarnService {
         definition: card.definition ?? '',
         fullTerm: card.fullTerm ?? undefined,
         addedAt: new Date().toISOString(),
+        tags: [],
       }));
 
     if (newCards.length) {
