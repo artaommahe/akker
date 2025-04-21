@@ -97,7 +97,7 @@ export class CardDetailsComponent implements OnInit {
 
     this.update.emit({
       ...formValue,
-      tags: formValue.tags.split(','),
+      tags: formValue.tags.split(',').filter(tag => tag.trim() !== ''),
       id: this.card().id,
     });
   }
