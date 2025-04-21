@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import type { DbSprout } from '../../barn/rxdb/schema/sprouts';
+import type { DbCard } from '../../barn/rxdb/schema/cards';
 
 @Component({
   selector: 'app-card-stats',
@@ -34,4 +34,4 @@ export class CardStatsComponent {
   fsrs = input.required<CardStats>();
 }
 
-export type CardStats = NonNullable<DbSprout['fsrs']>;
+export type CardStats = NonNullable<DbCard['fsrs']>;

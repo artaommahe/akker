@@ -4,15 +4,16 @@ import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression';
 import { RxDBMigrationSchemaPlugin } from 'rxdb/plugins/migration-schema';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 
+import { type DbCard, cardsCollection } from './schema/cards';
 import { type DbSeed, seedsCollection } from './schema/seeds';
-import { type DbSprout, sproutsCollection } from './schema/sprouts';
 
 addRxPlugin(RxDBJsonDumpPlugin);
 addRxPlugin(RxDBMigrationSchemaPlugin);
 
 export interface BarnDbCollections<Reactivity> {
   seeds: RxCollection<DbSeed, unknown, unknown, unknown, Reactivity>;
-  sprouts: RxCollection<DbSprout, unknown, unknown, unknown, Reactivity>;
+  // TODO: legacy, rename to `cards` with a proper migration
+  sprouts: RxCollection<DbCard, unknown, unknown, unknown, Reactivity>;
 }
 
 interface CreateBarnBdOptions<Reactivity> {
@@ -34,7 +35,8 @@ export const createBarnDb = async <Reactivity>({ reactivity }: CreateBarnBdOptio
 
   await barnDb.addCollections({
     seeds: seedsCollection,
-    sprouts: sproutsCollection,
+    // TODO: legacy, rename to `cards` with a proper migration
+    sprouts: cardsCollection,
   });
 
   return barnDb;

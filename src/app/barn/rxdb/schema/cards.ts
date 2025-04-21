@@ -1,7 +1,7 @@
 import { type MigrationStrategies, type RxCollectionCreator, type RxJsonSchema } from 'rxdb';
 import { type Card } from 'ts-fsrs';
 
-export interface DbSprout {
+export interface DbCard {
   id: string;
   term: string;
   fullTerm?: string;
@@ -15,7 +15,7 @@ export interface DbSprout {
   };
 }
 
-const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
+const cardsSchemaLiteral: RxJsonSchema<DbCard> = {
   title: 'sprouts schema',
   version: 2,
   type: 'object',
@@ -64,9 +64,9 @@ const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
   indexes: ['term'],
 };
 
-const sproutsSchemaMigrationStrategies: MigrationStrategies = {
+const cardsSchemaMigrationStrategies: MigrationStrategies = {
   1: oldDoc => oldDoc,
-  2: (oldDoc: DbSproutV1) => ({
+  2: (oldDoc: DbCardV1) => ({
     id: oldDoc.id,
     term: oldDoc.name,
     fullTerm: '',
@@ -76,12 +76,12 @@ const sproutsSchemaMigrationStrategies: MigrationStrategies = {
   }),
 };
 
-export const sproutsCollection: RxCollectionCreator<DbSprout> = {
-  schema: sproutsSchemaLiteral,
-  migrationStrategies: sproutsSchemaMigrationStrategies,
+export const cardsCollection: RxCollectionCreator<DbCard> = {
+  schema: cardsSchemaLiteral,
+  migrationStrategies: cardsSchemaMigrationStrategies,
 };
 
-interface DbSproutV1 {
+interface DbCardV1 {
   id: string;
   name: string;
   addedAt: string;
