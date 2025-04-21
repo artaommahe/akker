@@ -22,6 +22,18 @@ import { InputDirective } from '../../ui/input/input';
         Definition
         <textarea appInput type="text" rows="4" formControlName="definition"></textarea>
       </label>
+      <label class="flex flex-col">
+        Tags (comma separated)
+        <input appInput type="text" formControlName="tags" />
+        <!-- TODO: create re-usable error-display component -->
+        @if (form.get('tags')?.invalid && (form.get('tags')?.dirty || form.get('tags')?.touched)) {
+          @if (form.get('tags')?.hasError('pattern')) {
+            <span class="text-semantic-danger">
+              Tags list can only contain letters, numbers and commas without spaces
+            </span>
+          }
+        }
+      </label>
 
       <app-expansion-panel class="mt-4">
         <span class="text-secondary">FSRS stats</span>
@@ -64,6 +76,7 @@ export class CardDetailsComponent implements OnInit {
     term: ['', [Validators.minLength(1), Validators.required]],
     fullTerm: [''],
     definition: [''],
+    tags: ['', Validators.pattern(/^[a-zA-Z0-9,]*$/)],
   });
 
   ngOnInit(): void {
@@ -71,6 +84,7 @@ export class CardDetailsComponent implements OnInit {
       term: this.card().term,
       fullTerm: this.card().fullTerm ?? '',
       definition: this.card().definition,
+      tags: this.card().tags.join(','),
     });
   }
 
@@ -79,7 +93,13 @@ export class CardDetailsComponent implements OnInit {
       return;
     }
 
-    this.update.emit({ ...this.form.getRawValue(), id: this.card().id });
+    const formValue = this.form.getRawValue();
+
+    this.update.emit({
+      ...formValue,
+      tags: formValue.tags.split(','),
+      id: this.card().id,
+    });
   }
 }
 
@@ -88,5 +108,6 @@ export interface CardDetailsCard {
   term: string;
   fullTerm?: string;
   definition: string;
+  tags: string[];
   fsrs?: CardStats;
 }

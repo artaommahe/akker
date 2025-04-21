@@ -14,7 +14,7 @@ layer(base);
   --color-semantic-warning: #fca321;
   --color-semantic-danger: #dd452e;
 
-  --text-color--*: initial;
+  --text-color-*: initial;
   --text-color-primary: #f7f5f1;
   --text-color-secondary: #a5a096;
   --text-color-inverse: #313231;
