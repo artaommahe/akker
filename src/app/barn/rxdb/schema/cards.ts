@@ -1,12 +1,13 @@
 import { type MigrationStrategies, type RxCollectionCreator, type RxJsonSchema } from 'rxdb';
 import { type Card } from 'ts-fsrs';
 
-export interface DbSprout {
+export interface DbCard {
   id: string;
   term: string;
   fullTerm?: string;
   definition: string;
   addedAt: string;
+  tags: string[];
   fsrs?: {
     card: Omit<Card, 'due' | 'last_review'> & {
       due: string;
@@ -15,9 +16,9 @@ export interface DbSprout {
   };
 }
 
-const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
-  title: 'sprouts schema',
-  version: 2,
+const cardsSchemaLiteral: RxJsonSchema<DbCard> = {
+  title: 'cards schema',
+  version: 3,
   type: 'object',
   keyCompression: true,
   primaryKey: 'id',
@@ -38,6 +39,12 @@ const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
     addedAt: {
       type: 'string',
       format: 'date-time',
+    },
+    tags: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
     },
     fsrs: {
       type: 'object',
@@ -64,9 +71,9 @@ const sproutsSchemaLiteral: RxJsonSchema<DbSprout> = {
   indexes: ['term'],
 };
 
-const sproutsSchemaMigrationStrategies: MigrationStrategies = {
+const cardsSchemaMigrationStrategies: MigrationStrategies = {
   1: oldDoc => oldDoc,
-  2: (oldDoc: DbSproutV1) => ({
+  2: (oldDoc: DbCardV1) => ({
     id: oldDoc.id,
     term: oldDoc.name,
     fullTerm: '',
@@ -74,17 +81,36 @@ const sproutsSchemaMigrationStrategies: MigrationStrategies = {
     addedAt: oldDoc.addedAt,
     fsrs: oldDoc.fsrs,
   }),
+  3: (oldDoc: DbCardV2) => ({
+    ...oldDoc,
+    tags: [],
+  }),
 };
 
-export const sproutsCollection: RxCollectionCreator<DbSprout> = {
-  schema: sproutsSchemaLiteral,
-  migrationStrategies: sproutsSchemaMigrationStrategies,
+export const cardsCollection: RxCollectionCreator<DbCard> = {
+  schema: cardsSchemaLiteral,
+  migrationStrategies: cardsSchemaMigrationStrategies,
 };
 
-interface DbSproutV1 {
+interface DbCardV1 {
   id: string;
   name: string;
   addedAt: string;
+  fsrs?: {
+    card: Omit<Card, 'due' | 'last_review'> & {
+      due: string;
+      last_review?: string;
+    };
+  };
+}
+
+interface DbCardV2 {
+  id: string;
+  term: string;
+  fullTerm?: string;
+  definition: string;
+  addedAt: string;
+  tags: string[];
   fsrs?: {
     card: Omit<Card, 'due' | 'last_review'> & {
       due: string;

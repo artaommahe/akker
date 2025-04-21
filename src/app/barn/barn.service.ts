@@ -4,8 +4,8 @@ import { nanoid } from 'nanoid';
 import type { Observable } from 'rxjs';
 
 import { BarnDbService } from './barnDb.service';
+import type { DbCard } from './rxdb/schema/cards';
 import type { DbSeed } from './rxdb/schema/seeds';
-import type { DbSprout } from './rxdb/schema/sprouts';
 
 @Injectable({ providedIn: 'root' })
 export class BarnService {
@@ -53,6 +53,7 @@ export class BarnService {
         definition: card.definition ?? '',
         fullTerm: card.fullTerm ?? undefined,
         addedAt: new Date().toISOString(),
+        tags: card.tags ?? [],
       }));
 
     if (newCards.length) {
@@ -64,7 +65,7 @@ export class BarnService {
     await this.barnDb.sprouts.findOne({ selector: { id } }).remove();
   }
 
-  async updateCard(id: string, newData: Partial<DbSprout>) {
+  async updateCard(id: string, newData: Partial<DbCard>) {
     await this.barnDb.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
   }
 
@@ -130,4 +131,5 @@ interface CardToAdd {
   term: string;
   fullTerm?: string;
   definition?: string;
+  tags?: string[];
 }

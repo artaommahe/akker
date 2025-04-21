@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { type Card, State, createEmptyCard, fsrs } from 'ts-fsrs';
 
-import type { DbSprout } from '../barn/rxdb/schema/sprouts';
+import type { DbCard } from '../barn/rxdb/schema/cards';
 
 @Injectable({ providedIn: 'root' })
 export class LearningService {
   private f = fsrs();
 
   // TODO: add tests
-  selectCardsToLearn<T extends { id: string; fsrs?: DbSprout['fsrs'] }>(cards: T[], limit: number): T[] {
+  selectCardsToLearn<T extends { id: string; fsrs?: DbCard['fsrs'] }>(cards: T[], limit: number): T[] {
     const { newCards, learning, review } = cards.reduce(
       (acc, card) => {
         const type =
@@ -31,7 +31,7 @@ export class LearningService {
     return cardsToLearn;
   }
 
-  rateFsrsCard({ card, grade }: { card?: NonNullable<DbSprout['fsrs']>['card']; grade: CardGrade }) {
+  rateFsrsCard({ card, grade }: { card?: NonNullable<DbCard['fsrs']>['card']; grade: CardGrade }) {
     const fsrsCard = card ? convertDbCardToFsrsCard(card) : createEmptyCard<Card>(new Date());
 
     const recordLog = this.f.repeat(fsrsCard, new Date());
@@ -41,13 +41,13 @@ export class LearningService {
   }
 }
 
-const convertDbCardToFsrsCard = (card: NonNullable<DbSprout['fsrs']>['card']): Card => ({
+const convertDbCardToFsrsCard = (card: NonNullable<DbCard['fsrs']>['card']): Card => ({
   ...card,
   due: new Date(card.due),
   last_review: card.last_review ? new Date(card.last_review) : undefined,
 });
 
-const convertFsrsCardToDbCard = (card: Card): NonNullable<DbSprout['fsrs']>['card'] => ({
+const convertFsrsCardToDbCard = (card: Card): NonNullable<DbCard['fsrs']>['card'] => ({
   ...card,
   due: card.due.toISOString(),
   last_review: card.last_review?.toISOString(),

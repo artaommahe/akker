@@ -8,14 +8,13 @@ import { InputDirective } from '../../ui/input/input';
 @Component({
   selector: 'app-add-cards',
   template: `
-    <div class="flex h-full flex-col gap-8">
-      <textarea
-        class="grow"
-        appInput
-        placeholder="term;fullTerm;definition (one per line)"
-        [value]="newCards()"
-        (input)="updateNewCards($event)"
-      ></textarea>
+    <div class="flex h-full flex-col gap-4">
+      <ul>
+        <li>- format: term;fullTerm;definition;comma-separated tags (one per line)</li>
+        <li>- only letters and numbers are allowed in tags</li>
+      </ul>
+
+      <textarea class="grow" appInput [value]="newCards()" (input)="updateNewCards($event)"></textarea>
 
       @if (parseError()) {
         <div class="text-semantic-danger shrink-0">{{ parseError() }}</div>
@@ -47,8 +46,16 @@ export class AddCardsComponent {
 
     try {
       const newCards = (
-        parse(this.newCards(), { delimiter: ';', columns: ['term', 'fullTerm', 'definition'] }) as ParsedCard[]
-      ).filter(card => !!card.term);
+        parse(this.newCards(), { delimiter: ';', columns: ['term', 'fullTerm', 'definition', 'tags'] }) as ParsedCard[]
+      )
+        .filter(card => !!card.term)
+        .map(card => ({
+          ...card,
+          tags: card.tags
+            .split(',')
+            .map(tag => tag.trim())
+            .filter(tag => !!tag && /^[a-zA-Z0-9]+$/.test(tag)),
+        }));
 
       this.barnService.addCards(newCards);
     } catch (error) {
@@ -64,4 +71,5 @@ interface ParsedCard {
   term: string;
   fullTerm: string;
   definition: string;
+  tags: string;
 }
