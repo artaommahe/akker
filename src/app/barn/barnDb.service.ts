@@ -27,7 +27,6 @@ export function createReactivityFactory(injector: Injector): RxReactivityFactory
         toSignal(observable$, {
           initialValue,
           injector,
-          rejectErrors: true,
         }),
       );
     },
