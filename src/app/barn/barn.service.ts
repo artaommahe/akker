@@ -71,7 +71,7 @@ export class BarnService {
 
   // https://github.com/pubkey/rxdb/issues/6188
   private convertToSignal<T>(observable$: Observable<T>) {
-    return toSignal(observable$, { initialValue: undefined, injector: this.injector, rejectErrors: true });
+    return toSignal(observable$, { initialValue: undefined, injector: this.injector });
   }
 
   // TODO: add tests

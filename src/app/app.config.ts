@@ -1,5 +1,5 @@
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
-import { type ApplicationConfig, ErrorHandler, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { type ApplicationConfig, ErrorHandler, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { createErrorHandler } from '@sentry/angular';
 import { provideMarkdown } from 'ngx-markdown';
@@ -9,7 +9,7 @@ import { provideBarnDbAsync } from './barn/barnDb.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideBarnDbAsync(),
     {
