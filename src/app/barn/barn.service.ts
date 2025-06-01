@@ -86,7 +86,7 @@ export class BarnService {
         const count = newSeedCount + (existingSeed ? existingSeed.count : 0);
 
         // covers both cases: update existing seed or add new seed multiple times
-        if (count >= seedToCardTreshold) {
+        if (count >= seedToCardThreshold) {
           return { ...result, newCards: [...result.newCards, name] };
         } else if (existingSeed) {
           return {
@@ -118,7 +118,7 @@ export class BarnService {
   }
 }
 
-const seedToCardTreshold = 5;
+const seedToCardThreshold = 5;
 
 interface CardToAdd {
   term: string;
