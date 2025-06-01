@@ -10,7 +10,8 @@ import { InputDirective } from '../../ui/input/input';
   template: `
     <div class="flex h-full flex-col gap-4">
       <ul>
-        <li>- format: term;fullTerm;definition;comma-separated tags (one per line)</li>
+        <li>- one card per line</li>
+        <li>- format: term;fullTerm;definition;comma-separated-tags</li>
         <li>- only letters and numbers are allowed in tags</li>
       </ul>
 
@@ -46,13 +47,17 @@ export class AddCardsComponent {
 
     try {
       const newCards = (
-        parse(this.newCards(), { delimiter: ';', columns: ['term', 'fullTerm', 'definition', 'tags'] }) as ParsedCard[]
+        parse(this.newCards(), {
+          delimiter: ';',
+          columns: ['term', 'fullTerm', 'definition', 'tags'],
+          relaxColumnCountLess: true,
+        }) as ParsedCard[]
       )
-        .filter(card => !!card.term)
+        .filter((card): card is ParsedCard & Required<Pick<ParsedCard, 'term'>> => !!card.term)
         .map(card => ({
           ...card,
           tags: card.tags
-            .split(',')
+            ?.split(',')
             .map(tag => tag.trim())
             .filter(tag => !!tag && /^[a-zA-Z0-9]+$/.test(tag)),
         }));
@@ -68,8 +73,8 @@ export class AddCardsComponent {
 }
 
 interface ParsedCard {
-  term: string;
-  fullTerm: string;
-  definition: string;
-  tags: string;
+  term?: string;
+  fullTerm?: string;
+  definition?: string;
+  tags?: string;
 }

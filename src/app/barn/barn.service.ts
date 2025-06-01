@@ -39,14 +39,9 @@ export class BarnService {
   }
 
   async addCards(cardsToAdd: CardToAdd[]) {
-    const existingCards = this.cards() ?? [];
     const newCards = cardsToAdd
-      // filter out cards that already exist or are duplicates
-      .filter(
-        (card, index, self) =>
-          !existingCards.some(existingCard => existingCard.term === card.term) &&
-          self.findIndex(c => c.term === card.term) === index,
-      )
+      // filter out duplicates
+      .filter((card, index, self) => self.findIndex(anotherCard => anotherCard.term === card.term) === index)
       .map(card => ({
         id: nanoid(),
         term: card.term,
@@ -76,56 +71,54 @@ export class BarnService {
 
   // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
-    const existingCards = await this.barnDb.sprouts.find({ selector: { term: { $in: names } } }).exec();
-
-    const newSeeds = names.reduce(
-      (result, name) =>
-        // skip the term if we already have a card for it
-        existingCards.find(card => card.term === name)
-          ? result
-          : { ...result, [name]: result[name] ? result[name] + 1 : 1 },
+    const newSeedsCount = names.reduce(
+      (result, name) => ({ ...result, [name]: result[name] ? result[name] + 1 : 1 }),
       {} as Record<string, number>,
     );
 
-    const existingSeeds = await this.barnDb.seeds.find({ selector: { name: { $in: Object.keys(newSeeds) } } }).exec();
+    const existingSeeds = await this.barnDb.seeds
+      .find({ selector: { name: { $in: Object.keys(newSeedsCount) } } })
+      .exec();
 
-    const { seedsToUpdate, newCards } = existingSeeds.reduce(
-      (result, seed) => {
-        if (!newSeeds[seed.name]) {
-          return result;
-        }
+    const { seedsToAdd, seedsToUpdate, newCards } = Object.entries(newSeedsCount).reduce(
+      (result, [name, newSeedCount]) => {
+        const existingSeed = existingSeeds.find(seed => seed.name === name);
+        const count = newSeedCount + (existingSeed ? existingSeed.count : 0);
 
-        const count = seed.count + newSeeds[seed.name];
-
-        if (count >= seedToCardTreshold) {
-          return { ...result, newCards: [...result.newCards, seed.name] };
+        // covers both cases: update existing seed or add new seed multiple times
+        if (count >= seedToCardThreshold) {
+          return { ...result, newCards: [...result.newCards, name] };
+        } else if (existingSeed) {
+          return {
+            ...result,
+            seedsToUpdate: [
+              ...result.seedsToUpdate,
+              { ...existingSeed.toJSON(), count, lastAddedAt: new Date().toISOString() },
+            ],
+          };
         }
 
         return {
           ...result,
-          seedsToUpdate: [...result.seedsToUpdate, { ...seed.toJSON(), count, lastAddedAt: new Date().toISOString() }],
+          seedsToAdd: [
+            ...result.seedsToAdd,
+            {
+              id: nanoid(),
+              name,
+              count,
+              addedAt: new Date().toISOString(),
+              lastAddedAt: new Date().toISOString(),
+            },
+          ],
         };
       },
-      { seedsToUpdate: [] as DbSeed[], newCards: [] as string[] },
+      { seedsToAdd: [] as DbSeed[], seedsToUpdate: [] as DbSeed[], newCards: [] as string[] },
     );
-
-    // TODO: when count is more than seedPlantingTreshold
-    // shoult be added to newCards
-    const seedsToAdd = Object.keys(newSeeds)
-      .filter(name => !existingSeeds.some(seed => seed.name === name))
-      .map(name => ({
-        id: nanoid(),
-        name,
-        count: newSeeds[name],
-        addedAt: new Date().toISOString(),
-        lastAddedAt: new Date().toISOString(),
-      }));
-
     return { seedsToAdd, seedsToUpdate, newCards };
   }
 }
 
-const seedToCardTreshold = 5;
+const seedToCardThreshold = 5;
 
 interface CardToAdd {
   term: string;
