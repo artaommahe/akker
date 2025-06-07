@@ -4,13 +4,13 @@ import { BarnService, type CardToAdd } from './barn.service';
 
 @Injectable({ providedIn: 'root' })
 export class BarnDemoService {
-  private barnService = inject(BarnService);
+  private barnService = inject(BarnService, { optional: true });
 
   async init() {
     const urlParams = new URLSearchParams(window.location.search);
     const isDemoMode = urlParams.get('demo') === 'true';
 
-    if (!isDemoMode) {
+    if (!isDemoMode || !this.barnService) {
       return;
     }
 
@@ -18,7 +18,10 @@ export class BarnDemoService {
     await this.barnService.addCards(demoCards);
 
     urlParams.delete('demo');
-    window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
+    const newUrl = urlParams.toString()
+      ? `${window.location.pathname}?${urlParams.toString()}`
+      : window.location.pathname;
+    window.history.replaceState({}, '', newUrl);
   }
 }
 
