@@ -1,4 +1,4 @@
-name: Test
+name: Unit Tests
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  test-unit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,4 +21,4 @@ jobs:
       - name: Install browsers
         run: npx playwright install chromium --with-deps
       - name: Run tests
-        run: npm test
+        run: npm run test
