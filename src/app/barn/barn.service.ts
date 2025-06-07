@@ -120,7 +120,7 @@ export class BarnService {
 
 const seedToCardThreshold = 5;
 
-interface CardToAdd {
+export interface CardToAdd {
   term: string;
   fullTerm?: string;
   definition?: string;
