@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, type OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { BarnDemoService } from './barn/barn-demo.service';
 import { LayoutComponent } from './layout/layout.component';
 
 @Component({
@@ -14,10 +13,4 @@ import { LayoutComponent } from './layout/layout.component';
   imports: [RouterOutlet, LayoutComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  private barnDemoService = inject(BarnDemoService);
-
-  ngOnInit() {
-    this.barnDemoService.init();
-  }
-}
+export class AppComponent {}

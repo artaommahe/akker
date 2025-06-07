@@ -1,25 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 
-import { BarnService, type CardToAdd } from './barn.service';
+import { BarnService, type CardToAdd } from '../barn/barn.service';
 
 @Injectable({ providedIn: 'root' })
-export class BarnDemoService {
-  private barnService = inject(BarnService, { optional: true });
+export class DemoDataService {
+  private barnService = inject(BarnService);
 
-  async init() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const isDemoMode = urlParams.get('demo') === 'true';
-
-    if (!isDemoMode || !this.barnService) {
-      return;
-    }
-
-    urlParams.delete('demo');
-    const newUrl = urlParams.toString()
-      ? `${window.location.pathname}?${urlParams.toString()}`
-      : window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
-
+  async initDemoData() {
     try {
       await this.barnService.addSeeds(demoSeeds);
       await this.barnService.addCards(demoCards);

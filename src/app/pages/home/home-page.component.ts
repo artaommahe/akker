@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { InitDemoDataComponent } from '../../demo/init-demo-data/init-demo-data.component';
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
 import { AddSeedsButtonComponent } from '../../seeds/add-seeds-button/add-seeds-button.component';
 import { LastCardsListComponent } from './last-cards-list/last-cards-list.component';
@@ -10,6 +11,8 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
   selector: 'app-home-page',
   template: `
     <div class="flex flex-col gap-4">
+      <app-init-demo-data />
+
       <app-unsorted-cards />
 
       <app-learn-cards />
@@ -35,6 +38,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
     AddSeedsButtonComponent,
     LastSeedsListComponent,
     LastCardsListComponent,
+    InitDemoDataComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
