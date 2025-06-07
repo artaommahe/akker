@@ -14,8 +14,12 @@ export class BarnDemoService {
       return;
     }
 
-    await this.barnService.addSeeds(demoSeeds);
-    await this.barnService.addCards(demoCards);
+    try {
+      await this.barnService.addSeeds(demoSeeds);
+      await this.barnService.addCards(demoCards);
+    } catch (error) {
+      console.error("Can't initialize demo data", error);
+    }
 
     urlParams.delete('demo');
     const newUrl = urlParams.toString()
