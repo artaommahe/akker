@@ -1,17 +1,18 @@
-name: Test
+name: E2E Tests
 
 on:
   pull_request:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  test-e2e:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,6 +20,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
       - name: Install browsers
-        run: npx playwright install chromium --with-deps
+        run: npx playwright install webkit --with-deps
       - name: Run tests
-        run: npm test
+        run: npm run e2e
