@@ -20,6 +20,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
       - name: Install browsers
-        run: npx playwright install chrome --with-deps
+        run: npx playwright install webkit --with-deps
       - name: Run tests
         run: npm run e2e
