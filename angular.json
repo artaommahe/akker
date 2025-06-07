@@ -81,6 +81,17 @@
             "lintFilePatterns": ["./**/*.ts", "./**/*.html"],
             "eslintConfig": "eslint.config.js"
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "akker:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "akker:serve:production"
+            }
+          }
         }
       }
     }

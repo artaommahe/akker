@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "prepare": "husky",
-    "format": "prettier --write --ignore-unknown ."
+    "format": "prettier --write --ignore-unknown .",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -36,6 +37,7 @@
     "@angular/build": "^20.0.1",
     "@angular/cli": "^20.0.1",
     "@angular/compiler-cli": "^20.0.2",
+    "@playwright/test": "^1.52.0",
     "@tailwindcss/postcss": "^4.1.8",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@vitest/browser": "^3.2.2",
@@ -45,6 +47,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0",
     "playwright": "^1.52.0",
+    "playwright-ng-schematics": "^2.1.0",
     "postcss": "^8.5.4",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
