@@ -14,18 +14,18 @@ export class BarnDemoService {
       return;
     }
 
+    urlParams.delete('demo');
+    const newUrl = urlParams.toString()
+      ? `${window.location.pathname}?${urlParams.toString()}`
+      : window.location.pathname;
+    window.history.replaceState({}, '', newUrl);
+
     try {
       await this.barnService.addSeeds(demoSeeds);
       await this.barnService.addCards(demoCards);
     } catch (error) {
       console.error("Can't initialize demo data", error);
     }
-
-    urlParams.delete('demo');
-    const newUrl = urlParams.toString()
-      ? `${window.location.pathname}?${urlParams.toString()}`
-      : window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
   }
 }
 
