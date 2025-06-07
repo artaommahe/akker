@@ -1,21 +1,25 @@
-import { APP_INITIALIZER, ApplicationInitStatus, InjectionToken, Injector, type Provider, inject } from '@angular/core';
+import {
+  ApplicationInitStatus,
+  type EnvironmentProviders,
+  InjectionToken,
+  Injector,
+  type Provider,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 
 // https://github.com/angular/angular/issues/23279#issuecomment-1165030809
 export function provideAsync<T>(
   token: T | InjectionToken<T>,
   initializer: (injector: Injector) => Promise<T>,
-): Provider[] {
+): (Provider | EnvironmentProviders)[] {
   const container: { value?: T } = { value: undefined };
 
   return [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (injector: Injector) => async () => {
-        container.value = await initializer(injector);
-      },
-      deps: [Injector],
-      multi: true,
-    },
+    provideAppInitializer(async () => {
+      const injector = inject(Injector);
+      container.value = await initializer(injector);
+    }),
     {
       provide: token,
       useFactory: () => {
