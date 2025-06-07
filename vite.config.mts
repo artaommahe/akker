@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true,
       setupFiles: ['src/test-setup.ts'],
-      include: ['**/*.spec.ts'],
+      include: ['src/**/*.spec.ts'],
       reporters: ['default'],
       pool: 'threads',
       browser: { enabled: true, provider: 'playwright', headless: true, instances: [{ browser: 'chromium' }] },
