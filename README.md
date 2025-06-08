@@ -9,6 +9,7 @@ Flashcards-like pet project for learning words in new languages.
   - Vite
 - TailwindCSS
 - RxDB
+- E2E tests with Playwright
 
 ### Dev
 
