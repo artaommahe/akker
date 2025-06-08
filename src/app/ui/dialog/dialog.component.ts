@@ -20,7 +20,7 @@ import { IconComponent } from '../icon/icon';
   template: `
     <dialog
       [ngClass]="[
-        'bg-primary text-primary fixed top-0 grid h-full w-full p-5 pt-16 [max-block-size:unset] [max-inline-size:unset]',
+        'bg-primary text-primary fixed top-0 grid h-full w-full p-5 pt-14 [max-block-size:unset] [max-inline-size:unset]',
         '[&:not([open])]:pointer-events-none',
         'transition-transform duration-300 [&:not([open])]:translate-x-full',
       ]"
@@ -29,7 +29,7 @@ import { IconComponent } from '../icon/icon';
       #dialog
     >
       <!-- TODO: ui/button -->
-      <button class="absolute top-2 right-2 flex p-2" (click)="dialog.close()">
+      <button class="absolute top-2 right-2 flex p-2" aria-label="Close dialog" (click)="dialog.close()">
         <app-icon class="text-secondary size-6" name="crossInCircle" />
       </button>
 
