@@ -11,7 +11,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
     <section class="flex flex-col gap-2">
       <h2 class="text-secondary text-lg">Last cards</h2>
 
-      <ul class="flex flex-col gap-2">
+      <ul class="flex flex-col gap-2" aria-label="Last cards list">
         @for (card of lastCards(); track card.id) {
           <li>
             <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />

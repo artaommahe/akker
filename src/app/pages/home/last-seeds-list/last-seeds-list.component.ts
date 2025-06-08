@@ -11,7 +11,7 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
     <section class="flex flex-col gap-2">
       <h2 class="text-secondary text-lg">Last seeds</h2>
 
-      <ul class="flex flex-col gap-2">
+      <ul class="flex flex-col gap-2" aria-label="Last seeds list">
         @for (seed of lastAddedSeeds(); track seed.name) {
           <li>
             <app-seeds-list-item [seed]="seed" (showDetails)="seedDetailsDialog.set({ open: true, seed })" />

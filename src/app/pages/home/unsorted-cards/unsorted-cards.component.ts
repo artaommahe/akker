@@ -12,7 +12,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
       <section>
         <h2 class="text-secondary text-lg">Unsorted cards ({{ unsortedCardsCount() }})</h2>
 
-        <ul class="columns-2 gap-4">
+        <ul class="columns-2 gap-4" aria-label="Unsorted cards list">
           @for (card of someUnsortedCards(); track card.id) {
             <li>
               <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />
