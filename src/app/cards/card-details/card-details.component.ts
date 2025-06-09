@@ -9,28 +9,31 @@ import { InputDirective } from '../../ui/input/input';
 @Component({
   selector: 'app-card-details',
   template: `
-    <form class="flex h-full flex-col gap-2" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <label class="flex flex-col">
+    <form class="flex h-full flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="text-xl">Card details</h2>
+
+      <label class="flex flex-col gap-1">
         Term
         <input appInput type="text" formControlName="term" minlength="1" required />
       </label>
-      <label class="flex flex-col">
+
+      <label class="flex flex-col gap-1">
         Full term (optional)
         <input appInput type="text" formControlName="fullTerm" />
       </label>
-      <label class="flex flex-col">
+
+      <label class="flex flex-col gap-1">
         Definition
         <textarea appInput type="text" rows="4" formControlName="definition"></textarea>
       </label>
-      <label class="flex flex-col">
+
+      <label class="flex flex-col gap-1">
         Tags (comma separated)
         <input appInput type="text" formControlName="tags" />
         <!-- TODO: create re-usable error-display component -->
         @if (form.get('tags')?.invalid && (form.get('tags')?.dirty || form.get('tags')?.touched)) {
           @if (form.get('tags')?.hasError('pattern')) {
-            <span class="text-semantic-danger">
-              Tags list can only contain letters, numbers and commas without spaces
-            </span>
+            <p class="text-semantic-danger">Tags list can only contain letters, numbers, commas and spaces</p>
           }
         }
       </label>
@@ -42,7 +45,7 @@ import { InputDirective } from '../../ui/input/input';
           @if (card().fsrs; as fsrs) {
             <app-card-stats [fsrs]="fsrs" />
           } @else {
-            <span class="text-secondary">empty</span>
+            <p class="text-secondary">empty</p>
           }
         </ng-template>
       </app-expansion-panel>
@@ -76,15 +79,15 @@ export class CardDetailsComponent implements OnInit {
     term: ['', [Validators.minLength(1), Validators.required]],
     fullTerm: [''],
     definition: [''],
-    tags: ['', Validators.pattern(/^[a-zA-Z0-9,]*$/)],
+    tags: ['', Validators.pattern(/^[a-zA-Z0-9,\s]*$/)],
   });
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.form.setValue({
       term: this.card().term,
       fullTerm: this.card().fullTerm ?? '',
       definition: this.card().definition,
-      tags: this.card().tags.join(','),
+      tags: this.card().tags.join(', '),
     });
   }
 
@@ -97,7 +100,10 @@ export class CardDetailsComponent implements OnInit {
 
     this.update.emit({
       ...formValue,
-      tags: formValue.tags.split(',').filter(tag => tag.trim() !== ''),
+      tags: formValue.tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag !== ''),
       id: this.card().id,
     });
   }

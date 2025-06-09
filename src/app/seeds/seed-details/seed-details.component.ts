@@ -44,7 +44,7 @@ export class SeedDetailsComponent implements OnInit {
     name: ['', [Validators.minLength(1), Validators.required]],
   });
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.form.setValue({ name: this.seed().name });
   }
 

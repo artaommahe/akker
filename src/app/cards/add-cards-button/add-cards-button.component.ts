@@ -9,7 +9,7 @@ import { AddCardsComponent } from '../add-cards/add-cards.component';
   template: `
     <button
       class="bg-action-primary fixed right-6 bottom-16 flex items-center justify-center rounded-full shadow-md"
-      title="Add"
+      title="Add cards"
       (click)="showAddCardsDialog.set(true)"
     >
       <app-icon class="text-primary size-10" name="plusInCircle" />
