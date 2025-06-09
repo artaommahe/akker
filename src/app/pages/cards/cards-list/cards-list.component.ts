@@ -13,7 +13,7 @@ import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-p
       <section class="flex flex-col gap-2">
         <h2 class="text-secondary text-lg">New cards</h2>
 
-        <ul class="flex flex-col gap-2">
+        <ul class="flex flex-col gap-2" aria-label="New cards list">
           @for (card of newCards(); track card.id) {
             <li>
               <app-cards-list-item [card]="card" (showDetails)="showDetails.emit($event.id)" />

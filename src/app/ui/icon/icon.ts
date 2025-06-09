@@ -10,7 +10,7 @@ import { injectIcons } from './provide-icons';
 @Component({
   selector: 'app-icon',
   template: ``,
-  host: { '[class]': 'defaultClasses', '[innerHTML]': 'iconHtml()' },
+  host: { '[class]': 'defaultClasses', '[innerHTML]': 'iconHtml()', 'aria-hidden': 'true' },
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,33 +1,42 @@
 import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { parse } from 'csv-parse/browser/esm/sync';
 
-import { BarnService } from '../../barn/barn.service';
+import { BarnService, type CardToAdd } from '../../barn/barn.service';
 import { ButtonDirective } from '../../ui/button/button';
 import { InputDirective } from '../../ui/input/input';
 
 @Component({
   selector: 'app-add-cards',
   template: `
-    <div class="flex h-full flex-col gap-4">
-      <ul>
+    <form class="flex h-full flex-col gap-3" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="text-xl">Add cards</h2>
+
+      <ul id="new-cards-hint">
         <li>- one card per line</li>
         <li>- format: term;fullTerm;definition;comma-separated-tags</li>
         <li>- only letters and numbers are allowed in tags</li>
       </ul>
 
-      <textarea class="grow" appInput [value]="newCards()" (input)="updateNewCards($event)"></textarea>
+      <textarea
+        class="grow"
+        appInput
+        formControlName="newCards"
+        aria-label="New cards list"
+        aria-describedby="new-cards-hint"
+      ></textarea>
 
       @if (parseError()) {
-        <div class="text-semantic-danger shrink-0">{{ parseError() }}</div>
+        <p class="text-semantic-danger shrink-0">{{ parseError() }}</p>
       }
 
       <div class="mt-auto flex shrink-0 justify-end gap-4">
-        <button appButton (click)="dismiss.emit()">Cancel</button>
-        <button appButton appButtonType="primary" (click)="add()">Add</button>
+        <button type="button" appButton (click)="dismiss.emit()">Close</button>
+        <button type="submit" appButton appButtonType="primary">Add</button>
       </div>
-    </div>
+    </form>
   `,
-  imports: [ButtonDirective, InputDirective],
+  imports: [ButtonDirective, InputDirective, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCardsComponent {
@@ -35,32 +44,36 @@ export class AddCardsComponent {
 
   dismiss = output();
 
-  newCards = signal('');
+  form = inject(NonNullableFormBuilder).group({
+    newCards: [''],
+  });
+
   parseError = signal<string | null>(null);
 
-  updateNewCards(event: Event) {
-    this.newCards.set((event.target as HTMLTextAreaElement).value);
-  }
-
-  add() {
+  onSubmit() {
     this.parseError.set(null);
 
     try {
       const newCards = (
-        parse(this.newCards(), {
+        parse(this.form.getRawValue().newCards, {
           delimiter: ';',
           columns: ['term', 'fullTerm', 'definition', 'tags'],
           relaxColumnCountLess: true,
         }) as ParsedCard[]
       )
         .filter((card): card is ParsedCard & Required<Pick<ParsedCard, 'term'>> => !!card.term)
-        .map(card => ({
-          ...card,
-          tags: card.tags
-            ?.split(',')
-            .map(tag => tag.trim())
-            .filter(tag => !!tag && /^[a-zA-Z0-9]+$/.test(tag)),
-        }));
+        .map(
+          card =>
+            ({
+              term: card.term.trim(),
+              fullTerm: card.fullTerm?.trim(),
+              definition: card.definition?.trim(),
+              tags: card.tags
+                ?.split(',')
+                .map(tag => tag.trim())
+                .filter(tag => !!tag && /^[a-zA-Z0-9]+$/.test(tag)),
+            }) satisfies CardToAdd,
+        );
 
       this.barnService.addCards(newCards);
     } catch (error) {

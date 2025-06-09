@@ -19,7 +19,8 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["dom", "ESNext"],
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "baseUrl": "./"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

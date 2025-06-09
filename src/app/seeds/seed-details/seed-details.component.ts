@@ -7,7 +7,9 @@ import { InputDirective } from '../../ui/input/input';
 @Component({
   selector: 'app-seed-details',
   template: `
-    <form class="flex h-full flex-col gap-2" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="flex h-full flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="text-xl">Seed details</h2>
+
       <label>
         Name
         <input appInput type="text" formControlName="name" minlength="1" required />
@@ -42,7 +44,7 @@ export class SeedDetailsComponent implements OnInit {
     name: ['', [Validators.minLength(1), Validators.required]],
   });
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.form.setValue({ name: this.seed().name });
   }
 

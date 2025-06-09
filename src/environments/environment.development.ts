@@ -1,5 +1,5 @@
+import { baseEnvironment } from './environment.base';
+
 export const environment = {
-  sentry: {
-    dsn: '',
-  },
-};
+  ...baseEnvironment,
+} satisfies typeof baseEnvironment;

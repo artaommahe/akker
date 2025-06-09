@@ -9,7 +9,7 @@ import { AddSeedsComponent } from '../add-seeds/add-seeds.component';
   template: `
     <button
       class="bg-action-primary fixed right-6 bottom-16 flex items-center justify-center rounded-full shadow-md"
-      title="Add"
+      title="Add seeds"
       (click)="showAddSeedsDialog.set(true)"
     >
       <app-icon class="text-primary size-10" name="plusInCircle" />
