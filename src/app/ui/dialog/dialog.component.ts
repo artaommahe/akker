@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, fromEvent, map, of, switchMap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { IconComponent } from '../icon/icon';
 
@@ -52,7 +53,9 @@ export class DialogComponent {
   isOpen = toSignal(
     combineLatest([toObservable(this.openInput), toObservable(this.dialogRef)]).pipe(
       switchMap(([open, dialogRef]) =>
-        open ? of(open) : fromEvent(dialogRef.nativeElement, 'transitionend').pipe(map(() => false)),
+        open || environment.animationsDisabled
+          ? of(open)
+          : fromEvent(dialogRef.nativeElement, 'transitionend').pipe(map(() => false)),
       ),
     ),
   );
