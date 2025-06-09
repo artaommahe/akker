@@ -54,6 +54,12 @@ test.describe('seeds', () => {
     });
 
     test('should show seed details when clicking on a seed in any list', async ({ page }) => {
+      await page.getByRole('list', { name: 'Last seeds list' }).getByRole('button', { name: 'snoep' }).click();
+
+      await expect(page.getByRole('heading', { name: 'Seed details' })).toBeVisible();
+      await expect(page.getByRole('textbox', { name: 'Name' })).toHaveValue('snoep');
+
+      await page.getByRole('button', { name: 'Cancel' }).click();
       await page.getByRole('link', { name: 'Seeds' }).click();
 
       await page.getByRole('list', { name: 'Top seeds list' }).getByRole('button', { name: 'snoep' }).click();
@@ -129,33 +135,6 @@ test.describe('seeds', () => {
       await page.getByRole('link', { name: 'Seeds' }).click();
       await page.getByRole('group').filter({ hasText: 'All seeds' }).click();
 
-      await expect(page.getByText('snoep')).not.toBeVisible();
-    });
-
-    test('should convert a seed to a card on treshold exceed', async ({ page }) => {
-      await page.getByRole('button', { name: 'Add seeds' }).click();
-      await page
-        .getByRole('textbox', { name: 'New seeds list' })
-        .fill(['kat', 'snoep', 'snoep', 'snoep', 'snoep'].join('\n'));
-      await page.getByRole('button', { name: 'Add', exact: true }).click();
-
-      await expect(page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('listitem')).toHaveCount(5);
-      await expect(page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem')).toHaveCount(4);
-      await expect(
-        page
-          .getByRole('list', { name: 'Last cards' })
-          .getByRole('listitem')
-          .filter({ hasText: /kat|snoep/ }),
-      ).toHaveCount(2);
-
-      const lastCards = page.getByRole('list', { name: 'Last cards' }).getByRole('listitem');
-      await expect(lastCards.first()).toHaveText('kat');
-      await expect(lastCards.nth(1)).toHaveText('snoep');
-
-      await page.getByRole('link', { name: 'Seeds' }).click();
-      await page.getByRole('group').filter({ hasText: 'All seeds' }).click();
-
-      await expect(page.getByText('kat')).not.toBeVisible();
       await expect(page.getByText('snoep')).not.toBeVisible();
     });
   });

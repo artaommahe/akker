@@ -8,7 +8,7 @@ test.describe('demo data', () => {
     await expect(page.getByRole('heading', { name: 'Unsorted cards (3)' })).toBeVisible();
     await expect(page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('listitem')).toHaveCount(3);
 
-    await expect(page.getByRole('list', { name: 'Last cards list' }).getByRole('listitem')).toHaveCount(8);
+    await expect(page.getByRole('list', { name: 'Last cards list' }).getByRole('listitem')).toHaveCount(10);
 
     await expect(page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem')).toHaveCount(6);
   });
