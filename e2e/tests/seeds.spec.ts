@@ -95,6 +95,16 @@ test.describe('seeds', () => {
       );
     });
 
+    test('should allow to add a seed with the same name as an existing card', async ({ page }) => {
+      await page.getByRole('button', { name: 'Add seeds' }).click();
+      await page.getByRole('textbox', { name: 'New seeds list' }).fill(['aarde', 'aarde', 'aarde'].join('\n'));
+      await page.getByRole('button', { name: 'Add', exact: true }).click();
+
+      await expect(page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem').first()).toHaveText(
+        'aarde3',
+      );
+    });
+
     test('should allow to edit a seed', async ({ page }) => {
       await page.getByRole('list', { name: 'Last seeds list' }).getByRole('button', { name: 'doel' }).click();
       await page.getByRole('textbox', { name: 'Name' }).fill('lucht');
