@@ -36,7 +36,12 @@ export class UnsortedCardsComponent {
   private unsortedCards = computed(() => this.barnService.cards()?.filter(card => !card.definition));
 
   unsortedCardsCount = computed(() => this.unsortedCards()?.length ?? 0);
-  someUnsortedCards = computed(() => this.unsortedCards()?.slice(0, someUnsortedCardsCount) ?? []);
+  someUnsortedCards = computed(
+    () =>
+      this.unsortedCards()
+        ?.slice(0, someUnsortedCardsCount)
+        .map(card => ({ ...card.toMutableJSON(), stability: card.fsrs?.card.stability })) ?? [],
+  );
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
