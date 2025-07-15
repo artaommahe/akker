@@ -13,6 +13,8 @@ layer(base);
   --color-semantic-success: #8db14b;
   --color-semantic-warning: #fca321;
   --color-semantic-danger: #dd452e;
+  --color-stroke-primary: #f7f5f1;
+  --color-stroke-secondary: #a5a096;
 
   --text-color-*: initial;
   --text-color-primary: #f7f5f1;

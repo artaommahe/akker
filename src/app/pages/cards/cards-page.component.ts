@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
 import { BarnService } from '../../barn/barn.service';
 import { AddCardsButtonComponent } from '../../cards/add-cards-button/add-cards-button.component';
@@ -13,7 +13,7 @@ import { CardsListComponent } from './cards-list/cards-list.component';
     <div class="flex flex-col gap-4">
       <app-learn-cards />
 
-      <app-cards-list [cards]="cards() ?? []" (showDetails)="onShowDetails($event)" />
+      <app-cards-list [cards]="cards()" (showDetails)="onShowDetails($event)" />
 
       <app-card-details-dialog
         [open]="cardDetailsDialog().open"
@@ -30,7 +30,10 @@ import { CardsListComponent } from './cards-list/cards-list.component';
 export class CardsPageComponent {
   private barnService = inject(BarnService);
 
-  cards = this.barnService.cards;
+  cards = computed(
+    () =>
+      this.barnService.cards()?.map(card => ({ ...card.toMutableJSON(), stability: card.fsrs?.card.stability })) ?? [],
+  );
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
   onShowDetails(cardId: string) {

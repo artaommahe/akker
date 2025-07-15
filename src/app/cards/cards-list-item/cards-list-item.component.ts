@@ -1,13 +1,17 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
+import { CardRecallLevelComponent } from '../card-recall-level/card-recall-level.component';
+
 @Component({
   selector: 'app-cards-list-item',
   template: `
     <button class="flex w-full items-center gap-2 px-2 py-1 text-left" (click)="showDetails.emit(card())">
       <span class="grow truncate">{{ card().term }}</span>
+
+      <app-card-recall-level [stability]="card().stability" />
     </button>
   `,
-  imports: [],
+  imports: [CardRecallLevelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsListItemComponent {
@@ -18,4 +22,5 @@ export class CardsListItemComponent {
 export interface CardsListItemCard {
   id: string;
   term: string;
+  stability: number | undefined;
 }
