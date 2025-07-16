@@ -18,16 +18,16 @@ test.describe('cards', () => {
   test('should show last cards list at home page', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Last cards' })).toBeVisible();
     await expect(page.getByRole('list', { name: 'Last cards list' }).getByRole('listitem')).toHaveText([
-      'aardbei',
-      'aarde',
-      'arbeid',
-      'bliksem',
-      'boom',
       'framboos',
-      'leraar',
-      'postkantoor',
-      'servet',
       'tijdschrift',
+      'servet',
+      'leraar',
+      'voorkomen',
+      'postkantoor',
+      'aarde',
+      'boom',
+      'wolk',
+      'bliksem',
     ]);
   });
 
@@ -36,23 +36,23 @@ test.describe('cards', () => {
 
     await expect(page.getByRole('heading', { name: 'New cards' })).toBeVisible();
     await expect(page.getByRole('list', { name: 'New cards list' }).getByRole('listitem')).toHaveText([
-      'aardbei',
-      'aarde',
-      'arbeid',
-      'bliksem',
-      'boom',
       'framboos',
-      'leraar',
-      'postkantoor',
-      'servet',
       'tijdschrift',
+      'servet',
+      'leraar',
+      'voorkomen',
+      'postkantoor',
+      'aarde',
+      'boom',
+      'wolk',
+      'bliksem',
     ]);
 
     await page.getByRole('group').filter({ hasText: 'Rest (2)' }).click();
 
     await expect(page.getByRole('group').filter({ hasText: 'Rest (2)' }).getByRole('listitem')).toHaveText([
-      'voorkomen',
-      'wolk',
+      'arbeid',
+      'aardbei',
     ]);
   });
 
@@ -116,8 +116,8 @@ test.describe('cards', () => {
     ).toHaveCount(2);
 
     const lastCards = page.getByRole('list', { name: 'Last cards' }).getByRole('listitem');
-    await expect(lastCards.first()).toHaveText('kat');
-    await expect(lastCards.nth(1)).toHaveText('snoep');
+    await expect(lastCards.first()).toHaveText('snoep');
+    await expect(lastCards.nth(1)).toHaveText('kat');
 
     await page.getByRole('link', { name: 'Seeds' }).click();
     await page.getByRole('group').filter({ hasText: 'All seeds' }).click();
@@ -146,9 +146,9 @@ test.describe('cards', () => {
     await page.getByRole('button', { name: 'Add', exact: true }).click();
 
     const lastCards = page.getByRole('list', { name: 'New cards list' }).getByRole('listitem');
-    await expect(lastCards.first()).toHaveText('identiteit');
-    await expect(lastCards.nth(1)).toHaveText('mier');
-    await expect(lastCards.nth(2)).toHaveText('razend');
+    await expect(lastCards.first()).toHaveText('razend');
+    await expect(lastCards.nth(1)).toHaveText('identiteit');
+    await expect(lastCards.nth(2)).toHaveText('mier');
     await expect(lastCards.nth(3)).toHaveText('ziekenhuis');
 
     // check that all fields are filled correctly for different cases

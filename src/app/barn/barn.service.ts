@@ -50,12 +50,13 @@ export class BarnService {
     const newCards = cardsToAdd
       // filter out duplicates
       .filter((card, index, self) => self.findIndex(anotherCard => anotherCard.term === card.term) === index)
-      .map(card => ({
+      .map((card, index) => ({
         id: nanoid(),
         term: card.term,
         definition: card.definition ?? '',
         fullTerm: card.fullTerm ?? undefined,
-        addedAt: new Date().toISOString(),
+        // add a unique timestamp to each card to avoid sorting conflicts later
+        addedAt: new Date(Date.now() + index).toISOString(),
         tags: card.tags ?? [],
       }));
 
