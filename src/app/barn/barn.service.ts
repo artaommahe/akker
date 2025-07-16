@@ -1,26 +1,28 @@
 import { Injectable, Injector, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { nanoid } from 'nanoid';
-import type { Observable } from 'rxjs';
+import { type Observable, from, switchMap } from 'rxjs';
 
-import { BarnDbService } from './barnDb.service';
+import { BarnDbService } from './barn-db.service';
 import type { DbCard } from './rxdb/schema/cards';
 import type { DbSeed } from './rxdb/schema/seeds';
 
 @Injectable({ providedIn: 'root' })
 export class BarnService {
-  private barnDb = inject(BarnDbService);
+  private barnDbService = inject(BarnDbService);
   private injector = inject(Injector);
 
-  seeds = this.convertToSignal(this.barnDb.seeds.find().$);
-  cards = this.convertToSignal(this.barnDb.sprouts.find().$);
+  seeds = this.convertToSignal(from(this.barnDbService.getDb()).pipe(switchMap(db => db.seeds.find().$)));
+  cards = this.convertToSignal(from(this.barnDbService.getDb()).pipe(switchMap(db => db.sprouts.find().$)));
 
   async addSeeds(names: string[]) {
+    const db = await this.barnDbService.getDb();
+
     const { seedsToAdd, seedsToUpdate, newCards } = await this.prepareNewSeeds(names);
 
     // add new or update existing seeds
     if (seedsToAdd.length || seedsToUpdate.length) {
-      await this.barnDb.seeds.bulkUpsert([...seedsToAdd, ...seedsToUpdate]);
+      await db.seeds.bulkUpsert([...seedsToAdd, ...seedsToUpdate]);
     }
 
     // add new cards
@@ -31,14 +33,20 @@ export class BarnService {
   }
 
   async removeSeeds(names: string[]) {
-    await this.barnDb.seeds.find({ selector: { name: { $in: names } } }).remove();
+    const db = await this.barnDbService.getDb();
+
+    await db.seeds.find({ selector: { name: { $in: names } } }).remove();
   }
 
   async updateSeed(name: string, newData: Partial<DbSeed>) {
-    await this.barnDb.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
+    const db = await this.barnDbService.getDb();
+
+    await db.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
   }
 
   async addCards(cardsToAdd: CardToAdd[]) {
+    const db = await this.barnDbService.getDb();
+
     const newCards = cardsToAdd
       // filter out duplicates
       .filter((card, index, self) => self.findIndex(anotherCard => anotherCard.term === card.term) === index)
@@ -52,16 +60,20 @@ export class BarnService {
       }));
 
     if (newCards.length) {
-      await this.barnDb.sprouts.bulkInsert(newCards);
+      await db.sprouts.bulkInsert(newCards);
     }
   }
 
   async removeCard(id: string) {
-    await this.barnDb.sprouts.findOne({ selector: { id } }).remove();
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.findOne({ selector: { id } }).remove();
   }
 
   async updateCard(id: string, newData: Partial<DbCard>) {
-    await this.barnDb.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
   }
 
   // https://github.com/pubkey/rxdb/issues/6188
@@ -71,14 +83,14 @@ export class BarnService {
 
   // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
+    const db = await this.barnDbService.getDb();
+
     const newSeedsCount = names.reduce(
       (result, name) => ({ ...result, [name]: result[name] ? result[name] + 1 : 1 }),
       {} as Record<string, number>,
     );
 
-    const existingSeeds = await this.barnDb.seeds
-      .find({ selector: { name: { $in: Object.keys(newSeedsCount) } } })
-      .exec();
+    const existingSeeds = await db.seeds.find({ selector: { name: { $in: Object.keys(newSeedsCount) } } }).exec();
 
     const { seedsToAdd, seedsToUpdate, newCards } = Object.entries(newSeedsCount).reduce(
       (result, [name, newSeedCount]) => {

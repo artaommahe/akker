@@ -5,13 +5,11 @@ import { createErrorHandler } from '@sentry/angular';
 import { provideMarkdown } from 'ngx-markdown';
 
 import { routes } from './app.routes';
-import { provideBarnDbAsync } from './barn/barnDb.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideBarnDbAsync(),
     {
       provide: ErrorHandler,
       useValue: createErrorHandler({ showDialog: false }),
