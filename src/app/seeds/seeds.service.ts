@@ -1,0 +1,13 @@
+import { Injectable, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+
+import { SeedsApiService } from '../barn/seeds-api.service';
+
+@Injectable({ providedIn: 'root' })
+export class SeedsService {
+  private seedsApiService = inject(SeedsApiService);
+
+  getSeedsAmount() {
+    return rxResource({ stream: () => this.seedsApiService.getSeedsAmount() });
+  }
+}

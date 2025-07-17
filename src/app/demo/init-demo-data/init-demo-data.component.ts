@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { CardsService } from 'src/app/cards/cards.service';
+import { SeedsService } from 'src/app/seeds/seeds.service';
 
-import { BarnService } from '../../barn/barn.service';
 import { ButtonDirective } from '../../ui/button/button';
 import { DemoDataService } from '../demo-data.service';
 
@@ -16,9 +17,19 @@ import { DemoDataService } from '../demo-data.service';
 })
 export class InitDemoDataComponent {
   private demoService = inject(DemoDataService);
-  private barnService = inject(BarnService);
+  private cardsService = inject(CardsService);
+  private seedsService = inject(SeedsService);
 
-  barnIsEmpty = computed(() => this.barnService.cards()?.length === 0 && this.barnService.seeds()?.length === 0);
+  private cardsAmount = this.cardsService.getCardsAmount();
+  private seedsAmount = this.seedsService.getSeedsAmount();
+
+  barnIsEmpty = computed(
+    () =>
+      this.cardsAmount.hasValue() &&
+      this.cardsAmount.value() === 0 &&
+      this.seedsAmount.hasValue() &&
+      this.seedsAmount.value() === 0,
+  );
 
   initDemo() {
     this.demoService.initDemoData();
