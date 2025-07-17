@@ -1,7 +1,5 @@
 import { Injectable, Injector, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { nanoid } from 'nanoid';
-import { type Observable, from, switchMap } from 'rxjs';
 
 import { BarnDbService } from './barn-db.service';
 import type { DbCard } from './rxdb/schema/cards';
@@ -11,8 +9,6 @@ import type { DbSeed } from './rxdb/schema/seeds';
 export class BarnService {
   private barnDbService = inject(BarnDbService);
   private injector = inject(Injector);
-
-  seeds = this.convertToSignal(from(this.barnDbService.getDb()).pipe(switchMap(db => db.seeds.find().$)));
 
   async addSeeds(names: string[]) {
     const db = await this.barnDbService.getDb();
@@ -74,11 +70,6 @@ export class BarnService {
     const db = await this.barnDbService.getDb();
 
     await db.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
-  }
-
-  // https://github.com/pubkey/rxdb/issues/6188
-  private convertToSignal<T>(observable$: Observable<T>) {
-    return toSignal(observable$, { initialValue: undefined, injector: this.injector });
   }
 
   // TODO: add tests

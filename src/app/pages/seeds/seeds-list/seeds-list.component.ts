@@ -58,15 +58,9 @@ export class SeedsListComponent {
   seeds = input.required<SeedsListSeed[]>();
   showDetails = output<SeedsListItemSeed>();
 
-  sortedSeeds = computed(() =>
-    this.seeds().toSorted((a, b) => b.count - a.count || b.lastAddedAt.localeCompare(a.lastAddedAt)),
-  );
+  sortedSeeds = computed(() => this.seeds().toSorted((a, b) => b.count - a.count));
   topSeeds = computed(() => this.sortedSeeds().slice(0, topSeedsCount));
-  lastAddedSeeds = computed(() =>
-    this.seeds()
-      .toSorted((a, b) => b.lastAddedAt.localeCompare(a.lastAddedAt))
-      .slice(0, topSeedsCount),
-  );
+  lastAddedSeeds = computed(() => this.seeds().slice(0, topSeedsCount));
 }
 
 const topSeedsCount = 10;
@@ -74,5 +68,4 @@ const topSeedsCount = 10;
 export interface SeedsListSeed extends SeedsListItemSeed {
   name: string;
   count: number;
-  lastAddedAt: string;
 }
