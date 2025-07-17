@@ -13,7 +13,6 @@ export class BarnService {
   private injector = inject(Injector);
 
   seeds = this.convertToSignal(from(this.barnDbService.getDb()).pipe(switchMap(db => db.seeds.find().$)));
-  cards = this.convertToSignal(from(this.barnDbService.getDb()).pipe(switchMap(db => db.sprouts.find().$)));
 
   async addSeeds(names: string[]) {
     const db = await this.barnDbService.getDb();

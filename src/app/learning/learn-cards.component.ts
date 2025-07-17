@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
 import { BarnService } from '../barn/barn.service';
+import { CardsService } from '../cards/cards.service';
 import { ButtonDirective } from '../ui/button/button';
 import { DialogComponent } from '../ui/dialog/dialog.component';
 import { type Card, CardsComponent } from './cards/cards.component';
@@ -9,7 +10,9 @@ import { type CardGrade, LearningService } from './learning.service';
 @Component({
   selector: 'app-learn-cards',
   template: `
-    <button appButton (click)="learnCards()">Learn</button>
+    @if (cards.hasValue() && cards.value().length) {
+      <button appButton (click)="learnCards()">Learn</button>
+    }
 
     <app-dialog [open]="cardsToLearnDialog().open" (dismiss)="closeCardsDialog()">
       <ng-template>
@@ -24,12 +27,15 @@ import { type CardGrade, LearningService } from './learning.service';
 })
 export class LearnCardsComponent {
   private barnService = inject(BarnService);
+  private cardsService = inject(CardsService);
   private learningService = inject(LearningService);
 
+  // NOTE: should use `cardsToLearn` input instead https://github.com/artaommahe/akker/issues/71
+  cards = this.cardsService.getCards();
   cardsToLearnDialog = signal<{ open: boolean; cards: Card[] | null }>({ open: false, cards: null });
 
   learnCards() {
-    const cards = this.barnService.cards()?.map(cards => cards.toJSON());
+    const cards = this.cards.value();
 
     if (!cards) {
       return;
@@ -45,10 +51,7 @@ export class LearnCardsComponent {
   }
 
   async onRateCard({ id, grade }: { id: string; grade: CardGrade }) {
-    const card = this.barnService
-      .cards()
-      ?.find(card => card.id === id)
-      ?.toJSON();
+    const card = this.cards.value()?.find(card => card.id === id);
 
     if (!card) {
       return;
