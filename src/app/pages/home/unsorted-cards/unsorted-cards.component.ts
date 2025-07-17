@@ -12,7 +12,7 @@ import { CardsService } from '../../../cards/cards.service';
       <h2 class="text-secondary text-lg">
         Unsorted cards
         @if (unsortedCards.hasValue()) {
-          ({{ unsortedCardsAmount() }})
+          ({{ unsortedCardsCount() }})
         }
       </h2>
 
@@ -50,7 +50,7 @@ export class UnsortedCardsComponent {
 
   unsortedCards = this.cardsService.getUnsortedCards();
 
-  unsortedCardsAmount = computed(() => this.unsortedCards.value()?.length ?? 0);
+  unsortedCardsCount = computed(() => this.unsortedCards.value()?.length ?? 0);
   someUnsortedCards = computed(
     () =>
       this.unsortedCards

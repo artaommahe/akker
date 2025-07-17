@@ -15,7 +15,7 @@ export class CardsService {
     return rxResource({ stream: () => this.cardsApiService.getCards({ lastCardsCount }) });
   }
 
-  getCardsAmount() {
-    return rxResource({ stream: () => this.cardsApiService.getCardsAmount() });
+  getCardsCount() {
+    return rxResource({ stream: () => this.cardsApiService.getCardsCount() });
   }
 }

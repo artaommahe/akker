@@ -7,7 +7,7 @@ import { BarnDbService } from './barn-db.service';
 export class SeedsApiService {
   private barnDbService = inject(BarnDbService);
 
-  getSeedsAmount() {
+  getSeedsCount() {
     return from(this.barnDbService.getDb()).pipe(switchMap(db => db.seeds.count().$));
   }
 }

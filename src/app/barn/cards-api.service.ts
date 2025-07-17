@@ -21,7 +21,7 @@ export class CardsApiService {
     );
   }
 
-  getCardsAmount() {
+  getCardsCount() {
     return from(this.barnDbService.getDb()).pipe(switchMap(db => db.sprouts.count().$));
   }
 }

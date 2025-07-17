@@ -20,15 +20,15 @@ export class InitDemoDataComponent {
   private cardsService = inject(CardsService);
   private seedsService = inject(SeedsService);
 
-  private cardsAmount = this.cardsService.getCardsAmount();
-  private seedsAmount = this.seedsService.getSeedsAmount();
+  private cardsCount = this.cardsService.getCardsCount();
+  private seedsCount = this.seedsService.getSeedsCount();
 
   barnIsEmpty = computed(
     () =>
-      this.cardsAmount.hasValue() &&
-      this.cardsAmount.value() === 0 &&
-      this.seedsAmount.hasValue() &&
-      this.seedsAmount.value() === 0,
+      this.cardsCount.hasValue() &&
+      this.cardsCount.value() === 0 &&
+      this.seedsCount.hasValue() &&
+      this.seedsCount.value() === 0,
   );
 
   initDemo() {
