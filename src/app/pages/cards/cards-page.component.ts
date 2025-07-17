@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { CardsService } from 'src/app/cards/cards.service';
 
-import { BarnService } from '../../barn/barn.service';
 import { AddCardsButtonComponent } from '../../cards/add-cards-button/add-cards-button.component';
 import { CardDetailsDialogComponent } from '../../cards/card-details-dialog/card-details-dialog.component';
 import type { CardDetailsCard } from '../../cards/card-details/card-details.component';
@@ -13,7 +13,18 @@ import { CardsListComponent } from './cards-list/cards-list.component';
     <div class="flex flex-col gap-4">
       <app-learn-cards />
 
-      <app-cards-list [cards]="cards()" (showDetails)="onShowDetails($event)" />
+      @switch (cards.status()) {
+        @case ('loading') {
+          <p>Loading...</p>
+        }
+        @case ('error') {
+          <p class="text-semantic-danger">Error loading cards list:</p>
+          <p>{{ cards.error() }}</p>
+        }
+        @default {
+          <app-cards-list [cards]="formattedCards()" (showDetails)="onShowDetails($event)" />
+        }
+      }
 
       <app-card-details-dialog
         [open]="cardDetailsDialog().open"
@@ -28,16 +39,16 @@ import { CardsListComponent } from './cards-list/cards-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsPageComponent {
-  private barnService = inject(BarnService);
+  private cardsService = inject(CardsService);
 
-  cards = computed(
-    () =>
-      this.barnService.cards()?.map(card => ({ ...card.toMutableJSON(), stability: card.fsrs?.card.stability })) ?? [],
+  cards = this.cardsService.getCards();
+  formattedCards = computed(
+    () => this.cards.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
   onShowDetails(cardId: string) {
-    const card = this.cards()?.find(card => card.id === cardId);
+    const card = this.cards.value()?.find(card => card.id === cardId);
 
     if (!card) {
       throw new Error(`Card with id ${cardId} not found`);

@@ -16,7 +16,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
           <p>Loading...</p>
         }
         @case ('error') {
-          <p class="text-semantic-danger">Error loading last cards:</p>
+          <p class="text-semantic-danger">Error loading last cards list:</p>
           <p>{{ lastCards.error() }}</p>
         }
         @default {
@@ -43,7 +43,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
 export class LastCardsListComponent {
   private cardsService = inject(CardsService);
 
-  lastCards = this.cardsService.getLastCards({ lastCardsCount });
+  lastCards = this.cardsService.getCards({ lastCardsCount });
   formattedLastCards = computed(
     () => this.lastCards.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );

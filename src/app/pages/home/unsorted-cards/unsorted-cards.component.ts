@@ -21,7 +21,7 @@ import { CardsService } from '../../../cards/cards.service';
           <p>Loading...</p>
         }
         @case ('error') {
-          <p class="text-semantic-danger">Error loading unsorted cards:</p>
+          <p class="text-semantic-danger">Error loading unsorted cards list:</p>
           <p>{{ unsortedCards.error() }}</p>
         }
         @default {

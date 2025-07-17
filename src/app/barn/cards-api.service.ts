@@ -14,7 +14,7 @@ export class CardsApiService {
     );
   }
 
-  getLastCards({ lastCardsCount }: { lastCardsCount: number }) {
+  getCards({ lastCardsCount }: { lastCardsCount?: number } = {}) {
     return from(this.barnDbV2Service.getDb()).pipe(
       switchMap(db => db.sprouts.find({ sort: [{ addedAt: 'desc' }], limit: lastCardsCount }).$),
       map(cards => cards.map(card => card.toMutableJSON())),
