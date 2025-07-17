@@ -1,4 +1,4 @@
-import { Injectable, Injector, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { nanoid } from 'nanoid';
 
 import { BarnDbService } from './barn-db.service';
@@ -8,7 +8,6 @@ import type { DbSeed } from './rxdb/schema/seeds';
 @Injectable({ providedIn: 'root' })
 export class BarnService {
   private barnDbService = inject(BarnDbService);
-  private injector = inject(Injector);
 
   async addSeeds(names: string[]) {
     const db = await this.barnDbService.getDb();
