@@ -11,8 +11,8 @@ export class CardsService {
     return rxResource({ stream: () => this.cardsApiService.getUnsortedCards() });
   }
 
-  getCards({ lastCardsCount }: { lastCardsCount?: number } = {}) {
-    return rxResource({ stream: () => this.cardsApiService.getCards({ lastCardsCount }) });
+  getCards({ limit }: { limit?: number } = {}) {
+    return rxResource({ stream: () => this.cardsApiService.getCards({ limit: limit }) });
   }
 
   getCardsCount() {

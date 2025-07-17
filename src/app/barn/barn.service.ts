@@ -93,9 +93,12 @@ export class BarnService {
     const existingSeeds = await db.seeds.find({ selector: { name: { $in: Object.keys(newSeedsCount) } } }).exec();
 
     const { seedsToAdd, seedsToUpdate, newCards } = Object.entries(newSeedsCount).reduce(
-      (result, [name, newSeedCount]) => {
+      (result, [name, newSeedCount], index) => {
         const existingSeed = existingSeeds.find(seed => seed.name === name);
         const count = newSeedCount + (existingSeed ? existingSeed.count : 0);
+
+        // add a unique timestamp to each seed to avoid sorting conflicts later
+        const addedAt = new Date(Date.now() + index).toISOString();
 
         // covers both cases: update existing seed or add new seed multiple times
         if (count >= seedToCardThreshold) {
@@ -103,10 +106,7 @@ export class BarnService {
         } else if (existingSeed) {
           return {
             ...result,
-            seedsToUpdate: [
-              ...result.seedsToUpdate,
-              { ...existingSeed.toJSON(), count, lastAddedAt: new Date().toISOString() },
-            ],
+            seedsToUpdate: [...result.seedsToUpdate, { ...existingSeed.toJSON(), count, lastAddedAt: addedAt }],
           };
         }
 
@@ -118,8 +118,8 @@ export class BarnService {
               id: nanoid(),
               name,
               count,
-              addedAt: new Date().toISOString(),
-              lastAddedAt: new Date().toISOString(),
+              addedAt,
+              lastAddedAt: addedAt,
             },
           ],
         };

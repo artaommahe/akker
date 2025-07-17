@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { SeedsService } from 'src/app/seeds/seeds.service';
 
-import { BarnService } from '../../../barn/barn.service';
 import { SeedDetailsDialogComponent } from '../../../seeds/seed-details-dialog/seed-details-dialog.component';
 import { type SeedDetailsSeed } from '../../../seeds/seed-details/seed-details.component';
 import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-list-item.component';
@@ -11,13 +11,24 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
     <section class="flex flex-col gap-2">
       <h2 class="text-secondary text-lg">Last seeds</h2>
 
-      <ul class="flex flex-col gap-2" aria-label="Last seeds list">
-        @for (seed of lastAddedSeeds(); track seed.name) {
-          <li>
-            <app-seeds-list-item [seed]="seed" (showDetails)="seedDetailsDialog.set({ open: true, seed })" />
-          </li>
+      @switch (lastSeeds.status()) {
+        @case ('loading') {
+          <p>Loading...</p>
         }
-      </ul>
+        @case ('error') {
+          <p class="text-semantic-danger">Error loading last seeds list:</p>
+          <p>{{ lastSeeds.error() }}</p>
+        }
+        @default {
+          <ul class="flex flex-col gap-2" aria-label="Last seeds list">
+            @for (seed of lastSeeds.value(); track seed.name) {
+              <li>
+                <app-seeds-list-item [seed]="seed" (showDetails)="seedDetailsDialog.set({ open: true, seed })" />
+              </li>
+            }
+          </ul>
+        }
+      }
     </section>
 
     <app-seed-details-dialog
@@ -30,14 +41,9 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastSeedsListComponent {
-  private barnService = inject(BarnService);
+  private seedsService = inject(SeedsService);
 
-  lastAddedSeeds = computed(() =>
-    this.barnService
-      .seeds()
-      ?.toSorted((a, b) => b.lastAddedAt.localeCompare(a.lastAddedAt))
-      .slice(0, lastSeedsCount),
-  );
+  lastSeeds = this.seedsService.getSeeds({ limit: lastSeedsCount });
   seedDetailsDialog = signal<{ open: boolean; seed: SeedDetailsSeed | null }>({ open: false, seed: null });
 
   closeSeedDetailsDialog() {

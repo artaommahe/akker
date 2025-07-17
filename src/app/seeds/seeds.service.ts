@@ -7,6 +7,9 @@ import { SeedsApiService } from '../barn/seeds-api.service';
 export class SeedsService {
   private seedsApiService = inject(SeedsApiService);
 
+  getSeeds({ limit }: { limit?: number } = {}) {
+    return rxResource({ stream: () => this.seedsApiService.getSeeds({ limit }) });
+  }
   getSeedsCount() {
     return rxResource({ stream: () => this.seedsApiService.getSeedsCount() });
   }
