@@ -12,7 +12,7 @@ export class CardsService {
   }
 
   getCards({ limit }: { limit?: number } = {}) {
-    return rxResource({ stream: () => this.cardsApiService.getCards({ limit: limit }) });
+    return rxResource({ stream: () => this.cardsApiService.getCards({ limit }) });
   }
 
   getCardsCount() {

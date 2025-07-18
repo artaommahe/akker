@@ -15,7 +15,7 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
           <p>Loading...</p>
         }
         @case ('error') {
-          <p class="text-semantic-danger">Error loading cards list:</p>
+          <p class="text-semantic-danger">Error loading seeds list:</p>
           <p>{{ newSeeds.error() }}</p>
         }
         @default {
