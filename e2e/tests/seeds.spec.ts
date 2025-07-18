@@ -12,8 +12,8 @@ test.describe('seeds', () => {
     await page.getByRole('button', { name: 'Add', exact: true }).click();
 
     await expect(page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem')).toHaveText([
-      'beschermen1',
       'ondraaglijk4',
+      'beschermen1',
       'verwarren3',
     ]);
   });
@@ -32,8 +32,8 @@ test.describe('seeds', () => {
       'beschermen1',
     ]);
     await expect(page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem')).toHaveText([
-      'beschermen1',
       'ondraaglijk4',
+      'beschermen1',
       'verwarren3',
     ]);
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { CardsService } from 'src/app/cards/cards.service';
 
-import { BarnService } from '../../../barn/barn.service';
 import { CardDetailsDialogComponent } from '../../../cards/card-details-dialog/card-details-dialog.component';
 import type { CardDetailsCard } from '../../../cards/card-details/card-details.component';
 import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-list-item.component';
@@ -11,13 +11,24 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
     <section class="flex flex-col gap-2">
       <h2 class="text-secondary text-lg">Last cards</h2>
 
-      <ul class="flex flex-col gap-2" aria-label="Last cards list">
-        @for (card of lastCards(); track card.id) {
-          <li>
-            <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />
-          </li>
+      @switch (lastCards.status()) {
+        @case ('loading') {
+          <p>Loading...</p>
         }
-      </ul>
+        @case ('error') {
+          <p class="text-semantic-danger">Error loading last cards list:</p>
+          <p>{{ lastCards.error() }}</p>
+        }
+        @default {
+          <ul class="flex flex-col gap-2" aria-label="Last cards list">
+            @for (card of formattedLastCards(); track card.id) {
+              <li>
+                <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />
+              </li>
+            }
+          </ul>
+        }
+      }
     </section>
 
     <app-card-details-dialog
@@ -30,14 +41,11 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastCardsListComponent {
-  private barnService = inject(BarnService);
+  private cardsService = inject(CardsService);
 
-  lastCards = computed(() =>
-    this.barnService
-      .cards()
-      ?.toSorted((a, b) => b.addedAt.localeCompare(a.addedAt))
-      .slice(0, lastCardsCount)
-      .map(card => ({ ...card.toMutableJSON(), stability: card.fsrs?.card.stability })),
+  lastCards = this.cardsService.getCards({ limit: lastCardsCount });
+  formattedLastCards = computed(
+    () => this.lastCards.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 

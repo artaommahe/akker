@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { SeedsService } from 'src/app/seeds/seeds.service';
 
-import { BarnService } from '../../barn/barn.service';
 import { AddSeedsButtonComponent } from '../../seeds/add-seeds-button/add-seeds-button.component';
 import { SeedDetailsDialogComponent } from '../../seeds/seed-details-dialog/seed-details-dialog.component';
 import type { SeedDetailsSeed } from '../../seeds/seed-details/seed-details.component';
@@ -10,7 +10,21 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
   selector: 'app-seeds-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-seeds-list [seeds]="seeds() ?? []" (showDetails)="seedDetailsDialog.set({ open: true, seed: $event })" />
+      @switch (newSeeds.status()) {
+        @case ('loading') {
+          <p>Loading...</p>
+        }
+        @case ('error') {
+          <p class="text-semantic-danger">Error loading seeds list:</p>
+          <p>{{ newSeeds.error() }}</p>
+        }
+        @default {
+          <app-seeds-list
+            [seeds]="newSeeds.value() ?? []"
+            (showDetails)="seedDetailsDialog.set({ open: true, seed: $event })"
+          />
+        }
+      }
 
       <app-add-seeds-button />
 
@@ -25,9 +39,9 @@ import { SeedsListComponent } from './seeds-list/seeds-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedsPageComponent {
-  private barnService = inject(BarnService);
+  private seedsService = inject(SeedsService);
 
-  seeds = this.barnService.seeds;
+  newSeeds = this.seedsService.getSeeds();
   seedDetailsDialog = signal<{ open: boolean; seed: SeedDetailsSeed | null }>({ open: false, seed: null });
 
   closeSeedDetailsDialog() {

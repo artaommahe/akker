@@ -1,26 +1,22 @@
-import { Injectable, Injector, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Injectable, inject } from '@angular/core';
 import { nanoid } from 'nanoid';
-import type { Observable } from 'rxjs';
 
-import { BarnDbService } from './barnDb.service';
+import { BarnDbService } from './barn-db.service';
 import type { DbCard } from './rxdb/schema/cards';
 import type { DbSeed } from './rxdb/schema/seeds';
 
 @Injectable({ providedIn: 'root' })
 export class BarnService {
-  private barnDb = inject(BarnDbService);
-  private injector = inject(Injector);
-
-  seeds = this.convertToSignal(this.barnDb.seeds.find().$);
-  cards = this.convertToSignal(this.barnDb.sprouts.find().$);
+  private barnDbService = inject(BarnDbService);
 
   async addSeeds(names: string[]) {
+    const db = await this.barnDbService.getDb();
+
     const { seedsToAdd, seedsToUpdate, newCards } = await this.prepareNewSeeds(names);
 
     // add new or update existing seeds
     if (seedsToAdd.length || seedsToUpdate.length) {
-      await this.barnDb.seeds.bulkUpsert([...seedsToAdd, ...seedsToUpdate]);
+      await db.seeds.bulkUpsert([...seedsToAdd, ...seedsToUpdate]);
     }
 
     // add new cards
@@ -31,59 +27,68 @@ export class BarnService {
   }
 
   async removeSeeds(names: string[]) {
-    await this.barnDb.seeds.find({ selector: { name: { $in: names } } }).remove();
+    const db = await this.barnDbService.getDb();
+
+    await db.seeds.find({ selector: { name: { $in: names } } }).remove();
   }
 
   async updateSeed(name: string, newData: Partial<DbSeed>) {
-    await this.barnDb.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
+    const db = await this.barnDbService.getDb();
+
+    await db.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
   }
 
   async addCards(cardsToAdd: CardToAdd[]) {
+    const db = await this.barnDbService.getDb();
+
     const newCards = cardsToAdd
       // filter out duplicates
       .filter((card, index, self) => self.findIndex(anotherCard => anotherCard.term === card.term) === index)
-      .map(card => ({
+      .map((card, index) => ({
         id: nanoid(),
         term: card.term,
         definition: card.definition ?? '',
         fullTerm: card.fullTerm ?? undefined,
-        addedAt: new Date().toISOString(),
+        // add a unique timestamp to each card to avoid sorting conflicts later
+        addedAt: new Date(Date.now() + index).toISOString(),
         tags: card.tags ?? [],
       }));
 
     if (newCards.length) {
-      await this.barnDb.sprouts.bulkInsert(newCards);
+      await db.sprouts.bulkInsert(newCards);
     }
   }
 
   async removeCard(id: string) {
-    await this.barnDb.sprouts.findOne({ selector: { id } }).remove();
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.findOne({ selector: { id } }).remove();
   }
 
   async updateCard(id: string, newData: Partial<DbCard>) {
-    await this.barnDb.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
-  }
+    const db = await this.barnDbService.getDb();
 
-  // https://github.com/pubkey/rxdb/issues/6188
-  private convertToSignal<T>(observable$: Observable<T>) {
-    return toSignal(observable$, { initialValue: undefined, injector: this.injector });
+    await db.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
   }
 
   // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
+    const db = await this.barnDbService.getDb();
+
     const newSeedsCount = names.reduce(
       (result, name) => ({ ...result, [name]: result[name] ? result[name] + 1 : 1 }),
       {} as Record<string, number>,
     );
 
-    const existingSeeds = await this.barnDb.seeds
-      .find({ selector: { name: { $in: Object.keys(newSeedsCount) } } })
-      .exec();
+    const existingSeeds = await db.seeds.find({ selector: { name: { $in: Object.keys(newSeedsCount) } } }).exec();
 
     const { seedsToAdd, seedsToUpdate, newCards } = Object.entries(newSeedsCount).reduce(
-      (result, [name, newSeedCount]) => {
+      (result, [name, newSeedCount], index) => {
         const existingSeed = existingSeeds.find(seed => seed.name === name);
         const count = newSeedCount + (existingSeed ? existingSeed.count : 0);
+
+        // add a unique timestamp to each seed to avoid sorting conflicts later
+        const addedAt = new Date(Date.now() + index).toISOString();
 
         // covers both cases: update existing seed or add new seed multiple times
         if (count >= seedToCardThreshold) {
@@ -91,10 +96,7 @@ export class BarnService {
         } else if (existingSeed) {
           return {
             ...result,
-            seedsToUpdate: [
-              ...result.seedsToUpdate,
-              { ...existingSeed.toJSON(), count, lastAddedAt: new Date().toISOString() },
-            ],
+            seedsToUpdate: [...result.seedsToUpdate, { ...existingSeed.toJSON(), count, lastAddedAt: addedAt }],
           };
         }
 
@@ -106,8 +108,8 @@ export class BarnService {
               id: nanoid(),
               name,
               count,
-              addedAt: new Date().toISOString(),
-              lastAddedAt: new Date().toISOString(),
+              addedAt,
+              lastAddedAt: addedAt,
             },
           ],
         };
