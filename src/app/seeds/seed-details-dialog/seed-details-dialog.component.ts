@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
-import { BarnService } from '../../barn/barn.service';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
 import { SeedDetailsComponent, type SeedDetailsSeed } from '../seed-details/seed-details.component';
 import { SeedsService } from '../seeds.service';
@@ -25,7 +24,6 @@ import { SeedsService } from '../seeds.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeedDetailsDialogComponent {
-  private barnService = inject(BarnService);
   private seedsService = inject(SeedsService);
 
   open = input.required<boolean>();
@@ -38,7 +36,7 @@ export class SeedDetailsDialogComponent {
   }
 
   onUpdateSeed(name: string, value: Partial<SeedDetailsSeed>) {
-    this.barnService.updateSeed(name, value);
+    this.seedsService.updateSeed(name, value);
     this.dismiss.emit();
   }
 }

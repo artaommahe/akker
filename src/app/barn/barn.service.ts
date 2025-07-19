@@ -29,12 +29,6 @@ export class BarnService {
     }
   }
 
-  async updateSeed(name: string, newData: Partial<DbSeed>) {
-    const db = await this.barnDbService.getDb();
-
-    await db.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
-  }
-
   // TODO: add tests
   private async prepareNewSeeds(names: string[]) {
     const db = await this.barnDbService.getDb();
