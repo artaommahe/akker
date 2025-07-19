@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
 
-import { BarnService } from '../../barn/barn.service';
 import { ButtonDirective } from '../../ui/button/button';
 import { InputDirective } from '../../ui/input/input';
+import { SeedsService } from '../seeds.service';
 
 @Component({
   selector: 'app-add-seeds',
@@ -32,7 +32,7 @@ import { InputDirective } from '../../ui/input/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddSeedsComponent {
-  private barnService = inject(BarnService);
+  private seedsService = inject(SeedsService);
 
   dismiss = output();
 
@@ -49,7 +49,7 @@ export class AddSeedsComponent {
       .filter(seed => !!seed);
 
     if (newSeeds.length !== 0) {
-      this.barnService.addSeeds(newSeeds);
+      this.seedsService.addSeeds(newSeeds);
     }
 
     this.dismiss.emit();

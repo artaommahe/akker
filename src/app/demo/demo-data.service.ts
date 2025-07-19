@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 
-import { BarnService } from '../barn/barn.service';
 import { CardsService, type NewCard } from '../cards/cards.service';
+import { SeedsService } from '../seeds/seeds.service';
 
 @Injectable({ providedIn: 'root' })
 export class DemoDataService {
-  private barnService = inject(BarnService);
   private cardsService = inject(CardsService);
+  private seedsService = inject(SeedsService);
 
   async initDemoData() {
     try {
-      await this.barnService.addSeeds(demoSeeds);
+      await this.seedsService.addSeeds(demoSeeds);
       await this.cardsService.addCards(demoCards);
     } catch (error) {
       console.error("Can't initialize demo data", error);
