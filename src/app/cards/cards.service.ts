@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 import { CardsApiService } from '../barn/cards-api.service';
+import type { DbCard } from '../barn/rxdb/schema/cards';
 
 @Injectable({ providedIn: 'root' })
 export class CardsService {
@@ -17,6 +18,10 @@ export class CardsService {
 
   getCardsCount() {
     return rxResource({ stream: () => this.cardsApiService.getCardsCount() });
+  }
+
+  async updateCard(id: string, newData: Partial<DbCard>) {
+    return this.cardsApiService.updateCard(id, newData);
   }
 
   async removeCard(id: string) {

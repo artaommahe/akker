@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
-import { BarnService } from '../../barn/barn.service';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
 import { type CardDetailsCard, CardDetailsComponent } from '../card-details/card-details.component';
 import { CardsService } from '../cards.service';
@@ -25,7 +24,6 @@ import { CardsService } from '../cards.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardDetailsDialogComponent {
-  private barnService = inject(BarnService);
   private cardsService = inject(CardsService);
 
   open = input.required<boolean>();
@@ -38,7 +36,7 @@ export class CardDetailsDialogComponent {
   }
 
   onUpdateCard(id: string, value: Partial<CardDetailsCard>) {
-    this.barnService.updateCard(id, value);
+    this.cardsService.updateCard(id, value);
     this.dismiss.emit();
   }
 }

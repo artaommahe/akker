@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { nanoid } from 'nanoid';
 
 import { BarnDbService } from './barn-db.service';
-import type { DbCard } from './rxdb/schema/cards';
 import type { DbSeed } from './rxdb/schema/seeds';
 
 @Injectable({ providedIn: 'root' })
@@ -57,12 +56,6 @@ export class BarnService {
     if (newCards.length) {
       await db.sprouts.bulkInsert(newCards);
     }
-  }
-
-  async updateCard(id: string, newData: Partial<DbCard>) {
-    const db = await this.barnDbService.getDb();
-
-    await db.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
   }
 
   // TODO: add tests
