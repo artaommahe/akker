@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { nanoid } from 'nanoid';
 
 import { CardsService } from '../cards/cards.service';
+import { SeedsService } from '../seeds/seeds.service';
 import { BarnDbService } from './barn-db.service';
 import type { DbSeed } from './rxdb/schema/seeds';
 
@@ -9,6 +10,7 @@ import type { DbSeed } from './rxdb/schema/seeds';
 export class BarnService {
   private barnDbService = inject(BarnDbService);
   private cardsService = inject(CardsService);
+  private seedsService = inject(SeedsService);
 
   async addSeeds(names: string[]) {
     const db = await this.barnDbService.getDb();
@@ -23,14 +25,8 @@ export class BarnService {
     // add new cards
     if (newCards.length) {
       await this.cardsService.addCards(newCards.map(term => ({ term })));
-      await this.removeSeeds(newCards);
+      await this.seedsService.removeSeeds(newCards);
     }
-  }
-
-  async removeSeeds(names: string[]) {
-    const db = await this.barnDbService.getDb();
-
-    await db.seeds.find({ selector: { name: { $in: names } } }).remove();
   }
 
   async updateSeed(name: string, newData: Partial<DbSeed>) {

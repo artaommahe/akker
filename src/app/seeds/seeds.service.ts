@@ -10,7 +10,12 @@ export class SeedsService {
   getSeeds({ limit }: { limit?: number } = {}) {
     return rxResource({ stream: () => this.seedsApiService.getSeeds({ limit }) });
   }
+
   getSeedsCount() {
     return rxResource({ stream: () => this.seedsApiService.getSeedsCount() });
+  }
+
+  async removeSeeds(names: string[]) {
+    await this.seedsApiService.removeSeeds(names);
   }
 }

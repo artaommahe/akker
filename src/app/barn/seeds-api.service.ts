@@ -17,4 +17,10 @@ export class SeedsApiService {
   getSeedsCount() {
     return from(this.barnDbService.getDb()).pipe(switchMap(db => db.seeds.count().$));
   }
+
+  async removeSeeds(names: string[]) {
+    const db = await this.barnDbService.getDb();
+
+    await db.seeds.find({ selector: { name: { $in: names } } }).remove();
+  }
 }

@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input, output } from '@angu
 import { BarnService } from '../../barn/barn.service';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
 import { SeedDetailsComponent, type SeedDetailsSeed } from '../seed-details/seed-details.component';
+import { SeedsService } from '../seeds.service';
 
 @Component({
   selector: 'app-seed-details-dialog',
@@ -25,13 +26,14 @@ import { SeedDetailsComponent, type SeedDetailsSeed } from '../seed-details/seed
 })
 export class SeedDetailsDialogComponent {
   private barnService = inject(BarnService);
+  private seedsService = inject(SeedsService);
 
   open = input.required<boolean>();
   seed = input.required<SeedDetailsSeed | null>();
   dismiss = output();
 
   onRemoveSeed(name: string) {
-    this.barnService.removeSeeds([name]);
+    this.seedsService.removeSeeds([name]);
     this.dismiss.emit();
   }
 
