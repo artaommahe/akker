@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { BarnService } from '../barn/barn.service';
 import { CardsService } from '../cards/cards.service';
 import { ButtonDirective } from '../ui/button/button';
 import { DialogComponent } from '../ui/dialog/dialog.component';
@@ -26,7 +25,6 @@ import { type CardGrade, LearningService } from './learning.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LearnCardsComponent {
-  private barnService = inject(BarnService);
   private cardsService = inject(CardsService);
   private learningService = inject(LearningService);
 
@@ -59,7 +57,7 @@ export class LearnCardsComponent {
 
     const newFsrsCard = this.learningService.rateFsrsCard({ card: card.fsrs?.card, grade });
 
-    await this.barnService.updateCard(card.id, { fsrs: { ...card.fsrs, card: newFsrsCard } });
+    await this.cardsService.updateCard(card.id, { fsrs: { ...card.fsrs, card: newFsrsCard } });
   }
 }
 

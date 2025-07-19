@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { from, map, switchMap } from 'rxjs';
 
 import { BarnDbService } from './barn-db.service';
+import type { DbCard } from './rxdb/schema/cards';
 
 @Injectable({ providedIn: 'root' })
 export class CardsApiService {
@@ -23,5 +24,23 @@ export class CardsApiService {
 
   getCardsCount() {
     return from(this.barnDbService.getDb()).pipe(switchMap(db => db.sprouts.count().$));
+  }
+
+  async addCards(cards: DbCard[]) {
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.bulkInsert(cards);
+  }
+
+  async updateCard(id: string, newData: Partial<DbCard>) {
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.findOne({ selector: { id } }).modify(card => ({ ...card, ...newData }));
+  }
+
+  async removeCard(id: string) {
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.findOne({ selector: { id } }).remove();
   }
 }

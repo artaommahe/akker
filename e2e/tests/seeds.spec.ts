@@ -101,6 +101,17 @@ test.describe('seeds', () => {
       );
     });
 
+    test('should increase seeds count when adding existing seeds', async ({ page }) => {
+      await page.getByRole('button', { name: 'Add seeds' }).click();
+      await page.getByRole('textbox', { name: 'New seeds list' }).fill(['snoep', 'spel'].join('\n'));
+      await page.getByRole('button', { name: 'Add', exact: true }).click();
+
+      const lastSeedsList = page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem');
+
+      await expect(lastSeedsList.first()).toHaveText('spel2');
+      await expect(lastSeedsList.nth(1)).toHaveText('snoep3');
+    });
+
     test('should allow to add a seed with the same name as an existing card', async ({ page }) => {
       await page.getByRole('button', { name: 'Add seeds' }).click();
       await page.getByRole('textbox', { name: 'New seeds list' }).fill(['aarde', 'aarde', 'aarde'].join('\n'));

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { BarnDbService } from 'src/app/barn/barn-db.service';
+import { SyncApiService } from 'src/app/barn/sync-api.service';
 
 import { ButtonDirective } from '../../../ui/button/button';
 import { DialogComponent } from '../../../ui/dialog/dialog.component';
@@ -37,13 +37,12 @@ import { DialogComponent } from '../../../ui/dialog/dialog.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SyncComponent {
-  private barnDbService = inject(BarnDbService);
+  private syncApiService = inject(SyncApiService);
 
   showRestoreDialog = signal(false);
 
   async backup() {
-    const db = await this.barnDbService.getDb();
-    const data = await db.exportJSON();
+    const data = await this.syncApiService.export();
 
     const dataLink = document.createElement('a');
     dataLink.href = `data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`;
@@ -56,12 +55,10 @@ export class SyncComponent {
       return;
     }
 
-    const db = await this.barnDbService.getDb();
-
     const fileContent = await readFileTextContent(backupFileInput.files[0]);
     const data = JSON.parse(fileContent);
 
-    await db.importJSON(data);
+    await this.syncApiService.import(data);
 
     this.showRestoreDialog.set(false);
   }
