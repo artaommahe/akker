@@ -1,12 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { nanoid } from 'nanoid';
 
+import { CardsService } from '../cards/cards.service';
 import { BarnDbService } from './barn-db.service';
 import type { DbSeed } from './rxdb/schema/seeds';
 
 @Injectable({ providedIn: 'root' })
 export class BarnService {
   private barnDbService = inject(BarnDbService);
+  private cardsService = inject(CardsService);
 
   async addSeeds(names: string[]) {
     const db = await this.barnDbService.getDb();
@@ -20,7 +22,7 @@ export class BarnService {
 
     // add new cards
     if (newCards.length) {
-      await this.addCards(newCards.map(term => ({ term })));
+      await this.cardsService.addCards(newCards.map(term => ({ term })));
       await this.removeSeeds(newCards);
     }
   }
@@ -35,27 +37,6 @@ export class BarnService {
     const db = await this.barnDbService.getDb();
 
     await db.seeds.findOne({ selector: { name } }).modify(seed => ({ ...seed, ...newData }));
-  }
-
-  async addCards(cardsToAdd: CardToAdd[]) {
-    const db = await this.barnDbService.getDb();
-
-    const newCards = cardsToAdd
-      // filter out duplicates
-      .filter((card, index, self) => self.findIndex(anotherCard => anotherCard.term === card.term) === index)
-      .map((card, index) => ({
-        id: nanoid(),
-        term: card.term,
-        definition: card.definition ?? '',
-        fullTerm: card.fullTerm ?? undefined,
-        // add a unique timestamp to each card to avoid sorting conflicts later
-        addedAt: new Date(Date.now() + index).toISOString(),
-        tags: card.tags ?? [],
-      }));
-
-    if (newCards.length) {
-      await db.sprouts.bulkInsert(newCards);
-    }
   }
 
   // TODO: add tests
@@ -108,10 +89,3 @@ export class BarnService {
 }
 
 const seedToCardThreshold = 5;
-
-export interface CardToAdd {
-  term: string;
-  fullTerm?: string;
-  definition?: string;
-  tags?: string[];
-}

@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, output, signal } from '@ang
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { parse } from 'csv-parse/browser/esm/sync';
 
-import { BarnService, type CardToAdd } from '../../barn/barn.service';
 import { ButtonDirective } from '../../ui/button/button';
 import { InputDirective } from '../../ui/input/input';
+import { CardsService, type NewCard } from '../cards.service';
 
 @Component({
   selector: 'app-add-cards',
@@ -40,7 +40,7 @@ import { InputDirective } from '../../ui/input/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCardsComponent {
-  private barnService = inject(BarnService);
+  private cardsService = inject(CardsService);
 
   dismiss = output();
 
@@ -72,10 +72,10 @@ export class AddCardsComponent {
                 ?.split(',')
                 .map(tag => tag.trim())
                 .filter(tag => !!tag && /^[a-zA-Z0-9]+$/.test(tag)),
-            }) satisfies CardToAdd,
+            }) satisfies NewCard,
         );
 
-      this.barnService.addCards(newCards);
+      this.cardsService.addCards(newCards);
     } catch (error) {
       this.parseError.set(String(error));
       return;

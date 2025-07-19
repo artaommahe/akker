@@ -26,6 +26,12 @@ export class CardsApiService {
     return from(this.barnDbService.getDb()).pipe(switchMap(db => db.sprouts.count().$));
   }
 
+  async addCards(cards: DbCard[]) {
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.bulkInsert(cards);
+  }
+
   async updateCard(id: string, newData: Partial<DbCard>) {
     const db = await this.barnDbService.getDb();
 
