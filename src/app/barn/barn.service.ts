@@ -59,12 +59,6 @@ export class BarnService {
     }
   }
 
-  async removeCard(id: string) {
-    const db = await this.barnDbService.getDb();
-
-    await db.sprouts.findOne({ selector: { id } }).remove();
-  }
-
   async updateCard(id: string, newData: Partial<DbCard>) {
     const db = await this.barnDbService.getDb();
 

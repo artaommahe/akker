@@ -24,4 +24,10 @@ export class CardsApiService {
   getCardsCount() {
     return from(this.barnDbService.getDb()).pipe(switchMap(db => db.sprouts.count().$));
   }
+
+  async removeCard(id: string) {
+    const db = await this.barnDbService.getDb();
+
+    await db.sprouts.findOne({ selector: { id } }).remove();
+  }
 }

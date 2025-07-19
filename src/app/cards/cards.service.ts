@@ -18,4 +18,8 @@ export class CardsService {
   getCardsCount() {
     return rxResource({ stream: () => this.cardsApiService.getCardsCount() });
   }
+
+  async removeCard(id: string) {
+    return this.cardsApiService.removeCard(id);
+  }
 }

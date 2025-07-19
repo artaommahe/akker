@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input, output } from '@angu
 import { BarnService } from '../../barn/barn.service';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
 import { type CardDetailsCard, CardDetailsComponent } from '../card-details/card-details.component';
+import { CardsService } from '../cards.service';
 
 @Component({
   selector: 'app-card-details-dialog',
@@ -25,13 +26,14 @@ import { type CardDetailsCard, CardDetailsComponent } from '../card-details/card
 })
 export class CardDetailsDialogComponent {
   private barnService = inject(BarnService);
+  private cardsService = inject(CardsService);
 
   open = input.required<boolean>();
   card = input.required<CardDetailsCard | null>();
   dismiss = output();
 
   onRemoveCard(id: string) {
-    this.barnService.removeCard(id);
+    this.cardsService.removeCard(id);
     this.dismiss.emit();
   }
 
