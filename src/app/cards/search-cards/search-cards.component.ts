@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, map } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
+import { InputDirective } from 'src/app/ui/input/input';
 
 import { CardDetailsDialogComponent } from '../card-details-dialog/card-details-dialog.component';
 import type { CardDetailsCard } from '../card-details/card-details.component';
@@ -13,7 +14,7 @@ import { CardsService } from '../cards.service';
   template: `
     <section class="flex flex-col gap-2">
       <input
-        class="w-full"
+        appInput
         type="text"
         aria-label="Search cards"
         placeholder="Search cards..."
@@ -46,7 +47,7 @@ import { CardsService } from '../cards.service';
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardsListItemComponent, CardDetailsDialogComponent],
+  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective],
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);

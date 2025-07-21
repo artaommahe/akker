@@ -16,7 +16,6 @@ export class CardsApiService {
   }
 
   getCards({ limit, term }: GetCardsParams = {}) {
-    console.log('getCards', { limit, term });
     return from(this.barnDbService.getDb()).pipe(
       switchMap(
         db =>
