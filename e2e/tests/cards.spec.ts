@@ -234,4 +234,36 @@ test.describe('cards', () => {
 
     await expect(page.getByText('aardbei')).not.toBeVisible();
   });
+
+  test.describe('search cards', () => {
+    test('should show search results for a term', async ({ page }) => {
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
+        'framboos',
+        'voorkomen',
+        'postkantoor',
+        'boom',
+      ]);
+    });
+
+    test('should update search results on term change', async ({ page }) => {
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' })).toBeVisible();
+
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oor');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
+        'voorkomen',
+        'postkantoor',
+      ]);
+    });
+
+    test('should show a message when no results found', async ({ page }) => {
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('nonexistentterm');
+
+      await expect(page.getByText('No results found')).toBeVisible();
+    });
+  });
 });

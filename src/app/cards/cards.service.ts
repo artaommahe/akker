@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { nanoid } from 'nanoid';
 
-import { CardsApiService } from '../barn/cards-api.service';
+import { CardsApiService, type GetCardsParams } from '../barn/cards-api.service';
 import type { DbCard } from '../barn/rxdb/schema/cards';
 
 @Injectable({ providedIn: 'root' })
@@ -13,8 +13,15 @@ export class CardsService {
     return rxResource({ stream: () => this.cardsApiService.getUnsortedCards() });
   }
 
-  getCards({ limit }: { limit?: number } = {}) {
-    return rxResource({ stream: () => this.cardsApiService.getCards({ limit }) });
+  getCards(params?: () => GetCardsParams | undefined) {
+    return rxResource({
+      params,
+      // NOTE: `params` field type is not correct here when `params` argument is `undefined`
+      // it should be `GetCardsParams | null`, but it derives only `GetCardsParams` type despite having `null` value
+      // unexpected `null` breaks `cardsApiService.getCards()` method
+      // https://github.com/angular/angular/issues/62724
+      stream: ({ params }) => this.cardsApiService.getCards(params ?? undefined),
+    });
   }
 
   getCardsCount() {
