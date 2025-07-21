@@ -14,7 +14,14 @@ export class CardsService {
   }
 
   getCards(params?: () => GetCardsParams | undefined) {
-    return rxResource({ params, stream: ({ params }) => this.cardsApiService.getCards(params) });
+    return rxResource({
+      params,
+      // NOTE: `params` field type is not correct here when `params` argument is `undefined`
+      // it should be `GetCardsParams | null`, but it derives only `GetCardsParams` type despite having `null` value
+      // unexpected `null` breaks `cardsApiService.getCards()` method
+      // https://github.com/angular/angular/issues/62724
+      stream: ({ params }) => this.cardsApiService.getCards(params ?? undefined),
+    });
   }
 
   getCardsCount() {
