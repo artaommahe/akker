@@ -68,7 +68,7 @@ export class SearchCardsComponent {
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
   setSearchString(event: Event) {
-    this.searchString.set((event.target as HTMLTextAreaElement).value);
+    this.searchString.set((event.target as HTMLInputElement).value);
   }
 
   private parseSearchString(searchString: string): GetCardsParams {
