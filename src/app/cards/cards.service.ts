@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { nanoid } from 'nanoid';
 
-import { CardsApiService } from '../barn/cards-api.service';
+import { CardsApiService, type GetCardsParams } from '../barn/cards-api.service';
 import type { DbCard } from '../barn/rxdb/schema/cards';
 
 @Injectable({ providedIn: 'root' })
@@ -13,8 +13,8 @@ export class CardsService {
     return rxResource({ stream: () => this.cardsApiService.getUnsortedCards() });
   }
 
-  getCards({ limit }: { limit?: number } = {}) {
-    return rxResource({ stream: () => this.cardsApiService.getCards({ limit }) });
+  getCards(params?: () => GetCardsParams | undefined) {
+    return rxResource({ params, stream: ({ params }) => this.cardsApiService.getCards(params) });
   }
 
   getCardsCount() {

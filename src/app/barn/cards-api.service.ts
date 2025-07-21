@@ -15,9 +15,17 @@ export class CardsApiService {
     );
   }
 
-  getCards({ limit }: { limit?: number } = {}) {
+  getCards({ limit, term }: GetCardsParams = {}) {
+    console.log('getCards', { limit, term });
     return from(this.barnDbService.getDb()).pipe(
-      switchMap(db => db.sprouts.find({ sort: [{ addedAt: 'desc' }], limit }).$),
+      switchMap(
+        db =>
+          db.sprouts.find({
+            ...(term ? { selector: { term: { $regex: term, $options: 'i' } } } : {}),
+            sort: [{ addedAt: 'desc' }],
+            limit,
+          }).$,
+      ),
       map(cards => cards.map(card => card.toMutableJSON())),
     );
   }
@@ -43,4 +51,9 @@ export class CardsApiService {
 
     await db.sprouts.findOne({ selector: { id } }).remove();
   }
+}
+
+export interface GetCardsParams {
+  limit?: number;
+  term?: string;
 }
