@@ -78,12 +78,12 @@ export class SearchCardsComponent {
    * - remaining text is treated as a search term
    */
   private parseSearchString(searchString: string): GetCardsParams {
-    const parsedParts = searchString.match(searchStringParserRegex) ?? [];
+    const searchTokens = searchString.match(searchStringTokensRegex) ?? [];
 
-    const params = parsedParts.reduce(
-      (params, part) => {
-        if (part.startsWith('tags:')) {
-          const tags = part
+    const params = searchTokens.reduce(
+      (params, token) => {
+        if (token.startsWith('tags:')) {
+          const tags = token
             .slice(5)
             .split(',')
             .map(tag => tag.trim())
@@ -92,7 +92,7 @@ export class SearchCardsComponent {
           return { ...params, tags: [...(params.tags ?? []), ...tags] };
         }
 
-        return { ...params, term: `${params.term} ${part}`.trim() };
+        return { ...params, term: `${params.term} ${token}`.trim() };
       },
       { term: '', tags: [] } as GetCardsParams,
     );
@@ -107,7 +107,7 @@ export class SearchCardsComponent {
 
 const searchResultsDebounceTimeMs = 300;
 // used a part of regex from https://github.com/nepsilon/search-query-parser/blob/8158d09c70b66168440e93ffabd720f4c8314c9b/lib/search-query-parser.js#L40
-const searchStringParserRegex = new RegExp(
+const searchStringTokensRegex = new RegExp(
   [
     // `<type>:` with single or double quotes
     // is not supported yet
