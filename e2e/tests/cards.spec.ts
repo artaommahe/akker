@@ -3,6 +3,7 @@ import test, { expect } from 'playwright/test';
 test.describe('cards', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // TODO: set initial state without relying on demo data feature
     await page.getByRole('button', { name: 'Load demo data' }).click();
   });
 
@@ -86,12 +87,12 @@ test.describe('cards', () => {
 
   test('should show last card details at cards page', async ({ page }) => {
     await page.getByRole('link', { name: 'Cards' }).click();
-    await page.getByRole('list', { name: 'New cards list' }).getByRole('button', { name: 'leraar' }).click();
+    await page.getByRole('list', { name: 'New cards list' }).getByRole('button', { name: 'framboos' }).click();
 
     await expect(page.getByRole('heading', { name: 'Card details' })).toBeVisible();
-    await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('leraar');
+    await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('framboos');
     await expect(page.getByRole('textbox', { name: 'Full term' })).toHaveValue('');
-    await expect(page.getByRole('textbox', { name: 'Definition' })).toHaveValue('teacher');
+    await expect(page.getByRole('textbox', { name: 'Definition' })).toHaveValue('raspberry');
     await expect(page.getByRole('textbox', { name: 'Tags' })).toHaveValue('');
 
     await page.getByRole('group').filter({ hasText: 'FSRS stats' }).click();
@@ -258,6 +259,43 @@ test.describe('cards', () => {
         'voorkomen',
         'postkantoor',
       ]);
+    });
+
+    test('should allow to search by tags', async ({ page }) => {
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:top1k');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
+        'servet',
+        'leraar',
+        'postkantoor',
+      ]);
+
+      // multiple tags should work too
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:nl,top1k');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
+        'servet',
+        'leraar',
+        'voorkomen',
+        'postkantoor',
+      ]);
+    });
+
+    test('should allow to search by everything at once', async ({ page }) => {
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:nl,top1k oor');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
+        'voorkomen',
+        'postkantoor',
+      ]);
+    });
+
+    test('should show card details from search results', async ({ page }) => {
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oor');
+      await page.getByRole('list', { name: 'Search cards list' }).getByRole('button', { name: 'voorkomen' }).click();
+
+      await expect(page.getByRole('heading', { name: 'Card details' })).toBeVisible();
+      await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('voorkomen');
     });
 
     test('should show a message when no results found', async ({ page }) => {

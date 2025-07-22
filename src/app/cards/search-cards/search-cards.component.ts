@@ -71,10 +71,33 @@ export class SearchCardsComponent {
     this.searchString.set((event.target as HTMLInputElement).value);
   }
 
+  // TODO: add tests
+  /**
+   * supported syntax:
+   * - `tags:tag1,tag2` - search for cards with the specified tags
+   * - remaining text is treated as a search term
+   */
   private parseSearchString(searchString: string): GetCardsParams {
-    const term = searchString.trim();
+    const searchTokens = searchString.match(searchStringTokensRegex) ?? [];
 
-    return { term };
+    const params = searchTokens.reduce(
+      (params, token) => {
+        if (token.startsWith('tags:')) {
+          const tags = token
+            .slice(5)
+            .split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0);
+
+          return { ...params, tags: [...(params.tags ?? []), ...tags] };
+        }
+
+        return { ...params, term: `${params.term} ${token}`.trim() };
+      },
+      { term: '', tags: [] } as GetCardsParams,
+    );
+
+    return params;
   }
 
   closeCardDetailsDialog() {
@@ -83,3 +106,17 @@ export class SearchCardsComponent {
 }
 
 const searchResultsDebounceTimeMs = 300;
+// used a part of regex from https://github.com/nepsilon/search-query-parser/blob/8158d09c70b66168440e93ffabd720f4c8314c9b/lib/search-query-parser.js#L40
+const searchStringTokensRegex = new RegExp(
+  [
+    // `<type>:` with single or double quotes
+    // is not supported yet
+    /* `(\\S+:'(?:[^'\\\\]|\\.)*')`,
+    `(\\S+:"(?:[^"\\\\]|\\.)*")`, */
+    // `<type>:<value>`
+    `\\S+:\\S+`,
+    // just remaining text
+    `\\S+`,
+  ].join('|'),
+  'g',
+);

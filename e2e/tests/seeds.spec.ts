@@ -50,6 +50,7 @@ test.describe('seeds', () => {
   test.describe('', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('/');
+      // TODO: set initial state without relying on demo data feature
       await page.getByRole('button', { name: 'Load demo data' }).click();
     });
 
