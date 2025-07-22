@@ -15,12 +15,15 @@ export class CardsApiService {
     );
   }
 
-  getCards({ limit, term }: GetCardsParams = {}) {
+  getCards({ limit, term, tags }: GetCardsParams = {}) {
     return from(this.barnDbService.getDb()).pipe(
       switchMap(
         db =>
           db.sprouts.find({
-            ...(term ? { selector: { term: { $regex: term, $options: 'i' } } } : {}),
+            selector: {
+              ...(term ? { term: { $regex: term, $options: 'i' } } : {}),
+              ...(tags?.length ? { tags: { $in: tags } } : {}),
+            },
             sort: [{ addedAt: 'desc' }],
             limit,
           }).$,
@@ -55,4 +58,5 @@ export class CardsApiService {
 export interface GetCardsParams {
   limit?: number;
   term?: string;
+  tags?: string[];
 }

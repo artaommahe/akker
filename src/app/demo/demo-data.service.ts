@@ -27,9 +27,9 @@ const demoCards = [
   { term: 'boom', definition: 'tree' },
   { term: 'aarde', fullTerm: '**aa**rde', definition: 'earth' },
   { term: 'postkantoor', fullTerm: 'p**o**stkantoor', definition: 'post office', tags: ['nl', 'top1k'] },
-  { term: 'voorkomen', fullTerm: 'voork**o**men', definition: 'to prevent' },
-  { term: 'leraar', definition: 'teacher' },
-  { term: 'servet', definition: 'napkin' },
+  { term: 'voorkomen', fullTerm: 'voork**o**men', definition: 'to prevent', tags: ['nl', 'top2k'] },
+  { term: 'leraar', definition: 'teacher', tags: ['nl', 'top1k'] },
+  { term: 'servet', definition: 'napkin', tags: ['nl', 'top1k'] },
   { term: 'tijdschrift', fullTerm: 't**ij**dschrift', definition: 'magazine' },
   { term: 'framboos', definition: 'raspberry' },
 ] satisfies NewCard[];
