@@ -9,7 +9,7 @@ import { CardsService } from '../../../cards/cards.service';
   selector: 'app-unsorted-cards',
   template: `
     <section>
-      <h2 class="text-secondary text-lg">
+      <h2 class="text-secondary text-lg" id="unsorted-cards-heading">
         Unsorted cards
         @if (unsortedCards.hasValue()) {
           ({{ unsortedCardsCount() }})
@@ -25,7 +25,7 @@ import { CardsService } from '../../../cards/cards.service';
           <p>{{ unsortedCards.error() }}</p>
         }
         @default {
-          <ul class="columns-2 gap-4" aria-label="Unsorted cards list">
+          <ul class="columns-2 gap-4" aria-labelledby="unsorted-cards-heading">
             @for (card of someUnsortedCards(); track card.id) {
               <li>
                 <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />

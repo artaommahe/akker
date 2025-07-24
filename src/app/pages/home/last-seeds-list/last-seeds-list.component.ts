@@ -9,7 +9,7 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
   selector: 'app-last-seeds-list',
   template: `
     <section class="flex flex-col gap-2">
-      <h2 class="text-secondary text-lg">Last seeds</h2>
+      <h2 class="text-secondary text-lg" id="last-seeds-heading">Last seeds</h2>
 
       @switch (lastSeeds.status()) {
         @case ('loading') {
@@ -20,7 +20,7 @@ import { SeedsListItemComponent } from '../../../seeds/seeds-list-item/seeds-lis
           <p>{{ lastSeeds.error() }}</p>
         }
         @default {
-          <ul class="flex flex-col gap-2" aria-label="Last seeds list">
+          <ul class="flex flex-col gap-2" aria-labelledby="last-seeds-heading">
             @for (seed of lastSeeds.value(); track seed.name) {
               <li>
                 <app-seeds-list-item [seed]="seed" (showDetails)="seedDetailsDialog.set({ open: true, seed })" />

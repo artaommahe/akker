@@ -12,9 +12,9 @@ import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-p
     <div class="div flex flex-col gap-6">
       <div class="div flex gap-4">
         <section class="min-w-0 flex-1">
-          <h2 class="text-secondary text-lg">Top</h2>
+          <h2 class="text-secondary text-lg" id="top-seeds-heading">Top seeds</h2>
 
-          <ul class="flex flex-col gap-2" aria-label="Top seeds list">
+          <ul class="flex flex-col gap-2" aria-labelledby="top-seeds-heading">
             @for (seed of topSeeds(); track seed.name) {
               <li>
                 <app-seeds-list-item [seed]="seed" (showDetails)="showDetails.emit($event)" />
@@ -26,9 +26,9 @@ import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-p
         <div class="border-l-primary/10 w-px self-stretch border-l"></div>
 
         <section class="min-w-0 flex-1">
-          <h2 class="text-secondary text-lg">Last</h2>
+          <h2 class="text-secondary text-lg" id="last-seeds-heading">Last seeds</h2>
 
-          <ul class="flex flex-col gap-2" aria-label="Last seeds list">
+          <ul class="flex flex-col gap-2" aria-labelledby="last-seeds-heading">
             @for (seed of lastAddedSeeds(); track seed.name) {
               <li>
                 <app-seeds-list-item [seed]="seed" (showDetails)="showDetails.emit($event)" />
