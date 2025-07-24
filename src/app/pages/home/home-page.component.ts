@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CardsService } from 'src/app/cards/cards.service';
 import { SearchCardsComponent } from 'src/app/cards/search-cards/search-cards.component';
 
 import { InitDemoDataComponent } from '../../demo/init-demo-data/init-demo-data.component';
@@ -12,7 +13,9 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
   selector: 'app-home-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-search-cards />
+      @if (cardsCount.hasValue() && cardsCount.value() > 0) {
+        <app-search-cards />
+      }
 
       <app-init-demo-data />
 
@@ -46,4 +49,10 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePageComponent {}
+export class HomePageComponent {
+  private cardsService = inject(CardsService);
+
+  // TODO: move all data fetching from children to this component
+  // https://github.com/artaommahe/akker/issues/78
+  cardsCount = this.cardsService.getCardsCount();
+}
