@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
+import { IconComponent } from 'src/app/ui/icon/icon';
 import { InputDirective } from 'src/app/ui/input/input';
 
 import { CardDetailsDialogComponent } from '../card-details-dialog/card-details-dialog.component';
@@ -13,15 +14,24 @@ import { CardsService } from '../cards.service';
   selector: 'app-search-cards',
   template: `
     <section class="flex flex-col gap-2">
-      <input
-        appInput
-        type="text"
-        aria-label="Search cards"
-        placeholder="Search cards..."
-        [value]="searchString()"
-        (input)="setSearchString($event)"
-        (keyup.Esc)="searchString.set('')"
-      />
+      <div class="flex items-center gap-2">
+        <input
+          class="grow"
+          appInput
+          type="text"
+          aria-label="Search cards"
+          placeholder="Search cards..."
+          [value]="searchString()"
+          (input)="setSearchString($event)"
+          (keyup.Esc)="cancelSearch()"
+        />
+
+        @if (searchString().length > 0) {
+          <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="cancelSearch()">
+            <app-icon class="text-secondary size-6" name="crossInCircle" />
+          </button>
+        }
+      </div>
 
       @if (searchParams()) {
         @if (searchResult.status() === 'error') {
@@ -48,7 +58,7 @@ import { CardsService } from '../cards.service';
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective],
+  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective, IconComponent],
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
@@ -71,6 +81,12 @@ export class SearchCardsComponent {
 
   setSearchString(event: Event) {
     this.searchString.set((event.target as HTMLInputElement).value);
+  }
+
+  cancelSearch() {
+    this.searchString.set('');
+    // clear focus from the input field
+    (document.activeElement as HTMLElement | null)?.blur();
   }
 
   // TODO: add tests
