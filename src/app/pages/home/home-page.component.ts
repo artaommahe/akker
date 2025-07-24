@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CardsService } from 'src/app/cards/cards.service';
-import { SearchCardsComponent } from 'src/app/cards/search-cards/search-cards.component';
+import { SearchCardsButtonComponent } from 'src/app/cards/search-cards/serch-cards-button.component';
 
 import { InitDemoDataComponent } from '../../demo/init-demo-data/init-demo-data.component';
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
@@ -14,7 +14,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
   template: `
     <div class="flex flex-col gap-4">
       @if (cardsCount.hasValue() && cardsCount.value() > 0) {
-        <app-search-cards />
+        <app-search-cards-button />
       }
 
       <app-init-demo-data />
@@ -45,7 +45,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
     LastSeedsListComponent,
     LastCardsListComponent,
     InitDemoDataComponent,
-    SearchCardsComponent,
+    SearchCardsButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

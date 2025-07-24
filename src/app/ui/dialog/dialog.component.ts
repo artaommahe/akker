@@ -32,8 +32,7 @@ export class DialogComponent {
   contentRef = contentChild.required(TemplateRef);
 
   modalClass = clsx([
-    'bg-primary text-primary fixed top-0 grid h-full w-full p-5 pt-14 [max-block-size:unset] [max-inline-size:unset]',
-    '[&:not([open])]:pointer-events-none',
+    'top-0 grid h-full w-full p-5 pt-14',
     'transition-transform duration-300 [&:not([open])]:translate-x-full',
   ]);
 }

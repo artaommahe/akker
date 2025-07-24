@@ -1,14 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  computed,
-  effect,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
@@ -23,20 +14,7 @@ import { CardsService } from '../cards.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <!-- NOTE: using button with explicit 'click' listener provides a better accessibility. Imitates input's styles-->
-    <button
-      class="bg-secondary focus-visible:border-primary text-secondary w-full rounded-lg border border-transparent p-2 text-left outline-hidden"
-      (click)="dialogIsVisibleNew.set(true)"
-    >
-      Search cards...
-    </button>
-
-    <dialog
-      class="border-secondary text-primary bg-primary backdrop:bg-primary/50 fixed m-2 max-h-[80vh] w-[calc(100vw-1rem)] flex-col gap-2 rounded-xl border p-2 [max-block-size:unset] [max-inline-size:unset] backdrop:backdrop-blur-xs"
-      [class.flex]="dialogIsVisibleNew()"
-      (close)="dialogIsVisibleNew.set(false)"
-      #searchDialog
-    >
+    <section class="flex w-full flex-col gap-2">
       <div class="flex items-center gap-2">
         <input
           class="grow"
@@ -46,11 +24,11 @@ import { CardsService } from '../cards.service';
           placeholder="Search cards..."
           [value]="searchString()"
           (input)="setSearchString($event)"
-          (keyup.Esc)="cancelSearch()"
+          #searchInput
         />
 
         @if (searchString().length > 0) {
-          <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="cancelSearch()">
+          <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="clearSearchInput()">
             <app-icon class="text-secondary size-6" name="crossInCircle" />
           </button>
         }
@@ -93,7 +71,7 @@ import { CardsService } from '../cards.service';
           </ul>
         </section>
       </ng-template>
-    </dialog>
+    </section>
 
     <app-card-details-dialog
       [open]="cardDetailsDialog().open"
@@ -107,10 +85,7 @@ import { CardsService } from '../cards.service';
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
 
-  dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('searchDialog');
-  searchPlaceholderRef = viewChild.required<ElementRef<HTMLInputElement>>('searchPlaceholder');
-
-  dialogIsVisibleNew = signal(false);
+  searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   searchString = signal('');
   searchParams = toSignal(
@@ -128,23 +103,13 @@ export class SearchCardsComponent {
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
-  constructor() {
-    effect(() => {
-      if (this.dialogIsVisibleNew()) {
-        this.dialogRef().nativeElement.showModal();
-      } else {
-        this.dialogRef().nativeElement.close();
-      }
-    });
-  }
-
   setSearchString(event: Event) {
     this.searchString.set((event.target as HTMLInputElement).value);
   }
 
-  cancelSearch() {
+  clearSearchInput() {
     this.searchString.set('');
-    this.dialogIsVisibleNew.set(false);
+    this.searchInputRef()?.nativeElement.focus();
   }
 
   // TODO: add tests
