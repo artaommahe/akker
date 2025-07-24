@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, map } from 'rxjs';
+import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import { InputDirective } from 'src/app/ui/input/input';
 
@@ -20,6 +20,7 @@ import { CardsService } from '../cards.service';
         placeholder="Search cards..."
         [value]="searchString()"
         (input)="setSearchString($event)"
+        (keyup.Esc)="searchString.set('')"
       />
 
       @if (searchParams()) {
@@ -55,8 +56,9 @@ export class SearchCardsComponent {
   searchString = signal('');
   searchParams = toSignal(
     toObservable(this.searchString).pipe(
-      debounceTime(searchResultsDebounceTimeMs),
       map(searchString => searchString.trim()),
+      // immediately emit empty search string to clear search results
+      debounce(searchString => (searchString.length > 0 ? timer(searchResultsDebounceTimeMs) : of(undefined))),
       map(searchString => (searchString.length > 0 ? this.parseSearchString(searchString) : undefined)),
     ),
   );
