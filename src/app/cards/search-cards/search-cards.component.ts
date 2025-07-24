@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
@@ -13,7 +23,20 @@ import { CardsService } from '../cards.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex flex-col gap-2">
+    <!-- NOTE: using button with explicit 'click' listener provides a better accessibility. Imitates input's styles-->
+    <button
+      class="bg-secondary focus-visible:border-primary text-secondary w-full rounded-lg border border-transparent p-2 text-left outline-hidden"
+      (click)="dialogIsVisibleNew.set(true)"
+    >
+      Search cards...
+    </button>
+
+    <dialog
+      class="border-secondary text-primary bg-primary backdrop:bg-primary/50 fixed m-2 max-h-[80vh] w-[calc(100vw-1rem)] flex-col gap-2 rounded-xl border p-2 [max-block-size:unset] [max-inline-size:unset] backdrop:backdrop-blur-xs"
+      [class.flex]="dialogIsVisibleNew()"
+      (close)="dialogIsVisibleNew.set(false)"
+      #searchDialog
+    >
       <div class="flex items-center gap-2">
         <input
           class="grow"
@@ -39,6 +62,8 @@ import { CardsService } from '../cards.service';
           <p>{{ searchResult.error() }}</p>
         } @else if (formattedSearchResult().length === 0) {
           <p>No results found</p>
+
+          <ng-container *ngTemplateOutlet="syntax"></ng-container>
         } @else {
           <ul class="flex flex-col gap-2" aria-label="Search cards list">
             @for (card of formattedSearchResult(); track card.id) {
@@ -48,8 +73,27 @@ import { CardsService } from '../cards.service';
             }
           </ul>
         }
+      } @else {
+        <ng-container *ngTemplateOutlet="syntax"></ng-container>
       }
-    </section>
+
+      <ng-template #syntax>
+        <section class="text-secondary">
+          <h3 class="text-lg">Search syntax:</h3>
+          <ul class="list-disc pl-4">
+            <li>
+              <code>tags:tag1,tag2</code>
+              - search for cards with the specified tags
+            </li>
+            <li>
+              Remaining text is treated as a search term. For example, searching for
+              <code>foo bar</code>
+              will return cards that contain this exact substring.
+            </li>
+          </ul>
+        </section>
+      </ng-template>
+    </dialog>
 
     <app-card-details-dialog
       [open]="cardDetailsDialog().open"
@@ -58,10 +102,15 @@ import { CardsService } from '../cards.service';
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective, IconComponent],
+  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective, IconComponent, NgTemplateOutlet],
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
+
+  dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('searchDialog');
+  searchPlaceholderRef = viewChild.required<ElementRef<HTMLInputElement>>('searchPlaceholder');
+
+  dialogIsVisibleNew = signal(false);
 
   searchString = signal('');
   searchParams = toSignal(
@@ -79,14 +128,23 @@ export class SearchCardsComponent {
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
+  constructor() {
+    effect(() => {
+      if (this.dialogIsVisibleNew()) {
+        this.dialogRef().nativeElement.showModal();
+      } else {
+        this.dialogRef().nativeElement.close();
+      }
+    });
+  }
+
   setSearchString(event: Event) {
     this.searchString.set((event.target as HTMLInputElement).value);
   }
 
   cancelSearch() {
     this.searchString.set('');
-    // clear focus from the input field
-    (document.activeElement as HTMLElement | null)?.blur();
+    this.dialogIsVisibleNew.set(false);
   }
 
   // TODO: add tests
