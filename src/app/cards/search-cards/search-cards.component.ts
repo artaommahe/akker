@@ -64,9 +64,17 @@ import { CardsService } from '../cards.service';
               - search for cards with the specified tags
             </li>
             <li>
-              Remaining text is treated as a search term. For example, searching for
+              Remaining text is treated as a search term in regex format. For example, searching for
               <code>foo bar</code>
               will return cards that contain this exact substring.
+              <br />
+              For advance search use regex syntax, e.g.
+              <code>foo|bar</code>
+              will return cards that contain either "foo" or "bar" in their text.
+              <br />
+              Note: special characters like
+              <code>.*+?^{{ '{' }}{{ '}' }}$()|[]\\</code>
+              have to be escaped with a backslash.
             </li>
           </ul>
         </section>

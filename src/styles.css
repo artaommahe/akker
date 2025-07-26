@@ -42,6 +42,10 @@ layer(base);
   }
 }
 
+code {
+  @apply bg-secondary rounded px-1.5 py-0.5;
+}
+
 /* global markdown styles */
 markdown strong {
   @apply text-action-secondary;

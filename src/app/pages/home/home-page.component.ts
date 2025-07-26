@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CardsService } from 'src/app/cards/cards.service';
-import { SearchCardsButtonComponent } from 'src/app/cards/search-cards/serch-cards-button.component';
+import { SearchCardsButtonComponent } from 'src/app/cards/search-cards/search-cards-button.component';
 
 import { InitDemoDataComponent } from '../../demo/init-demo-data/init-demo-data.component';
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
