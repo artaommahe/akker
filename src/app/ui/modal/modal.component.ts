@@ -54,7 +54,8 @@ export class ModalComponent {
 
   modalClass = computed(() =>
     clsx(
-      'bg-primary text-primary fixed [max-block-size:unset] [max-inline-size:unset]',
+      'bg-primary text-primary fixed',
+      '[max-block-size:unset] [max-inline-size:unset]',
       '[&:not([open])]:pointer-events-none',
       this.modalClassInput() ?? '',
     ),

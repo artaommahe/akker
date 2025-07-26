@@ -23,7 +23,7 @@ import { CardsService } from '../cards.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex w-full flex-col gap-2">
+    <section class="flex max-h-[80vh] flex-col gap-2 overflow-hidden">
       <div class="flex items-center gap-2">
         <input
           class="grow"
@@ -52,7 +52,7 @@ import { CardsService } from '../cards.service';
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
         } @else {
-          <ul class="flex flex-col gap-2" aria-label="Search cards list">
+          <ul class="flex flex-col gap-2 overflow-y-scroll" aria-label="Search cards list">
             @for (card of formattedSearchResult(); track card.id) {
               <li>
                 <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />

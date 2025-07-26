@@ -28,7 +28,7 @@ export class SearchCardsButtonComponent {
   searchModalIsVisible = signal(false);
 
   modalClass = clsx(
-    'border-secondary m-2 max-h-[80vh] w-[calc(100vw-1rem)] rounded-xl border p-2',
+    'border-secondary m-2 w-[calc(100vw-1rem)] rounded-xl border p-2',
     'backdrop:bg-primary/50 backdrop:backdrop-blur-xs',
     'transition-none',
   );
