@@ -1,7 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, map } from 'rxjs';
+import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
+import { IconComponent } from 'src/app/ui/icon/icon';
 import { InputDirective } from 'src/app/ui/input/input';
 
 import { CardDetailsDialogComponent } from '../card-details-dialog/card-details-dialog.component';
@@ -12,15 +23,25 @@ import { CardsService } from '../cards.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex flex-col gap-2">
-      <input
-        appInput
-        type="text"
-        aria-label="Search cards"
-        placeholder="Search cards..."
-        [value]="searchString()"
-        (input)="setSearchString($event)"
-      />
+    <section class="flex w-full flex-col gap-2">
+      <div class="flex items-center gap-2">
+        <input
+          class="grow"
+          appInput
+          type="text"
+          aria-label="Search cards"
+          placeholder="Search cards..."
+          [value]="searchString()"
+          (input)="setSearchString($event)"
+          #searchInput
+        />
+
+        @if (searchString().length > 0) {
+          <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="clearSearchInput()">
+            <app-icon class="text-secondary size-6" name="crossInCircle" />
+          </button>
+        }
+      </div>
 
       @if (searchParams()) {
         @if (searchResult.status() === 'error') {
@@ -28,6 +49,8 @@ import { CardsService } from '../cards.service';
           <p>{{ searchResult.error() }}</p>
         } @else if (formattedSearchResult().length === 0) {
           <p>No results found</p>
+
+          <ng-container *ngTemplateOutlet="syntax"></ng-container>
         } @else {
           <ul class="flex flex-col gap-2" aria-label="Search cards list">
             @for (card of formattedSearchResult(); track card.id) {
@@ -37,7 +60,34 @@ import { CardsService } from '../cards.service';
             }
           </ul>
         }
+      } @else {
+        <ng-container *ngTemplateOutlet="syntax"></ng-container>
       }
+
+      <ng-template #syntax>
+        <section class="text-secondary">
+          <h3 class="text-lg">Search syntax:</h3>
+          <ul class="list-disc pl-4">
+            <li>
+              <code>tags:tag1,tag2</code>
+              - search for cards with the specified tags
+            </li>
+            <li>
+              Remaining text is treated as a search term in regex format. For example, searching for
+              <code>foo bar</code>
+              will return cards that contain this exact substring.
+              <br />
+              For advance search use regex syntax, e.g.
+              <code>foo|bar</code>
+              will return cards that contain either "foo" or "bar" in their text.
+              <br />
+              Note: special characters like
+              <code>{{ charactersToEscape }}</code>
+              have to be escaped with a backslash.
+            </li>
+          </ul>
+        </section>
+      </ng-template>
     </section>
 
     <app-card-details-dialog
@@ -47,16 +97,19 @@ import { CardsService } from '../cards.service';
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective],
+  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective, IconComponent, NgTemplateOutlet],
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
 
+  searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+
   searchString = signal('');
   searchParams = toSignal(
     toObservable(this.searchString).pipe(
-      debounceTime(searchResultsDebounceTimeMs),
       map(searchString => searchString.trim()),
+      // immediately emit empty search string to clear search results
+      debounce(searchString => (searchString.length > 0 ? timer(searchResultsDebounceTimeMs) : of(undefined))),
       map(searchString => (searchString.length > 0 ? this.parseSearchString(searchString) : undefined)),
     ),
   );
@@ -67,8 +120,22 @@ export class SearchCardsComponent {
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
+  charactersToEscape = charactersToEscape;
+
+  constructor() {
+    effect(() => {
+      // `autofocus` attribute doesn't work here, most likely because how modal's content is rendered
+      this.searchInputRef()?.nativeElement.focus();
+    });
+  }
+
   setSearchString(event: Event) {
     this.searchString.set((event.target as HTMLInputElement).value);
+  }
+
+  clearSearchInput() {
+    this.searchString.set('');
+    this.searchInputRef()?.nativeElement.focus();
   }
 
   // TODO: add tests
@@ -120,3 +187,4 @@ const searchStringTokensRegex = new RegExp(
   ].join('|'),
   'g',
 );
+const charactersToEscape = `.*+?^{}$()|[]\\`;

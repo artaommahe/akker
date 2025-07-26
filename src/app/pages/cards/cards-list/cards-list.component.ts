@@ -11,9 +11,9 @@ import { ExpansionPanelComponent } from '../../../ui/expansion-panel/expansion-p
   template: `
     <div class="flex flex-col gap-4">
       <section class="flex flex-col gap-2">
-        <h2 class="text-secondary text-lg">New cards</h2>
+        <h2 class="text-secondary text-lg" id="new-cards-heading">New cards</h2>
 
-        <ul class="flex flex-col gap-2" aria-label="New cards list">
+        <ul class="flex flex-col gap-2" aria-labelledby="new-cards-heading">
           @for (card of newCards(); track card.id) {
             <li>
               <app-cards-list-item [card]="card" (showDetails)="showDetails.emit($event.id)" />

@@ -9,7 +9,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
   selector: 'app-last-cards-list',
   template: `
     <section class="flex flex-col gap-2">
-      <h2 class="text-secondary text-lg">Last cards</h2>
+      <h2 class="text-secondary text-lg" id="last-cards-heading">Last cards</h2>
 
       @switch (lastCards.status()) {
         @case ('loading') {
@@ -20,7 +20,7 @@ import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-lis
           <p>{{ lastCards.error() }}</p>
         }
         @default {
-          <ul class="flex flex-col gap-2" aria-label="Last cards list">
+          <ul class="flex flex-col gap-2" aria-labelledby="last-cards-heading">
             @for (card of formattedLastCards(); track card.id) {
               <li>
                 <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />

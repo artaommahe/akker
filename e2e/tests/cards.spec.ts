@@ -9,7 +9,7 @@ test.describe('cards', () => {
 
   test('should show unsorted cards list at home page', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Unsorted cards (3)' })).toBeVisible();
-    await expect(page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('listitem')).toHaveText([
+    await expect(page.getByRole('list', { name: 'Unsorted cards' }).getByRole('listitem')).toHaveText([
       'aardbei',
       'arbeid',
       'bliksem',
@@ -18,7 +18,7 @@ test.describe('cards', () => {
 
   test('should show last cards list at home page', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Last cards' })).toBeVisible();
-    await expect(page.getByRole('list', { name: 'Last cards list' }).getByRole('listitem')).toHaveText([
+    await expect(page.getByRole('list', { name: 'Last cards' }).getByRole('listitem')).toHaveText([
       'framboos',
       'tijdschrift',
       'servet',
@@ -36,7 +36,7 @@ test.describe('cards', () => {
     await page.getByRole('link', { name: 'Cards' }).click();
 
     await expect(page.getByRole('heading', { name: 'New cards' })).toBeVisible();
-    await expect(page.getByRole('list', { name: 'New cards list' }).getByRole('listitem')).toHaveText([
+    await expect(page.getByRole('list', { name: 'New cards' }).getByRole('listitem')).toHaveText([
       'framboos',
       'tijdschrift',
       'servet',
@@ -58,7 +58,7 @@ test.describe('cards', () => {
   });
 
   test('should show unsorted card details', async ({ page }) => {
-    await page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('button', { name: 'bliksem' }).click();
+    await page.getByRole('list', { name: 'Unsorted cards' }).getByRole('button', { name: 'bliksem' }).click();
 
     await expect(page.getByRole('heading', { name: 'Card details' })).toBeVisible();
     await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('bliksem');
@@ -72,7 +72,7 @@ test.describe('cards', () => {
   });
 
   test('should show last card details at home page', async ({ page }) => {
-    await page.getByRole('list', { name: 'Last cards list' }).getByRole('button', { name: 'postkantoor' }).click();
+    await page.getByRole('list', { name: 'Last cards' }).getByRole('button', { name: 'postkantoor' }).click();
 
     await expect(page.getByRole('heading', { name: 'Card details' })).toBeVisible();
     await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('postkantoor');
@@ -87,7 +87,7 @@ test.describe('cards', () => {
 
   test('should show last card details at cards page', async ({ page }) => {
     await page.getByRole('link', { name: 'Cards' }).click();
-    await page.getByRole('list', { name: 'New cards list' }).getByRole('button', { name: 'framboos' }).click();
+    await page.getByRole('list', { name: 'New cards' }).getByRole('button', { name: 'framboos' }).click();
 
     await expect(page.getByRole('heading', { name: 'Card details' })).toBeVisible();
     await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('framboos');
@@ -102,13 +102,11 @@ test.describe('cards', () => {
 
   test('should convert a seed to a card on treshold exceed', async ({ page }) => {
     await page.getByRole('button', { name: 'Add seeds' }).click();
-    await page
-      .getByRole('textbox', { name: 'New seeds list' })
-      .fill(['kat', 'snoep', 'snoep', 'snoep', 'snoep'].join('\n'));
+    await page.getByRole('textbox', { name: 'New seeds' }).fill(['kat', 'snoep', 'snoep', 'snoep', 'snoep'].join('\n'));
     await page.getByRole('button', { name: 'Add', exact: true }).click();
 
-    await expect(page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('listitem')).toHaveCount(5);
-    await expect(page.getByRole('list', { name: 'Last seeds list' }).getByRole('listitem')).toHaveCount(4);
+    await expect(page.getByRole('list', { name: 'Unsorted cards' }).getByRole('listitem')).toHaveCount(5);
+    await expect(page.getByRole('list', { name: 'Last seeds' }).getByRole('listitem')).toHaveCount(4);
     await expect(
       page
         .getByRole('list', { name: 'Last cards' })
@@ -132,10 +130,10 @@ test.describe('cards', () => {
     await page.getByRole('button', { name: 'Add cards' }).click();
 
     await expect(page.getByRole('heading', { name: 'Add cards' })).toBeVisible();
-    await expect(page.getByRole('textbox', { name: 'New cards list' })).toBeVisible();
+    await expect(page.getByRole('textbox', { name: 'New cards' })).toBeVisible();
 
     await page
-      .getByRole('textbox', { name: 'New cards list' })
+      .getByRole('textbox', { name: 'New cards' })
       .fill(
         [
           'ziekenhuis; z**ie**kenhuis; hospital; nl, top1k',
@@ -146,7 +144,7 @@ test.describe('cards', () => {
       );
     await page.getByRole('button', { name: 'Add', exact: true }).click();
 
-    const lastCards = page.getByRole('list', { name: 'New cards list' }).getByRole('listitem');
+    const lastCards = page.getByRole('list', { name: 'New cards' }).getByRole('listitem');
     await expect(lastCards.first()).toHaveText('razend');
     await expect(lastCards.nth(1)).toHaveText('identiteit');
     await expect(lastCards.nth(2)).toHaveText('mier');
@@ -186,7 +184,7 @@ test.describe('cards', () => {
   });
 
   test('should allow to edit a card', async ({ page }) => {
-    await page.getByRole('list', { name: 'Last cards list' }).getByRole('button', { name: 'leraar' }).click();
+    await page.getByRole('list', { name: 'Last cards' }).getByRole('button', { name: 'leraar' }).click();
     await page.getByRole('textbox', { name: 'Term', exact: true }).fill('docent');
     await page.getByRole('textbox', { name: 'Full term' }).fill('doc**e**nt');
     await page.getByRole('textbox', { name: 'Definition' }).fill('lecturer');
@@ -196,7 +194,7 @@ test.describe('cards', () => {
     await expect(page.getByText('leraar')).not.toBeVisible();
     await expect(page.getByRole('button', { name: 'docent' })).toBeVisible();
 
-    await page.getByRole('list', { name: 'Last cards list' }).getByRole('button', { name: 'docent' }).click();
+    await page.getByRole('list', { name: 'Last cards' }).getByRole('button', { name: 'docent' }).click();
     await expect(page.getByRole('heading', { name: 'Card details' })).toBeVisible();
     await expect(page.getByRole('textbox', { name: 'Term', exact: true })).toHaveValue('docent');
     await expect(page.getByRole('textbox', { name: 'Full term' })).toHaveValue('doc**e**nt');
@@ -212,19 +210,19 @@ test.describe('cards', () => {
   });
 
   test('should remove unsorted card from the list on card definition change', async ({ page }) => {
-    await page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('button', { name: 'arbeid' }).click();
+    await page.getByRole('list', { name: 'Unsorted cards' }).getByRole('button', { name: 'arbeid' }).click();
     await page.getByRole('textbox', { name: 'Definition' }).fill('work');
     await page.getByRole('button', { name: 'Save' }).click();
 
     await expect(page.getByRole('heading', { name: 'Unsorted cards (2)' })).toBeVisible();
-    await expect(page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('listitem')).toHaveText([
+    await expect(page.getByRole('list', { name: 'Unsorted cards' }).getByRole('listitem')).toHaveText([
       'aardbei',
       'bliksem',
     ]);
   });
 
   test('should allow to delete a card', async ({ page }) => {
-    await page.getByRole('list', { name: 'Unsorted cards list' }).getByRole('button', { name: 'aardbei' }).click();
+    await page.getByRole('list', { name: 'Unsorted cards' }).getByRole('button', { name: 'aardbei' }).click();
     await page.getByRole('button', { name: 'Remove' }).click();
 
     await expect(page.getByRole('heading', { name: 'Unsorted cards (2)' })).toBeVisible();
@@ -238,6 +236,7 @@ test.describe('cards', () => {
 
   test.describe('search cards', () => {
     test('should show search results for a term', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
 
       await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
@@ -249,6 +248,7 @@ test.describe('cards', () => {
     });
 
     test('should update search results on term change', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
 
       await expect(page.getByRole('list', { name: 'Search cards list' })).toBeVisible();
@@ -262,6 +262,7 @@ test.describe('cards', () => {
     });
 
     test('should allow to search by tags', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:top1k');
 
       await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
@@ -282,6 +283,7 @@ test.describe('cards', () => {
     });
 
     test('should allow to search by everything at once', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:nl,top1k oor');
 
       await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
@@ -291,6 +293,7 @@ test.describe('cards', () => {
     });
 
     test('should show card details from search results', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oor');
       await page.getByRole('list', { name: 'Search cards list' }).getByRole('button', { name: 'voorkomen' }).click();
 
@@ -299,6 +302,7 @@ test.describe('cards', () => {
     });
 
     test('should show a message when no results found', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('nonexistentterm');
 
       await expect(page.getByText('No results found')).toBeVisible();

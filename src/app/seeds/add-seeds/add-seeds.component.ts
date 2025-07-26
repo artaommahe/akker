@@ -15,7 +15,7 @@ import { SeedsService } from '../seeds.service';
         <textarea
           class="grow"
           appInput
-          aria-label="New seeds list"
+          aria-label="New seeds"
           aria-describedby="new-seeds-hint"
           [value]="newSeed()"
           (input)="updateSeed($event)"
