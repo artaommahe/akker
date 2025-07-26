@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import clsx from 'clsx';
-import { combineLatest, fromEvent, map, of, switchMap } from 'rxjs';
+import { combineLatest, delay, fromEvent, map, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 /**
@@ -61,6 +61,8 @@ export class ModalComponent {
   );
 
   isAnimated = toObservable(this.dialogRef).pipe(
+    // without this delay `getComputedStyle().transition` always returns `all` for some reason
+    delay(0),
     map(dialogRef => {
       const dialogAnimationExists = window.getComputedStyle(dialogRef.nativeElement).transition !== 'none';
 
