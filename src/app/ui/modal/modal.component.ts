@@ -1,9 +1,10 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   TemplateRef,
+  computed,
   contentChild,
   effect,
   input,
@@ -11,6 +12,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import clsx from 'clsx';
 import { combineLatest, fromEvent, map, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -23,13 +25,12 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-modal',
   template: `
+    <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+    <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
     <dialog
-      [ngClass]="[
-        'bg-primary text-primary fixed [max-block-size:unset] [max-inline-size:unset]',
-        '[&:not([open])]:pointer-events-none',
-        modalClass() ?? '',
-      ]"
+      [class]="modalClass()"
       [inert]="!isOpen()"
+      (click)="handleBackdropClick($event)"
       (close)="dismiss.emit()"
       #dialog
     >
@@ -38,17 +39,26 @@ import { environment } from 'src/environments/environment';
       }
     </dialog>
   `,
-  imports: [NgTemplateOutlet, NgClass],
+  imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  openInput = input(false, { alias: 'open' });
-  modalClass = input<string | undefined>(undefined);
+  openInput = input.required<boolean>({ alias: 'open' });
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  modalClassInput = input<string | undefined>(undefined, { alias: 'modalClass' });
   dismiss = output();
 
   dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   contentRef = contentChild.required(TemplateRef);
+
+  modalClass = computed(() =>
+    clsx(
+      'bg-primary text-primary fixed [max-block-size:unset] [max-inline-size:unset]',
+      '[&:not([open])]:pointer-events-none',
+      this.modalClassInput() ?? '',
+    ),
+  );
 
   isOpen = toSignal(
     combineLatest([toObservable(this.openInput), toObservable(this.dialogRef)]).pipe(
@@ -68,9 +78,15 @@ export class ModalComponent {
       if (this.openInput()) {
         this.dialogRef().nativeElement.showModal();
       } else {
-        this.dialogRef().nativeElement.close();
+        this.close();
       }
     });
+  }
+
+  handleBackdropClick(event: MouseEvent) {
+    if (event.target === this.dialogRef().nativeElement) {
+      this.close();
+    }
   }
 
   close() {
