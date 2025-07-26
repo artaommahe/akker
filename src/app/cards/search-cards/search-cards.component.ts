@@ -82,7 +82,7 @@ import { CardsService } from '../cards.service';
               will return cards that contain either "foo" or "bar" in their text.
               <br />
               Note: special characters like
-              <code>.*+?^{{ '{' }}{{ '}' }}$()|[]\\</code>
+              <code>{{ charactersToEscape }}</code>
               have to be escaped with a backslash.
             </li>
           </ul>
@@ -119,6 +119,8 @@ export class SearchCardsComponent {
   );
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
+
+  charactersToEscape = charactersToEscape;
 
   constructor() {
     effect(() => {
@@ -185,3 +187,4 @@ const searchStringTokensRegex = new RegExp(
   ].join('|'),
   'g',
 );
+const charactersToEscape = `.*+?^{}$()|[]\\`;

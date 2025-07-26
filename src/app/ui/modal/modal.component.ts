@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment';
  * Base modal component that can be used to create dialogs and other modal windows.
  * Uses the native `<dialog>` element just for fun and learning purposes.
  *
- * NOTE: if modal has no animation, that `transition-none` class should be explicitly added to the `modalClass` input
+ * NOTE: if modal has no animation, the `transition-none` class should be explicitly added to the `modalClass` input
  * */
 @Component({
   selector: 'app-modal',
@@ -60,12 +60,17 @@ export class ModalComponent {
     ),
   );
 
-  isOpen = toSignal(
-    combineLatest([toObservable(this.openInput), toObservable(this.dialogRef)]).pipe(
-      switchMap(([open, dialogRef]) => {
-        const dialogAnimationExists = window.getComputedStyle(dialogRef.nativeElement).transition !== 'none';
+  isAnimated = toObservable(this.dialogRef).pipe(
+    map(dialogRef => {
+      const dialogAnimationExists = window.getComputedStyle(dialogRef.nativeElement).transition !== 'none';
 
-        return open || environment.animationsDisabled || !dialogAnimationExists
+      return dialogAnimationExists && !environment.animationsDisabled;
+    }),
+  );
+  isOpen = toSignal(
+    combineLatest([toObservable(this.openInput), toObservable(this.dialogRef), this.isAnimated]).pipe(
+      switchMap(([open, dialogRef, isAnimated]) => {
+        return open || !isAnimated
           ? of(open)
           : // we should wait for the modal animation to finish before removing modal's content from the DOM
             fromEvent(dialogRef.nativeElement, 'transitionend').pipe(map(() => false));
