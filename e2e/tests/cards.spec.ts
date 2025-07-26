@@ -236,6 +236,7 @@ test.describe('cards', () => {
 
   test.describe('search cards', () => {
     test('should show search results for a term', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
 
       await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
@@ -247,6 +248,7 @@ test.describe('cards', () => {
     });
 
     test('should update search results on term change', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
 
       await expect(page.getByRole('list', { name: 'Search cards list' })).toBeVisible();
@@ -260,6 +262,7 @@ test.describe('cards', () => {
     });
 
     test('should allow to search by tags', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:top1k');
 
       await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
@@ -280,6 +283,7 @@ test.describe('cards', () => {
     });
 
     test('should allow to search by everything at once', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('tags:nl,top1k oor');
 
       await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
@@ -289,6 +293,7 @@ test.describe('cards', () => {
     });
 
     test('should show card details from search results', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oor');
       await page.getByRole('list', { name: 'Search cards list' }).getByRole('button', { name: 'voorkomen' }).click();
 
@@ -297,6 +302,7 @@ test.describe('cards', () => {
     });
 
     test('should show a message when no results found', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('nonexistentterm');
 
       await expect(page.getByText('No results found')).toBeVisible();
