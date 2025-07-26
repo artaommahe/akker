@@ -1,5 +1,14 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
@@ -110,6 +119,13 @@ export class SearchCardsComponent {
   );
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
+
+  constructor() {
+    effect(() => {
+      // `autofocus` attribute doesn't work here, most likely because how modal's content is rendered
+      this.searchInputRef()?.nativeElement.focus();
+    });
+  }
 
   setSearchString(event: Event) {
     this.searchString.set((event.target as HTMLInputElement).value);
