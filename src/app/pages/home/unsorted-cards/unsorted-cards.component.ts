@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { CardsListComponent } from 'src/app/cards/cards-list/cards-list.component';
 
-import { CardDetailsDialogComponent } from '../../../cards/card-details-dialog/card-details-dialog.component';
-import { type CardDetailsCard } from '../../../cards/card-details/card-details.component';
-import { CardsListItemComponent } from '../../../cards/cards-list-item/cards-list-item.component';
 import { CardsService } from '../../../cards/cards.service';
 
 @Component({
@@ -16,33 +14,16 @@ import { CardsService } from '../../../cards/cards.service';
         }
       </h2>
 
-      @switch (unsortedCards.status()) {
-        @case ('loading') {
-          <p>Loading...</p>
-        }
-        @case ('error') {
-          <p class="text-semantic-danger">Error loading unsorted cards list:</p>
-          <p>{{ unsortedCards.error() }}</p>
-        }
-        @default {
-          <ul class="columns-2 gap-4" aria-labelledby="unsorted-cards-heading">
-            @for (card of someUnsortedCards(); track card.id) {
-              <li>
-                <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />
-              </li>
-            }
-          </ul>
-        }
-      }
+      <app-cards-list
+        [cards]="someUnsortedCards()"
+        [isLoading]="unsortedCards.isLoading()"
+        [loadingError]="unsortedCards.error()"
+        listLabelledBy="unsorted-cards-heading"
+        [isTwoColumnsLayout]="true"
+      />
     </section>
-
-    <app-card-details-dialog
-      [open]="cardDetailsDialog().open"
-      [card]="cardDetailsDialog().card"
-      (dismiss)="closeCardDetailsDialog()"
-    />
   `,
-  imports: [CardDetailsDialogComponent, CardsListItemComponent],
+  imports: [CardsListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnsortedCardsComponent {
@@ -58,12 +39,6 @@ export class UnsortedCardsComponent {
         ?.slice(0, someUnsortedCardsCount)
         .map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
-
-  cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
-
-  closeCardDetailsDialog() {
-    this.cardDetailsDialog.update(value => ({ ...value, open: false }));
-  }
 }
 
 const someUnsortedCardsCount = 10;

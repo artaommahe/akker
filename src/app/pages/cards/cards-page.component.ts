@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { CardsListComponent } from 'src/app/cards/cards-list/cards-list.component';
 import { CardsService } from 'src/app/cards/cards.service';
+import { ExpansionPanelComponent } from 'src/app/ui/expansion-panel/expansion-panel.component';
 
 import { AddCardsButtonComponent } from '../../cards/add-cards-button/add-cards-button.component';
-import { CardDetailsDialogComponent } from '../../cards/card-details-dialog/card-details-dialog.component';
-import type { CardDetailsCard } from '../../cards/card-details/card-details.component';
 import { LearnCardsComponent } from '../../learning/learn-cards.component';
-import { CardsListComponent } from './cards-list/cards-list.component';
 
 @Component({
   selector: 'app-cards-page',
@@ -13,29 +12,29 @@ import { CardsListComponent } from './cards-list/cards-list.component';
     <div class="flex flex-col gap-4">
       <app-learn-cards />
 
-      @switch (cards.status()) {
-        @case ('loading') {
-          <p>Loading...</p>
-        }
-        @case ('error') {
-          <p class="text-semantic-danger">Error loading cards list:</p>
-          <p>{{ cards.error() }}</p>
-        }
-        @default {
-          <app-cards-list [cards]="formattedCards()" (showDetails)="onShowDetails($event)" />
-        }
-      }
+      <section class="flex flex-col gap-2">
+        <h2 class="text-secondary text-lg" id="new-cards-heading">New cards</h2>
 
-      <app-card-details-dialog
-        [open]="cardDetailsDialog().open"
-        [card]="cardDetailsDialog().card"
-        (dismiss)="closeCardDetailsDialog()"
-      />
+        <app-cards-list
+          [cards]="newCards()"
+          [isLoading]="cards.isLoading()"
+          [loadingError]="cards.error()"
+          listLabelledBy="new-cards-heading"
+        />
+      </section>
+
+      <app-expansion-panel>
+        <ng-container>Rest ({{ restCards().length }})</ng-container>
+
+        <ng-template>
+          <app-cards-list [cards]="restCards()" ariaLabel="Rest cards" />
+        </ng-template>
+      </app-expansion-panel>
 
       <app-add-cards-button />
     </div>
   `,
-  imports: [CardsListComponent, CardDetailsDialogComponent, LearnCardsComponent, AddCardsButtonComponent],
+  imports: [CardsListComponent, LearnCardsComponent, AddCardsButtonComponent, ExpansionPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsPageComponent {
@@ -45,19 +44,8 @@ export class CardsPageComponent {
   formattedCards = computed(
     () => this.cards.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
-  cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
-
-  onShowDetails(cardId: string) {
-    const card = this.cards.value()?.find(card => card.id === cardId);
-
-    if (!card) {
-      throw new Error(`Card with id ${cardId} not found`);
-    }
-
-    this.cardDetailsDialog.set({ open: true, card });
-  }
-
-  closeCardDetailsDialog() {
-    this.cardDetailsDialog.update(value => ({ ...value, open: false }));
-  }
+  newCards = computed(() => this.formattedCards().slice(0, newCardsCount));
+  restCards = computed(() => this.formattedCards().slice(newCardsCount));
 }
+
+const newCardsCount = 10;

@@ -51,7 +51,7 @@ test.describe('cards', () => {
 
     await page.getByRole('group').filter({ hasText: 'Rest (2)' }).click();
 
-    await expect(page.getByRole('group').filter({ hasText: 'Rest (2)' }).getByRole('listitem')).toHaveText([
+    await expect(page.getByRole('list', { name: 'Rest cards' }).getByRole('listitem')).toHaveText([
       'arbeid',
       'aardbei',
     ]);
