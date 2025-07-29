@@ -7,11 +7,9 @@ import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, signal }
     <details (toggle)="isOpen.set(details.open)" #details>
       <summary class="text-lg"><ng-content></ng-content></summary>
 
-      <ul class="flex flex-col gap-2">
-        @if (isOpen()) {
-          <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
-        }
-      </ul>
+      @if (isOpen()) {
+        <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
+      }
     </details>
   `,
   imports: [NgTemplateOutlet],
