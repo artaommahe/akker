@@ -45,7 +45,7 @@ export class CardsListComponent {
   listAriaLabelledBy = input<string>();
   isTwoColumnsLayout = input(false);
 
-  cardDetailsDialog = signal<{ open: boolean; card: CardsListCard | null }>({ open: false, card: null });
+  cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
   constructor() {
     effect(() => {
