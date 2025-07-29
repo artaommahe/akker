@@ -17,8 +17,8 @@ import { type CardsListItemCard, CardsListItemComponent } from '../cards-list-it
         class="flex-col gap-2 overflow-y-scroll"
         [class.flex]="!isTwoColumnsLayout()"
         [class.columns-2]="isTwoColumnsLayout()"
-        [attr.aria-label]="ariaLabel()"
-        [attr.aria-labelledby]="listLabelledBy()"
+        [attr.aria-label]="listAriaLabel()"
+        [attr.aria-labelledby]="listAriaLabelledBy()"
       >
         @for (card of cards(); track card.id) {
           <li>
@@ -41,16 +41,16 @@ export class CardsListComponent {
   cards = input.required<CardsListCard[]>();
   isLoading = input(false);
   loadingError = input<Error>();
-  ariaLabel = input<string>();
-  listLabelledBy = input<string>();
+  listAriaLabel = input<string>();
+  listAriaLabelledBy = input<string>();
   isTwoColumnsLayout = input(false);
 
   cardDetailsDialog = signal<{ open: boolean; card: CardsListCard | null }>({ open: false, card: null });
 
   constructor() {
     effect(() => {
-      if (!this.ariaLabel() && !this.listLabelledBy()) {
-        throw new Error('CardsListComponent: Either ariaLabel or listLabelledBy input must be provided');
+      if (!this.listAriaLabel() && !this.listAriaLabelledBy()) {
+        throw new Error('CardsListComponent: Either listAriaLabel or listAriaLabelledBy input must be provided');
       }
     });
   }

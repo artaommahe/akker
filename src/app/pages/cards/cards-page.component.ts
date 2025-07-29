@@ -19,7 +19,7 @@ import { LearnCardsComponent } from '../../learning/learn-cards.component';
           [cards]="newCards()"
           [isLoading]="cards.isLoading()"
           [loadingError]="cards.error()"
-          listLabelledBy="new-cards-heading"
+          [listAriaLabelledBy]="'new-cards-heading'"
         />
       </section>
 
@@ -27,7 +27,7 @@ import { LearnCardsComponent } from '../../learning/learn-cards.component';
         <ng-container>Rest ({{ restCards().length }})</ng-container>
 
         <ng-template>
-          <app-cards-list [cards]="restCards()" ariaLabel="Rest cards" />
+          <app-cards-list [cards]="restCards()" [listAriaLabel]="'Rest cards'" />
         </ng-template>
       </app-expansion-panel>
 

@@ -52,7 +52,7 @@ import { CardsService } from '../cards.service';
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
         } @else {
-          <app-cards-list class="contents" [cards]="formattedSearchResult()" ariaLabel="Search cards list" />
+          <app-cards-list class="contents" [cards]="formattedSearchResult()" [listAriaLabel]="'Search cards list'" />
         }
       } @else {
         <ng-container *ngTemplateOutlet="syntax"></ng-container>

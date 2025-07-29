@@ -12,7 +12,7 @@ import { CardsService } from 'src/app/cards/cards.service';
         [cards]="formattedLastCards()"
         [isLoading]="lastCards.isLoading()"
         [loadingError]="lastCards.error()"
-        listLabelledBy="last-cards-heading"
+        [listAriaLabelledBy]="'last-cards-heading'"
       />
     </section>
   `,

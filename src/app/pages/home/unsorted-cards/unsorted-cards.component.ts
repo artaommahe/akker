@@ -18,7 +18,7 @@ import { CardsService } from '../../../cards/cards.service';
         [cards]="someUnsortedCards()"
         [isLoading]="unsortedCards.isLoading()"
         [loadingError]="unsortedCards.error()"
-        listLabelledBy="unsorted-cards-heading"
+        [listAriaLabelledBy]="'unsorted-cards-heading'"
         [isTwoColumnsLayout]="true"
       />
     </section>
