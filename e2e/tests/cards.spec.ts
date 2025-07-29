@@ -51,7 +51,7 @@ test.describe('cards', () => {
 
     await page.getByRole('group').filter({ hasText: 'Rest (2)' }).click();
 
-    await expect(page.getByRole('group').filter({ hasText: 'Rest (2)' }).getByRole('listitem')).toHaveText([
+    await expect(page.getByRole('list', { name: 'Rest cards' }).getByRole('listitem')).toHaveText([
       'arbeid',
       'aardbei',
     ]);
@@ -68,7 +68,7 @@ test.describe('cards', () => {
 
     await page.getByRole('group').filter({ hasText: 'FSRS stats' }).click();
 
-    await expect(page.getByRole('group').filter({ hasText: 'FSRS stats' }).getByRole('list')).toHaveText('empty');
+    await expect(page.getByRole('group').filter({ hasText: 'FSRS stats' }).getByRole('paragraph')).toHaveText('empty');
   });
 
   test('should show last card details at home page', async ({ page }) => {
@@ -82,7 +82,7 @@ test.describe('cards', () => {
 
     await page.getByRole('group').filter({ hasText: 'FSRS stats' }).click();
 
-    await expect(page.getByRole('group').filter({ hasText: 'FSRS stats' }).getByRole('list')).toHaveText('empty');
+    await expect(page.getByRole('group').filter({ hasText: 'FSRS stats' }).getByRole('paragraph')).toHaveText('empty');
   });
 
   test('should show last card details at cards page', async ({ page }) => {
@@ -97,7 +97,7 @@ test.describe('cards', () => {
 
     await page.getByRole('group').filter({ hasText: 'FSRS stats' }).click();
 
-    await expect(page.getByRole('group').filter({ hasText: 'FSRS stats' }).getByRole('list')).toHaveText('empty');
+    await expect(page.getByRole('group').filter({ hasText: 'FSRS stats' }).getByRole('paragraph')).toHaveText('empty');
   });
 
   test('should convert a seed to a card on treshold exceed', async ({ page }) => {

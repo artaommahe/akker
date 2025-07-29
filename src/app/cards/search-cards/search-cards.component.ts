@@ -17,9 +17,7 @@ import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { IconComponent } from 'src/app/ui/icon/icon';
 import { InputDirective } from 'src/app/ui/input/input';
 
-import { CardDetailsDialogComponent } from '../card-details-dialog/card-details-dialog.component';
-import type { CardDetailsCard } from '../card-details/card-details.component';
-import { CardsListItemComponent } from '../cards-list-item/cards-list-item.component';
+import { CardsListComponent } from '../cards-list/cards-list.component';
 import { CardsService } from '../cards.service';
 
 @Component({
@@ -54,13 +52,7 @@ import { CardsService } from '../cards.service';
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
         } @else {
-          <ul class="flex flex-col gap-2 overflow-y-scroll" aria-label="Search cards list">
-            @for (card of formattedSearchResult(); track card.id) {
-              <li>
-                <app-cards-list-item [card]="card" (showDetails)="cardDetailsDialog.set({ open: true, card })" />
-              </li>
-            }
-          </ul>
+          <app-cards-list class="contents" [cards]="formattedSearchResult()" [listAriaLabel]="'Search cards list'" />
         }
       } @else {
         <ng-container *ngTemplateOutlet="syntax"></ng-container>
@@ -91,15 +83,9 @@ import { CardsService } from '../cards.service';
         </section>
       </ng-template>
     </section>
-
-    <app-card-details-dialog
-      [open]="cardDetailsDialog().open"
-      [card]="cardDetailsDialog().card"
-      (dismiss)="closeCardDetailsDialog()"
-    />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardsListItemComponent, CardDetailsDialogComponent, InputDirective, IconComponent, NgTemplateOutlet],
+  imports: [CardsListComponent, InputDirective, IconComponent, NgTemplateOutlet],
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
@@ -126,8 +112,6 @@ export class SearchCardsComponent {
   formattedSearchResult = computed(
     () => this.cachedSearchResultValue()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
-
-  cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
 
   charactersToEscape = charactersToEscape;
 
@@ -174,10 +158,6 @@ export class SearchCardsComponent {
     );
 
     return params;
-  }
-
-  closeCardDetailsDialog() {
-    this.cardDetailsDialog.update(value => ({ ...value, open: false }));
   }
 }
 
