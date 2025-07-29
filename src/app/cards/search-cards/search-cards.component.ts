@@ -119,12 +119,12 @@ export class SearchCardsComponent {
   // prevent previous search results from being cleared while new search is in progress
   // currently there is no way to get the previous value of a resource
   // https://github.com/angular/angular/issues/58602#issuecomment-2621337106 (last point)
-  cashedSearchResultValue = linkedSignal<DbCard[] | undefined, DbCard[] | undefined>({
+  cachedSearchResultValue = linkedSignal<DbCard[] | undefined, DbCard[] | undefined>({
     source: this.searchResult.value,
     computation: (newCards, previous) => newCards ?? previous?.value,
   });
   formattedSearchResult = computed(
-    () => this.cashedSearchResultValue()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
+    () => this.cachedSearchResultValue()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
