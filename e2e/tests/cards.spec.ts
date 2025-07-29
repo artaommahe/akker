@@ -292,6 +292,20 @@ test.describe('cards', () => {
       ]);
     });
 
+    test('should update search results on query change', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oor');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText([
+        'voorkomen',
+        'postkantoor',
+      ]);
+
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oom');
+
+      await expect(page.getByRole('list', { name: 'Search cards list' }).getByRole('listitem')).toHaveText(['boom']);
+    });
+
     test('should show card details from search results', async ({ page }) => {
       await page.getByRole('button', { name: 'Search cards...' }).click();
       await page.getByRole('textbox', { name: 'Search cards' }).fill('oor');
