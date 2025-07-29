@@ -6,12 +6,14 @@ import {
   computed,
   effect,
   inject,
+  linkedSignal,
   signal,
   viewChild,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
+import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { IconComponent } from 'src/app/ui/icon/icon';
 import { InputDirective } from 'src/app/ui/input/input';
 
@@ -36,7 +38,7 @@ import { CardsService } from '../cards.service';
           #searchInput
         />
 
-        @if (searchString().length > 0) {
+        @if (searchParams()) {
           <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="clearSearchInput()">
             <app-icon class="text-secondary size-6" name="crossInCircle" />
           </button>
@@ -47,7 +49,7 @@ import { CardsService } from '../cards.service';
         @if (searchResult.status() === 'error') {
           <p class="text-semantic-danger">Error loading search results:</p>
           <p>{{ searchResult.error() }}</p>
-        } @else if (formattedSearchResult().length === 0) {
+        } @else if (!searchResult.isLoading() && formattedSearchResult().length === 0) {
           <p>No results found</p>
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
@@ -114,8 +116,15 @@ export class SearchCardsComponent {
     ),
   );
   searchResult = this.cardsService.getCards(() => this.searchParams());
+  // prevent previous search results from being cleared while new search is in progress
+  // currently there is no way to get the previous value of a resource
+  // https://github.com/angular/angular/issues/58602#issuecomment-2621337106 (last point)
+  cachedSearchResultValue = linkedSignal<DbCard[] | undefined, DbCard[] | undefined>({
+    source: this.searchResult.value,
+    computation: (newCards, previous) => newCards ?? previous?.value,
+  });
   formattedSearchResult = computed(
-    () => this.searchResult.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
+    () => this.cachedSearchResultValue()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
 
   cardDetailsDialog = signal<{ open: boolean; card: CardDetailsCard | null }>({ open: false, card: null });
