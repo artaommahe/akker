@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { CardsService } from '../cards/cards.service';
-import { ButtonDirective } from '../ui/button/button';
-import { DialogComponent } from '../ui/dialog/dialog.component';
-import { type Card, CardsComponent } from './cards/cards.component';
-import { type CardGrade, LearningService } from './learning.service';
+import { CardsService } from '../../cards/cards.service';
+import { ButtonDirective } from '../../ui/button/button';
+import { DialogComponent } from '../../ui/dialog/dialog.component';
+import { type Card, LearnCardsComponent } from '../learn-cards/learn-cards.component';
+import { type CardGrade, LearningService } from '../learning.service';
 
 @Component({
-  selector: 'app-learn-cards',
+  selector: 'app-learn-cards-button',
   template: `
     @if (cards.hasValue() && cards.value().length) {
       <button appButton (click)="learnCards()">Learn</button>
@@ -16,15 +16,15 @@ import { type CardGrade, LearningService } from './learning.service';
     <app-dialog [open]="cardsToLearnDialog().open" (dismiss)="closeCardsDialog()">
       <ng-template>
         @if (cardsToLearnDialog().cards; as cards) {
-          <app-cards [cards]="cards" (rateCard)="onRateCard($event)" />
+          <app-learn-cards [cards]="cards" (rateCard)="onRateCard($event)" />
         }
       </ng-template>
     </app-dialog>
   `,
-  imports: [CardsComponent, ButtonDirective, DialogComponent],
+  imports: [LearnCardsComponent, ButtonDirective, DialogComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LearnCardsComponent {
+export class LearnCardsButtonComponent {
   private cardsService = inject(CardsService);
   private learningService = inject(LearningService);
 

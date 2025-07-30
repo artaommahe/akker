@@ -6,7 +6,7 @@ import { CardGrade } from '../learning.service';
 
 // TODO: add tests
 @Component({
-  selector: 'app-cards',
+  selector: 'app-learn-cards',
   template: `
     <div class="flex h-full flex-col gap-4 pb-16">
       <div class="text-secondary flex items-center justify-between">
@@ -57,7 +57,7 @@ import { CardGrade } from '../learning.service';
   imports: [ButtonDirective, MarkdownComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardsComponent {
+export class LearnCardsComponent {
   cards = input.required<Card[]>();
   rateCard = output<{ id: string; grade: CardGrade }>();
 

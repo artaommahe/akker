@@ -3,7 +3,7 @@ import { CardsService } from 'src/app/cards/cards.service';
 import { SearchCardsButtonComponent } from 'src/app/cards/search-cards/search-cards-button.component';
 
 import { InitDemoDataComponent } from '../../demo/init-demo-data/init-demo-data.component';
-import { LearnCardsComponent } from '../../learning/learn-cards.component';
+import { LearnCardsButtonComponent } from '../../learning/learn-cards-button/learn-cards-button.component';
 import { AddSeedsButtonComponent } from '../../seeds/add-seeds-button/add-seeds-button.component';
 import { LastCardsListComponent } from './last-cards-list/last-cards-list.component';
 import { LastSeedsListComponent } from './last-seeds-list/last-seeds-list.component';
@@ -21,7 +21,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
 
       <app-unsorted-cards />
 
-      <app-learn-cards />
+      <app-learn-cards-button />
 
       <div class="flex gap-4">
         <div class="min-w-0 flex-1">
@@ -40,7 +40,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
   `,
   imports: [
     UnsortedCardsComponent,
-    LearnCardsComponent,
+    LearnCardsButtonComponent,
     AddSeedsButtonComponent,
     LastSeedsListComponent,
     LastCardsListComponent,
