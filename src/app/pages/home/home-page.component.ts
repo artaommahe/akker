@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CardsService } from 'src/app/cards/cards.service';
 import { SearchCardsButtonComponent } from 'src/app/cards/search-cards/search-cards-button.component';
 
@@ -21,7 +21,7 @@ import { UnsortedCardsComponent } from './unsorted-cards/unsorted-cards.componen
 
       <app-unsorted-cards />
 
-      <app-learn-cards-button />
+      <app-learn-cards-button [cards]="cardsToLearn()" />
 
       <div class="flex gap-4">
         <div class="min-w-0 flex-1">
@@ -55,4 +55,7 @@ export class HomePageComponent {
   // TODO: move all data fetching from children to this component
   // https://github.com/artaommahe/akker/issues/78
   cardsCount = this.cardsService.getCardsCount();
+  cards = this.cardsService.getCards();
+
+  cardsToLearn = computed(() => (this.cards.hasValue() ? this.cards.value() : undefined));
 }

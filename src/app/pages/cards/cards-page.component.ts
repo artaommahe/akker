@@ -10,7 +10,7 @@ import { LearnCardsButtonComponent } from '../../learning/learn-cards-button/lea
   selector: 'app-cards-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-learn-cards-button />
+      <app-learn-cards-button [cards]="cardsToLearn()" />
 
       <section class="flex flex-col gap-2">
         <h2 class="text-secondary text-lg" id="new-cards-heading">New cards</h2>
@@ -41,6 +41,7 @@ export class CardsPageComponent {
   private cardsService = inject(CardsService);
 
   cards = this.cardsService.getCards();
+  cardsToLearn = computed(() => (this.cards.hasValue() ? this.cards.value() : undefined));
   formattedCards = computed(
     () => this.cards.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );

@@ -58,7 +58,7 @@ import { CardGrade } from '../learning.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LearnCardsComponent {
-  cards = input.required<Card[]>();
+  cards = input.required<LearnCardsCard[]>();
   rateCard = output<{ id: string; grade: CardGrade }>();
 
   cardsToRate = computed(() => [
@@ -102,7 +102,7 @@ export class LearnCardsComponent {
   }
 }
 
-export interface Card {
+export interface LearnCardsCard {
   id: string;
   term: string;
   fullTerm?: string;

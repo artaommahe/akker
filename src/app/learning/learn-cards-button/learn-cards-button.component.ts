@@ -1,23 +1,22 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 
 import { CardsService } from '../../cards/cards.service';
 import { ButtonDirective } from '../../ui/button/button';
 import { DialogComponent } from '../../ui/dialog/dialog.component';
-import { type Card, LearnCardsComponent } from '../learn-cards/learn-cards.component';
+import { type LearnCardsCard, LearnCardsComponent } from '../learn-cards/learn-cards.component';
 import { type CardGrade, LearningService } from '../learning.service';
 
 @Component({
   selector: 'app-learn-cards-button',
   template: `
-    @if (cards.hasValue() && cards.value().length) {
-      <button appButton (click)="learnCards()">Learn</button>
+    @if (cards()?.length) {
+      <button appButton (click)="openLearnCardsDialog()">Learn</button>
     }
 
-    <app-dialog [open]="cardsToLearnDialog().open" (dismiss)="closeCardsDialog()">
+    <app-dialog [open]="showLearnCardsDialog()" (dismiss)="closeLearnCardsDialog()">
       <ng-template>
-        @if (cardsToLearnDialog().cards; as cards) {
-          <app-learn-cards [cards]="cards" (rateCard)="onRateCard($event)" />
-        }
+        <app-learn-cards [cards]="currentCardsToLearn()" (rateCard)="onRateCard($event)" />
       </ng-template>
     </app-dialog>
   `,
@@ -28,28 +27,25 @@ export class LearnCardsButtonComponent {
   private cardsService = inject(CardsService);
   private learningService = inject(LearningService);
 
-  // NOTE: should use `cardsToLearn` input instead https://github.com/artaommahe/akker/issues/71
-  cards = this.cardsService.getCards();
-  cardsToLearnDialog = signal<{ open: boolean; cards: Card[] | null }>({ open: false, cards: null });
+  cards = input.required<LearnCardsButtonCard[] | undefined>();
 
-  learnCards() {
-    const cards = this.cards.value();
+  currentCardsToLearn = signal<LearnCardsCard[]>([]);
+  showLearnCardsDialog = signal(false);
 
-    if (!cards) {
-      return;
-    }
+  openLearnCardsDialog() {
+    // can't use `computed` here cause it will (may) be re-evaluated on every card rate
+    const cardsToLearn = this.learningService.selectCardsToLearn(this.cards() ?? [], cardsToLearnCount);
 
-    const cardsToLearn = this.learningService.selectCardsToLearn(cards, cardsToLearnCount);
-
-    this.cardsToLearnDialog.set({ open: true, cards: cardsToLearn });
+    this.currentCardsToLearn.set(cardsToLearn);
+    this.showLearnCardsDialog.set(true);
   }
 
-  closeCardsDialog() {
-    this.cardsToLearnDialog.update(value => ({ ...value, open: false }));
+  closeLearnCardsDialog() {
+    this.showLearnCardsDialog.set(false);
   }
 
   async onRateCard({ id, grade }: { id: string; grade: CardGrade }) {
-    const card = this.cards.value()?.find(card => card.id === id);
+    const card = this.cards()?.find(card => card.id === id);
 
     if (!card) {
       return;
@@ -62,3 +58,5 @@ export class LearnCardsButtonComponent {
 }
 
 const cardsToLearnCount = 15;
+
+interface LearnCardsButtonCard extends LearnCardsCard, Pick<DbCard, 'fsrs'> {}
