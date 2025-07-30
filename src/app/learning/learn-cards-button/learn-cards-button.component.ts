@@ -29,7 +29,7 @@ export class LearnCardsButtonComponent {
 
   cards = input.required<LearnCardsButtonCard[] | undefined>();
 
-  currentCardsToLearn = signal<LearnCardsCard[]>([]);
+  currentCardsToLearn = signal<LearnCardsButtonCard[]>([]);
   showLearnCardsDialog = signal(false);
 
   openLearnCardsDialog() {
@@ -44,13 +44,7 @@ export class LearnCardsButtonComponent {
     this.showLearnCardsDialog.set(false);
   }
 
-  async onRateCard({ id, grade }: { id: string; grade: CardGrade }) {
-    const card = this.cards()?.find(card => card.id === id);
-
-    if (!card) {
-      return;
-    }
-
+  async onRateCard({ card, grade }: { card: LearnCardsButtonCard; grade: CardGrade }) {
     const newFsrsCard = this.learningService.rateFsrsCard({ card: card.fsrs?.card, grade });
 
     await this.cardsService.updateCard(card.id, { fsrs: { ...card.fsrs, card: newFsrsCard } });
