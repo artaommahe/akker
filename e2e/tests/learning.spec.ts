@@ -1,7 +1,7 @@
 import test, { expect } from 'playwright/test';
 
 test.describe('learning', () => {
-  test('shouldnt show learn cards button if there are no cards', async ({ page }) => {
+  test("shouldn't show learn cards button if there are no cards", async ({ page }) => {
     await page.goto('/');
 
     await expect(page.getByRole('button', { name: 'Learn' })).toHaveCount(0);
@@ -40,7 +40,7 @@ test.describe('learning', () => {
       await expect(page.getByRole('button', { name: 'Again' })).toBeVisible();
     });
 
-    test('should show allow to rate cards', async ({ page }) => {
+    test('should allow to rate cards', async ({ page }) => {
       await page.getByRole('button', { name: 'Learn' }).click();
 
       await page.getByRole('button', { name: 'Easy' }).click();
