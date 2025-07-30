@@ -4,13 +4,13 @@ import { CardsService } from 'src/app/cards/cards.service';
 import { ExpansionPanelComponent } from 'src/app/ui/expansion-panel/expansion-panel.component';
 
 import { AddCardsButtonComponent } from '../../cards/add-cards-button/add-cards-button.component';
-import { LearnCardsComponent } from '../../learning/learn-cards.component';
+import { LearnCardsButtonComponent } from '../../learning/learn-cards-button/learn-cards-button.component';
 
 @Component({
   selector: 'app-cards-page',
   template: `
     <div class="flex flex-col gap-4">
-      <app-learn-cards />
+      <app-learn-cards-button [cards]="cardsToLearn()" />
 
       <section class="flex flex-col gap-2">
         <h2 class="text-secondary text-lg" id="new-cards-heading">New cards</h2>
@@ -34,13 +34,14 @@ import { LearnCardsComponent } from '../../learning/learn-cards.component';
       <app-add-cards-button />
     </div>
   `,
-  imports: [CardsListComponent, LearnCardsComponent, AddCardsButtonComponent, ExpansionPanelComponent],
+  imports: [CardsListComponent, LearnCardsButtonComponent, AddCardsButtonComponent, ExpansionPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsPageComponent {
   private cardsService = inject(CardsService);
 
   cards = this.cardsService.getCards();
+  cardsToLearn = computed(() => (this.cards.hasValue() ? this.cards.value() : undefined));
   formattedCards = computed(
     () => this.cards.value()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );

@@ -6,7 +6,7 @@ import { CardGrade } from '../learning.service';
 
 // TODO: add tests
 @Component({
-  selector: 'app-cards',
+  selector: 'app-learn-cards',
   template: `
     <div class="flex h-full flex-col gap-4 pb-16">
       <div class="text-secondary flex items-center justify-between">
@@ -57,13 +57,13 @@ import { CardGrade } from '../learning.service';
   imports: [ButtonDirective, MarkdownComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardsComponent {
-  cards = input.required<Card[]>();
-  rateCard = output<{ id: string; grade: CardGrade }>();
+export class LearnCardsComponent<T extends LearnCardsCard> {
+  cards = input.required<T[]>();
+  rateCard = output<{ card: T; grade: CardGrade }>();
 
   cardsToRate = computed(() => [
     ...this.cards().filter(card => !this.cardsRate()[card.id]),
-    // TODO: fix that going over 'again' cards is stuck on a card that was rated 'again' again
+    // TODO: fix that going over multiple 'again' cards is stuck on a card that was rated 'again' last time
     ...this.cards().filter(card => this.cardsRate()[card.id] === CardGrade.Again),
   ]);
   currentCard = computed(() => this.cardsToRate().at(0) ?? null);
@@ -97,12 +97,12 @@ export class CardsComponent {
     }
 
     this.cardsRate.set({ ...this.cardsRate(), [currentCard.id]: grade });
-    this.rateCard.emit({ id: currentCard.id, grade });
+    this.rateCard.emit({ card: currentCard, grade });
     this.showCardDefinition.set(false);
   }
 }
 
-export interface Card {
+export interface LearnCardsCard {
   id: string;
   term: string;
   fullTerm?: string;
