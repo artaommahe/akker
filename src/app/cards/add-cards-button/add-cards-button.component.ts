@@ -17,7 +17,11 @@ import { AddCardsComponent } from '../add-cards/add-cards.component';
 
     <app-dialog [open]="showAddCardsDialog()" (dismiss)="showAddCardsDialog.set(false)">
       <ng-template>
-        <app-add-cards (dismiss)="showAddCardsDialog.set(false)" />
+        @defer (when showAddCardsDialog()) {
+          <app-add-cards (dismiss)="showAddCardsDialog.set(false)" />
+        } @loading {
+          <p>Loading...</p>
+        }
       </ng-template>
     </app-dialog>
   `,
