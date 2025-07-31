@@ -1,14 +1,14 @@
-import test, { expect } from 'playwright/test';
+import test, { type Page, expect } from 'playwright/test';
 
 test.describe('learning', () => {
   test("shouldn't show learn cards button if there are no cards", async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('button', { name: 'Learn' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Learn' })).not.toBeVisible();
 
     await page.goto('/cards');
 
-    await expect(page.getByRole('button', { name: 'Learn' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Learn' })).not.toBeVisible();
   });
 
   // group tests that use the demo data
@@ -20,11 +20,27 @@ test.describe('learning', () => {
     });
 
     test('should show learn cards button on home and cards pages', async ({ page }) => {
-      await expect(page.getByRole('button', { name: 'Learn' })).toHaveCount(1);
+      await expect(page.getByRole('button', { name: 'Learn' })).toBeVisible();
 
       await page.goto('/cards');
 
-      await expect(page.getByRole('button', { name: 'Learn' })).toHaveCount(1);
+      await expect(page.getByRole('button', { name: 'Learn' })).toBeVisible();
+    });
+
+    test('should show learn cards button in search results', async ({ page }) => {
+      await page.getByRole('button', { name: 'Search cards...' }).click();
+
+      await expect(getSearchDialog(page)).toBeVisible();
+      await expect(getSearchDialog(page).getByRole('button', { name: 'Learn' })).not.toBeVisible();
+
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oo');
+
+      await expect(getSearchDialog(page).getByRole('button', { name: 'Learn' })).toBeVisible();
+
+      // empty search results case
+      await page.getByRole('textbox', { name: 'Search cards' }).fill('oot');
+
+      await expect(getSearchDialog(page).getByRole('button', { name: 'Learn' })).not.toBeVisible();
     });
 
     // NOTE: can't check for a specific term present cause the order of cards is randomized
@@ -89,3 +105,6 @@ test.describe('learning', () => {
     });
   });
 });
+
+const getSearchDialog = (page: Page) =>
+  page.getByRole('dialog').filter({ has: page.getByRole('textbox', { name: 'Search cards' }) });
