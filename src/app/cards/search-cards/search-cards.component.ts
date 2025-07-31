@@ -14,6 +14,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
+import { LearnCardsButtonComponent } from 'src/app/learning/learn-cards-button/learn-cards-button.component';
 import { IconComponent } from 'src/app/ui/icon/icon';
 import { InputDirective } from 'src/app/ui/input/input';
 
@@ -52,6 +53,8 @@ import { CardsService } from '../cards.service';
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
         } @else {
+          <app-learn-cards-button [cards]="formattedSearchResult()" />
+
           <app-cards-list class="contents" [cards]="formattedSearchResult()" [listAriaLabel]="'Search cards list'" />
         }
       } @else {
@@ -85,7 +88,7 @@ import { CardsService } from '../cards.service';
     </section>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardsListComponent, InputDirective, IconComponent, NgTemplateOutlet],
+  imports: [CardsListComponent, InputDirective, IconComponent, NgTemplateOutlet, LearnCardsButtonComponent],
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
