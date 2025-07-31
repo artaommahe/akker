@@ -17,7 +17,11 @@ import { AddSeedsComponent } from '../add-seeds/add-seeds.component';
 
     <app-dialog [open]="showAddSeedsDialog()" (dismiss)="showAddSeedsDialog.set(false)">
       <ng-template>
-        <app-add-seeds (dismiss)="showAddSeedsDialog.set(false)" />
+        @defer (when showAddSeedsDialog()) {
+          <app-add-seeds (dismiss)="showAddSeedsDialog.set(false)" />
+        } @loading {
+          <p>Loading...</p>
+        }
       </ng-template>
     </app-dialog>
   `,

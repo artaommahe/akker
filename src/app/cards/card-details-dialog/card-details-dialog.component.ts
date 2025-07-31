@@ -9,13 +9,17 @@ import { CardsService } from '../cards.service';
   template: `
     <app-dialog [open]="open()" (dismiss)="dismiss.emit()">
       <ng-template>
-        @if (card(); as card) {
-          <app-card-details
-            [card]="card"
-            (dismiss)="dismiss.emit()"
-            (remove)="onRemoveCard(card.id)"
-            (update)="onUpdateCard(card.id, $event)"
-          />
+        @defer (when open()) {
+          @if (card(); as card) {
+            <app-card-details
+              [card]="card"
+              (dismiss)="dismiss.emit()"
+              (remove)="onRemoveCard(card.id)"
+              (update)="onUpdateCard(card.id, $event)"
+            />
+          }
+        } @loading {
+          <p>Loading...</p>
         }
       </ng-template>
     </app-dialog>
