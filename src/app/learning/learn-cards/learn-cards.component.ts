@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-import { MarkdownComponent } from 'ngx-markdown';
+import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
 
 import { ButtonDirective } from '../../ui/button/button';
 import { CardGrade } from '../learning.service';
@@ -55,6 +55,7 @@ import { CardGrade } from '../learning.service';
     </div>
   `,
   imports: [ButtonDirective, MarkdownComponent],
+  providers: [provideMarkdown()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LearnCardsComponent<T extends LearnCardsCard> {
