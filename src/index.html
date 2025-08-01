@@ -8,6 +8,17 @@
     <link rel="icon" type="image/x-icon" href="favicon.svg" />
   </head>
   <body class="font-roboto">
-    <app-root></app-root>
+    <app-root inert></app-root>
+
+    <div
+      id="app-application-loader"
+      class="bg-primary fixed inset-0 flex items-center justify-center gap-3"
+      role="progressbar"
+      aria-label="Loading application"
+    >
+      <div class="application-loader-dot [animation-delay:-320ms]"></div>
+      <div class="application-loader-dot [animation-delay:-160ms]"></div>
+      <div class="application-loader-dot"></div>
+    </div>
   </body>
 </html>

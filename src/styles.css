@@ -34,19 +34,39 @@ layer(base);
 
   --caret-color-*: initial;
   --caret-color-primary: #f7f5f1;
+
+  --animate-application-loader: application-loader 1.8s infinite ease-in-out;
+
+  @keyframes application-loader {
+    0% {
+      transform: scale(0);
+    }
+    60% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
 }
 
 @layer base {
   ::file-selector-button {
     @apply bg-inverse border-secondary text-inverse border-2 px-1.5;
   }
+
+  code {
+    @apply bg-secondary rounded px-1.5 py-0.5;
+  }
+
+  /* global markdown styles */
+  markdown strong {
+    @apply text-action-secondary;
+  }
 }
 
-code {
-  @apply bg-secondary rounded px-1.5 py-0.5;
-}
-
-/* global markdown styles */
-markdown strong {
-  @apply text-action-secondary;
+@layer components {
+  .application-loader-dot {
+    @apply animate-application-loader bg-inverse size-4 rounded-full;
+  }
 }
