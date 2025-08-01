@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ApplicationLoaderService {
   removeLoader() {
-    const applicationLoaderElement = document.querySelector(applictationLoaderElementSelector);
+    const applicationLoaderElement = document.querySelector(applicationLoaderElementSelector);
     const removeAnimation = applicationLoaderElement?.animate([{ opacity: 1 }, { opacity: 0 }], {
       duration: animationDurationMs,
     });
@@ -25,6 +25,6 @@ export class ApplicationLoaderService {
 }
 
 const appRootSelector = 'app-root';
-const applictationLoaderElementSelector = '#app-application-loader';
+const applicationLoaderElementSelector = '#app-application-loader';
 const animationDurationMs = 300;
 const fallbackDelayMs = 500;
