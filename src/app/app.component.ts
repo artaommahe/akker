@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 import { LayoutComponent } from './layout/layout.component';
+import { ApplicationLoaderService } from './ui/application-loader/application-loader.service';
 
 @Component({
   selector: 'app-root',
@@ -19,5 +20,11 @@ import { LayoutComponent } from './layout/layout.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
+  private applicationLoaderService = inject(ApplicationLoaderService);
+
   animationsDisabled = environment.animationsDisabled;
+
+  constructor() {
+    this.applicationLoaderService.removeLoader();
+  }
 }
