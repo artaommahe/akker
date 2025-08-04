@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { type Duration, sub } from 'date-fns';
 
 import type { GetCardsParams } from '../barn/cards-api.service';
 
@@ -75,15 +76,10 @@ const isValidDateAgoUnit = (unit: string): unit is DateAgoUnit =>
   Object.values(DateAgoUnit).includes(unit as DateAgoUnit);
 
 const getDateAgo = (value: number, unit: DateAgoUnit) => {
-  const date = new Date();
+  const subOptions: Duration =
+    unit === DateAgoUnit.Day ? { days: value } : unit === DateAgoUnit.Week ? { weeks: value } : { months: value };
 
-  if (unit === DateAgoUnit.Day) {
-    date.setDate(date.getDate() - value);
-  } else if (unit === DateAgoUnit.Week) {
-    date.setDate(date.getDate() - value * 7);
-  } else if (unit === DateAgoUnit.Month) {
-    date.setMonth(date.getMonth() - value);
-  }
+  const date = sub(new Date(), subOptions);
 
   return date;
 };
