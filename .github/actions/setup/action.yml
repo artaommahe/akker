@@ -12,3 +12,6 @@ runs:
     - name: Install dependencies
       shell: bash
       run: npm ci
+    - name: Disable man-db update
+      shell: bash
+      run: sudo rm -f /var/lib/man-db/auto-update
