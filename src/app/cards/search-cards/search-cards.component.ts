@@ -24,13 +24,14 @@ import { CardsService } from '../cards.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex max-h-[80vh] flex-col gap-2 overflow-hidden">
+    <section class="flex max-h-[80vh] flex-col gap-2">
       <div class="flex items-center gap-2">
         <input
           class="grow"
           appInput
           type="text"
           aria-label="Search cards"
+          aria-describedby="search-syntax"
           placeholder="Search cards..."
           [value]="searchString()"
           (input)="setSearchString($event)"
@@ -62,7 +63,7 @@ import { CardsService } from '../cards.service';
       }
 
       <ng-template #syntax>
-        <section class="text-secondary">
+        <section class="text-secondary" id="search-syntax">
           <h3 class="text-lg">Search syntax:</h3>
           <ul class="list-disc pl-4">
             <li>
