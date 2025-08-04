@@ -4,7 +4,6 @@ import type { GetCardsParams } from '../barn/cards-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  // TODO: add tests
   /**
    * supported syntax:
    * - `tags:tag1,tag2`
