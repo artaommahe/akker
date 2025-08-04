@@ -24,12 +24,15 @@ describe('SearchService', () => {
       vi.useRealTimers();
     });
 
+    // valid parsing results
     test.each([
       ['tags:tag1', { term: '', tags: ['tag1'], addedAfter: undefined }],
       ['tags:tag1,tag2', { term: '', tags: ['tag1', 'tag2'], addedAfter: undefined }],
+      ['tags:tag1,tag2 tags:tag3', { term: '', tags: ['tag1', 'tag2', 'tag3'], addedAfter: undefined }],
       ['last:2d', { term: '', tags: [], addedAfter: new Date('2025-01-30T00:00:00Z') }],
       ['last:3w', { term: '', tags: [], addedAfter: new Date('2025-01-11T00:00:00Z') }],
       ['last:1m', { term: '', tags: [], addedAfter: new Date('2025-01-01T00:00:00Z') }],
+      ['last:1m last:1w', { term: '', tags: [], addedAfter: new Date('2025-01-25T00:00:00Z') }],
       ['search term', { term: 'search term', tags: [], addedAfter: undefined }],
       ['(regex|search) term', { term: '(regex|search) term', tags: [], addedAfter: undefined }],
       [
@@ -40,6 +43,20 @@ describe('SearchService', () => {
       const result = searchService.parseSearchString(searchString);
 
       expect(result).toEqual(expectedSearchParams);
+    });
+
+    // invalid parsing results
+    test.each([
+      ['last:xxx'],
+      ['last:0d'],
+      ['last:-1d'],
+      ['last:ad'],
+      ['last:1x'],
+      //
+    ])('should parse invalid search string `%s`', searchString => {
+      const result = searchService.parseSearchString(searchString);
+
+      expect(result).toEqual({ term: '', tags: [], addedAfter: undefined });
     });
   });
 });
