@@ -71,6 +71,14 @@ import { CardsService } from '../cards.service';
               - search for cards with the specified tags
             </li>
             <li>
+              <code>last:2d</code>
+              ,
+              <code>last:3w</code>
+              ,
+              <code>last:1m</code>
+              - search for cards that were created or updated in the last 2 days, 1 week, or 1 month respectively
+            </li>
+            <li>
               Remaining text is treated as a search term in regex format. For example, searching for
               <code>foo bar</code>
               will return cards that contain this exact substring.
@@ -138,7 +146,8 @@ export class SearchCardsComponent {
   // TODO: add tests
   /**
    * supported syntax:
-   * - `tags:tag1,tag2` - search for cards with the specified tags
+   * - `tags:tag1,tag2`
+   * - `last:2d`, `last:3w`, `last:1m`
    * - remaining text is treated as a search term
    */
   private parseSearchString(searchString: string): GetCardsParams {
@@ -154,11 +163,28 @@ export class SearchCardsComponent {
             .filter(tag => tag.length > 0);
 
           return { ...params, tags: [...(params.tags ?? []), ...tags] };
+        } else if (token.startsWith('last:')) {
+          const lastMatch = token.match(/last:(\d+)([dwm])/);
+
+          if (!lastMatch) {
+            return params;
+          }
+
+          const value = parseInt(lastMatch[1], 10);
+          const unit = lastMatch[2];
+
+          if (isNaN(value) || value <= 0 || !isValidDateAgoUnit(unit)) {
+            return params;
+          }
+
+          const addedAfter = getDateAgo(value, unit);
+
+          return { ...params, addedAfter };
         }
 
         return { ...params, term: `${params.term} ${token}`.trim() };
       },
-      { term: '', tags: [] } as GetCardsParams,
+      { term: '', tags: [], addedAfter: undefined } as GetCardsParams,
     );
 
     return params;
@@ -181,3 +207,26 @@ const searchStringTokensRegex = new RegExp(
   'g',
 );
 const charactersToEscape = `.*+?^{}$()|[]\\`;
+
+enum DateAgoUnit {
+  Day = 'd',
+  Week = 'w',
+  Month = 'm',
+}
+
+const isValidDateAgoUnit = (unit: string): unit is DateAgoUnit =>
+  Object.values(DateAgoUnit).includes(unit as DateAgoUnit);
+
+const getDateAgo = (value: number, unit: DateAgoUnit) => {
+  const date = new Date();
+
+  if (unit === DateAgoUnit.Day) {
+    date.setDate(date.getDate() - value);
+  } else if (unit === DateAgoUnit.Week) {
+    date.setDate(date.getDate() - value * 7);
+  } else if (unit === DateAgoUnit.Month) {
+    date.setMonth(date.getMonth() - value);
+  }
+
+  return date;
+};
