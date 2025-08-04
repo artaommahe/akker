@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
-import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { LearnCardsButtonComponent } from 'src/app/learning/learn-cards-button/learn-cards-button.component';
 import { IconComponent } from 'src/app/ui/icon/icon';
@@ -20,6 +19,7 @@ import { InputDirective } from 'src/app/ui/input/input';
 
 import { CardsListComponent } from '../cards-list/cards-list.component';
 import { CardsService } from '../cards.service';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-search-cards',
@@ -101,6 +101,7 @@ import { CardsService } from '../cards.service';
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
+  private searchService = inject(SearchService);
 
   searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
@@ -110,7 +111,7 @@ export class SearchCardsComponent {
       map(searchString => searchString.trim()),
       // immediately emit empty search string to clear search results
       debounce(searchString => (searchString.length > 0 ? timer(searchResultsDebounceTimeMs) : of(undefined))),
-      map(searchString => (searchString.length > 0 ? this.parseSearchString(searchString) : undefined)),
+      map(searchString => (searchString.length > 0 ? this.searchService.parseSearchString(searchString) : undefined)),
     ),
   );
   searchResult = this.cardsService.getCards(() => this.searchParams());
@@ -142,91 +143,7 @@ export class SearchCardsComponent {
     this.searchString.set('');
     this.searchInputRef()?.nativeElement.focus();
   }
-
-  // TODO: add tests
-  /**
-   * supported syntax:
-   * - `tags:tag1,tag2`
-   * - `last:2d`, `last:3w`, `last:1m`
-   * - remaining text is treated as a search term
-   */
-  private parseSearchString(searchString: string): GetCardsParams {
-    const searchTokens = searchString.match(searchStringTokensRegex) ?? [];
-
-    const params = searchTokens.reduce(
-      (params, token) => {
-        if (token.startsWith('tags:')) {
-          const tags = token
-            .slice(5)
-            .split(',')
-            .map(tag => tag.trim())
-            .filter(tag => tag.length > 0);
-
-          return { ...params, tags: [...(params.tags ?? []), ...tags] };
-        } else if (token.startsWith('last:')) {
-          const lastMatch = token.match(/last:(\d+)([dwm])/);
-
-          if (!lastMatch) {
-            return params;
-          }
-
-          const value = parseInt(lastMatch[1], 10);
-          const unit = lastMatch[2];
-
-          if (isNaN(value) || value <= 0 || !isValidDateAgoUnit(unit)) {
-            return params;
-          }
-
-          const addedAfter = getDateAgo(value, unit);
-
-          return { ...params, addedAfter };
-        }
-
-        return { ...params, term: `${params.term} ${token}`.trim() };
-      },
-      { term: '', tags: [], addedAfter: undefined } as GetCardsParams,
-    );
-
-    return params;
-  }
 }
 
 const searchResultsDebounceTimeMs = 300;
-// used a part of regex from https://github.com/nepsilon/search-query-parser/blob/8158d09c70b66168440e93ffabd720f4c8314c9b/lib/search-query-parser.js#L40
-const searchStringTokensRegex = new RegExp(
-  [
-    // `<type>:` with single or double quotes
-    // is not supported yet
-    /* `(\\S+:'(?:[^'\\\\]|\\.)*')`,
-    `(\\S+:"(?:[^"\\\\]|\\.)*")`, */
-    // `<type>:<value>`
-    `\\S+:\\S+`,
-    // just remaining text
-    `\\S+`,
-  ].join('|'),
-  'g',
-);
 const charactersToEscape = `.*+?^{}$()|[]\\`;
-
-enum DateAgoUnit {
-  Day = 'd',
-  Week = 'w',
-  Month = 'm',
-}
-
-const isValidDateAgoUnit = (unit: string): unit is DateAgoUnit =>
-  Object.values(DateAgoUnit).includes(unit as DateAgoUnit);
-
-const getDateAgo = (value: number, unit: DateAgoUnit) => {
-  const date = new Date();
-
-  if (unit === DateAgoUnit.Day) {
-    date.setDate(date.getDate() - value);
-  } else if (unit === DateAgoUnit.Week) {
-    date.setDate(date.getDate() - value * 7);
-  } else if (unit === DateAgoUnit.Month) {
-    date.setMonth(date.getMonth() - value);
-  }
-
-  return date;
-};
