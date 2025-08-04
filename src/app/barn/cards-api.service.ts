@@ -15,7 +15,7 @@ export class CardsApiService {
     );
   }
 
-  getCards({ limit, term, tags }: GetCardsParams = {}) {
+  getCards({ limit, term, tags, addedAfter }: GetCardsParams = {}) {
     return from(this.barnDbService.getDb()).pipe(
       switchMap(
         db =>
@@ -23,6 +23,7 @@ export class CardsApiService {
             selector: {
               ...(term ? { term: { $regex: term, $options: 'i' } } : {}),
               ...(tags?.length ? { tags: { $in: tags } } : {}),
+              ...(addedAfter ? { addedAt: { $gte: addedAfter.toISOString() } } : {}),
             },
             sort: [{ addedAt: 'desc' }],
             limit,
@@ -59,4 +60,5 @@ export interface GetCardsParams {
   limit?: number;
   term?: string;
   tags?: string[];
+  addedAfter?: Date;
 }

@@ -14,7 +14,13 @@ export default defineConfig(({ mode }) => {
       include: ['src/**/*.spec.ts'],
       reporters: ['default'],
       pool: 'threads',
-      browser: { enabled: true, provider: 'playwright', headless: true, instances: [{ browser: 'chromium' }] },
+      browser: {
+        enabled: true,
+        provider: 'playwright',
+        headless: true,
+        instances: [{ browser: 'chromium' }],
+        screenshotFailures: false,
+      },
     },
     define: { 'import.meta.vitest': mode !== 'production' },
   };

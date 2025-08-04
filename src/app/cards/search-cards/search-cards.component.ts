@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
-import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { LearnCardsButtonComponent } from 'src/app/learning/learn-cards-button/learn-cards-button.component';
 import { IconComponent } from 'src/app/ui/icon/icon';
@@ -20,17 +19,19 @@ import { InputDirective } from 'src/app/ui/input/input';
 
 import { CardsListComponent } from '../cards-list/cards-list.component';
 import { CardsService } from '../cards.service';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex max-h-[80vh] flex-col gap-2 overflow-hidden">
+    <section class="flex max-h-[80vh] flex-col gap-2">
       <div class="flex items-center gap-2">
         <input
           class="grow"
           appInput
           type="text"
           aria-label="Search cards"
+          aria-describedby="search-syntax"
           placeholder="Search cards..."
           [value]="searchString()"
           (input)="setSearchString($event)"
@@ -62,12 +63,20 @@ import { CardsService } from '../cards.service';
       }
 
       <ng-template #syntax>
-        <section class="text-secondary">
+        <section class="text-secondary" id="search-syntax">
           <h3 class="text-lg">Search syntax:</h3>
           <ul class="list-disc pl-4">
             <li>
               <code>tags:tag1,tag2</code>
               - search for cards with the specified tags
+            </li>
+            <li>
+              <code>last:2d</code>
+              ,
+              <code>last:3w</code>
+              ,
+              <code>last:1m</code>
+              - search for cards that were created or updated in the last 2 days, 1 week, or 1 month respectively
             </li>
             <li>
               Remaining text is treated as a search term in regex format. For example, searching for
@@ -92,6 +101,7 @@ import { CardsService } from '../cards.service';
 })
 export class SearchCardsComponent {
   private cardsService = inject(CardsService);
+  private searchService = inject(SearchService);
 
   searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
@@ -101,7 +111,7 @@ export class SearchCardsComponent {
       map(searchString => searchString.trim()),
       // immediately emit empty search string to clear search results
       debounce(searchString => (searchString.length > 0 ? timer(searchResultsDebounceTimeMs) : of(undefined))),
-      map(searchString => (searchString.length > 0 ? this.parseSearchString(searchString) : undefined)),
+      map(searchString => (searchString.length > 0 ? this.searchService.parseSearchString(searchString) : undefined)),
     ),
   );
   searchResult = this.cardsService.getCards(() => this.searchParams());
@@ -133,50 +143,7 @@ export class SearchCardsComponent {
     this.searchString.set('');
     this.searchInputRef()?.nativeElement.focus();
   }
-
-  // TODO: add tests
-  /**
-   * supported syntax:
-   * - `tags:tag1,tag2` - search for cards with the specified tags
-   * - remaining text is treated as a search term
-   */
-  private parseSearchString(searchString: string): GetCardsParams {
-    const searchTokens = searchString.match(searchStringTokensRegex) ?? [];
-
-    const params = searchTokens.reduce(
-      (params, token) => {
-        if (token.startsWith('tags:')) {
-          const tags = token
-            .slice(5)
-            .split(',')
-            .map(tag => tag.trim())
-            .filter(tag => tag.length > 0);
-
-          return { ...params, tags: [...(params.tags ?? []), ...tags] };
-        }
-
-        return { ...params, term: `${params.term} ${token}`.trim() };
-      },
-      { term: '', tags: [] } as GetCardsParams,
-    );
-
-    return params;
-  }
 }
 
 const searchResultsDebounceTimeMs = 300;
-// used a part of regex from https://github.com/nepsilon/search-query-parser/blob/8158d09c70b66168440e93ffabd720f4c8314c9b/lib/search-query-parser.js#L40
-const searchStringTokensRegex = new RegExp(
-  [
-    // `<type>:` with single or double quotes
-    // is not supported yet
-    /* `(\\S+:'(?:[^'\\\\]|\\.)*')`,
-    `(\\S+:"(?:[^"\\\\]|\\.)*")`, */
-    // `<type>:<value>`
-    `\\S+:\\S+`,
-    // just remaining text
-    `\\S+`,
-  ].join('|'),
-  'g',
-);
 const charactersToEscape = `.*+?^{}$()|[]\\`;
