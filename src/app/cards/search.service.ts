@@ -51,7 +51,7 @@ export class SearchService {
     return params;
   }
 }
-// used a part of regex from https://github.com/nepsilon/search-query-parser/blob/8158d09c70b66168440e93ffabd720f4c8314c9b/lib/search-query-parser.js#L40
+// used part of regex from https://github.com/nepsilon/search-query-parser/blob/8158d09c70b66168440e93ffabd720f4c8314c9b/lib/search-query-parser.js#L40
 const searchStringTokensRegex = new RegExp(
   [
     // `<type>:` with single or double quotes
