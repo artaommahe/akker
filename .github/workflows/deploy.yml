@@ -1,15 +1,12 @@
 name: Deploy
 
 on:
-  push:
-    branches:
-      - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -48,3 +45,35 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  release:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetches all history for all branches and tags
+          fetch-depth: 0
+      - name: Generate tag
+        id: tag
+        run: |
+          BASE_TAG="v$(date +'%Y-%m-%d')"
+          # Check if base tag (e.g. v2025-08-06) exists
+          if git rev-parse -q --verify "refs/tags/$BASE_TAG" >/dev/null; then
+            # If it exists, find the next available increment (e.g. v2025-08-06-1)
+            i=1
+            while git rev-parse -q --verify "refs/tags/${BASE_TAG}-${i}" >/dev/null; do
+              i=$((i+1))
+            done
+            NEW_TAG="${BASE_TAG}-${i}"
+          else
+            # If it does not exist, use the base tag
+            NEW_TAG="$BASE_TAG"
+          fi
+          echo "tag_name=$NEW_TAG" >> $GITHUB_OUTPUT
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          generate_release_notes: true
