@@ -62,11 +62,11 @@ jobs:
           # Check if base tag (e.g. v2025-08-06) exists
           if git rev-parse -q --verify "refs/tags/$BASE_TAG" >/dev/null; then
             # If it exists, find the next available increment (e.g. v2025-08-06-1)
-            i=1
-            while git rev-parse -q --verify "refs/tags/${BASE_TAG}-${i}" >/dev/null; do
-              i=$((i+1))
+            counter=1
+            while git rev-parse -q --verify "refs/tags/${BASE_TAG}-${counter}" >/dev/null; do
+              counter=$((counter+1))
             done
-            NEW_TAG="${BASE_TAG}-${i}"
+            NEW_TAG="${BASE_TAG}-${counter}"
           else
             # If it does not exist, use the base tag
             NEW_TAG="$BASE_TAG"
