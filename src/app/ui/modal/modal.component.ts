@@ -26,10 +26,10 @@ import { environment } from 'src/environments/environment';
   selector: 'app-modal',
   template: `
     <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-    <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
     <dialog
       [class]="modalClass()"
       [inert]="!isOpen()"
+      tabindex="-1"
       (click)="handleBackdropClick($event)"
       (close)="dismiss.emit()"
       #dialog
