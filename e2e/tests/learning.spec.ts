@@ -53,7 +53,7 @@ test.describe('learning', () => {
       await expect(page.getByRole('button', { name: 'Good' })).toBeVisible();
       await expect(page.getByRole('button', { name: 'Easy' })).toBeVisible();
       await expect(page.getByRole('button', { name: 'Hard' })).toBeVisible();
-      await expect(page.getByRole('button', { name: 'Again' })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Repeat' })).toBeVisible();
     });
 
     test('should allow to rate cards', async ({ page }) => {
@@ -77,7 +77,7 @@ test.describe('learning', () => {
       await expect(page.getByText('to repeat (0)')).toBeVisible();
       await expect(page.getByText('learning (3)')).toBeVisible();
 
-      await page.getByRole('button', { name: 'Again' }).click();
+      await page.getByRole('button', { name: 'Repeat' }).click();
 
       await expect(page.getByText('to go (8)')).toBeVisible();
       await expect(page.getByText('to repeat (1)')).toBeVisible();

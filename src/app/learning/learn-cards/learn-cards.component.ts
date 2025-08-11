@@ -16,7 +16,7 @@ import { CardGrade } from '../learning.service';
         </div>
         <div>
           to repeat
-          <span class="text-semantic-warning">({{ status().toRepeat }})</span>
+          <span class="text-semantic-danger">({{ status().toRepeat }})</span>
         </div>
         <div>
           learning
@@ -47,7 +47,7 @@ import { CardGrade } from '../learning.service';
       </button>
 
       <div class="flex items-center justify-around" [class.invisible]="!currentCard()">
-        <button appButton appButtonSemantic="danger" (click)="rate(CardGrade.Again)">Again</button>
+        <button appButton appButtonSemantic="danger" (click)="rate(CardGrade.Again)">Repeat</button>
         <button appButton appButtonSemantic="warning" (click)="rate(CardGrade.Hard)">Hard</button>
         <button appButton appButtonSemantic="success" (click)="rate(CardGrade.Good)">Good</button>
         <button appButton (click)="rate(CardGrade.Easy)">Easy</button>
