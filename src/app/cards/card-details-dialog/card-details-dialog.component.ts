@@ -9,7 +9,7 @@ import { CardsService } from '../cards.service';
   template: `
     <app-dialog [open]="open()" (dismiss)="dismiss.emit()">
       <ng-template>
-        @defer (when open()) {
+        @defer {
           @if (card(); as card) {
             <app-card-details
               [card]="card"

@@ -17,7 +17,7 @@ import { SearchCardsComponent } from './search-cards.component';
 
     <app-modal [open]="searchModalIsVisible()" [modalClass]="modalClass" (dismiss)="searchModalIsVisible.set(false)">
       <ng-template>
-        @defer (when searchModalIsVisible()) {
+        @defer {
           <app-search-cards />
         } @loading {
           <p>Loading...</p>

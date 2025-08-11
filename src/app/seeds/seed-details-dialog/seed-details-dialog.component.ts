@@ -9,7 +9,7 @@ import { SeedsService } from '../seeds.service';
   template: `
     <app-dialog [open]="open()" (dismiss)="dismiss.emit()">
       <ng-template>
-        @defer (when open()) {
+        @defer {
           @if (seed(); as seed) {
             <app-seed-details
               [seed]="seed"

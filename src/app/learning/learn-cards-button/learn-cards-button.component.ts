@@ -16,7 +16,7 @@ import { type CardGrade, LearningService } from '../learning.service';
 
     <app-dialog [open]="showLearnCardsDialog()" (dismiss)="closeLearnCardsDialog()">
       <ng-template>
-        @defer (when showLearnCardsDialog()) {
+        @defer {
           <app-learn-cards [cards]="currentCardsToLearn()" (rateCard)="onRateCard($event)" />
         } @loading {
           <p>Loading...</p>
