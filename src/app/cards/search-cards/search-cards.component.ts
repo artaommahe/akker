@@ -45,11 +45,13 @@ import { SearchService } from '../search.service';
         }
       </div>
 
-      @if (searchParams()) {
-        @if (searchResult.status() === 'error') {
-          <p class="text-semantic-danger">Error loading search results:</p>
-          <p>{{ searchResult.error() }}</p>
-        } @else if (!searchResult.isLoading() && formattedSearchResult().length === 0) {
+      @if (searchResult.status() === 'error') {
+        <p class="text-semantic-danger">Error loading search results:</p>
+        <p>{{ searchResult.error() }}</p>
+      }
+
+      @if (showSearchResults()) {
+        @if (formattedSearchResult().length === 0) {
           <p>No results found</p>
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
@@ -125,6 +127,15 @@ export class SearchCardsComponent {
   formattedSearchResult = computed(
     () => this.cachedSearchResultValue()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
+  // prevent search results list flickering in several cases
+  // - having multiple 'not found' search results in a row
+  // - from an empty search string to some search result
+  showSearchResults = linkedSignal({
+    source: this.searchParams,
+    computation: (searchParams, previous) =>
+      // we should reset the state to `false` when `searchParams` is empty
+      searchParams ? previous?.value || (this.searchResult.hasValue() && !this.searchResult.isLoading()) : false,
+  });
 
   charactersToEscape = charactersToEscape;
 
