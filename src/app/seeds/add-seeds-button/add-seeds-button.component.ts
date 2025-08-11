@@ -15,15 +15,13 @@ import { AddSeedsComponent } from '../add-seeds/add-seeds.component';
       <app-icon class="text-primary size-10" name="plusInCircle" />
     </button>
 
-    <app-dialog [open]="showAddSeedsDialog()" (dismiss)="showAddSeedsDialog.set(false)">
-      <ng-template>
-        @defer {
+    @defer {
+      <app-dialog [open]="showAddSeedsDialog()" (dismiss)="showAddSeedsDialog.set(false)">
+        <ng-template>
           <app-add-seeds (dismiss)="showAddSeedsDialog.set(false)" />
-        } @loading {
-          <p>Loading...</p>
-        }
-      </ng-template>
-    </app-dialog>
+        </ng-template>
+      </app-dialog>
+    }
   `,
   imports: [IconComponent, AddSeedsComponent, DialogComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
