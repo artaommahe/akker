@@ -26,10 +26,10 @@ import { environment } from 'src/environments/environment';
   selector: 'app-modal',
   template: `
     <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-    <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
     <dialog
       [class]="modalClass()"
       [inert]="!isOpen()"
+      tabindex="-1"
       (click)="handleBackdropClick($event)"
       (close)="dismiss.emit()"
       #dialog
@@ -54,7 +54,7 @@ export class ModalComponent {
 
   modalClass = computed(() =>
     clsx(
-      'bg-primary text-primary fixed',
+      'bg-primary text-primary fixed outline-none',
       '[max-block-size:unset] [max-inline-size:unset]',
       '[&:not([open])]:pointer-events-none',
       this.modalClassInput() ?? '',

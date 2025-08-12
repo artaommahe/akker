@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
 
 import { ButtonDirective } from '../../ui/button/button';
@@ -12,15 +12,15 @@ import { CardGrade } from '../learning.service';
       <div class="text-secondary flex items-center justify-between">
         <div>
           to go
-          <span class="text-action-primary">({{ status().toGo }})</span>
+          <span class="text-action-primary">({{ learningCards().toGo.length }})</span>
         </div>
         <div>
           to repeat
-          <span class="text-semantic-warning">({{ status().toRepeat }})</span>
+          <span class="text-semantic-danger">({{ learningCards().repeat.length }})</span>
         </div>
         <div>
           learning
-          <span class="text-semantic-success">({{ status().learning }})</span>
+          <span class="text-semantic-success">({{ learningCards().learning.length }})</span>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ import { CardGrade } from '../learning.service';
       </button>
 
       <div class="flex items-center justify-around" [class.invisible]="!currentCard()">
-        <button appButton appButtonSemantic="danger" (click)="rate(CardGrade.Again)">Again</button>
+        <button appButton appButtonSemantic="danger" (click)="rate(CardGrade.Again)">Repeat</button>
         <button appButton appButtonSemantic="warning" (click)="rate(CardGrade.Hard)">Hard</button>
         <button appButton appButtonSemantic="success" (click)="rate(CardGrade.Good)">Good</button>
         <button appButton (click)="rate(CardGrade.Easy)">Easy</button>
@@ -62,23 +62,14 @@ export class LearnCardsComponent<T extends LearnCardsCard> {
   cards = input.required<T[]>();
   rateCard = output<{ card: T; grade: CardGrade }>();
 
-  cardsToRate = computed(() => [
-    ...this.cards().filter(card => !this.cardsRate()[card.id]),
-    // TODO: fix that going over multiple 'again' cards is stuck on a card that was rated 'again' last time
-    ...this.cards().filter(card => this.cardsRate()[card.id] === CardGrade.Again),
-  ]);
-  currentCard = computed(() => this.cardsToRate().at(0) ?? null);
-  status = computed(() => ({
-    toGo: this.cards().filter(card => !this.cardsRate()[card.id]).length,
-    toRepeat: Object.values(this.cardsRate()).filter(rate => [CardGrade.Again].includes(rate)).length,
-    learning: Object.values(this.cardsRate()).filter(rate =>
-      [CardGrade.Hard, CardGrade.Good, CardGrade.Easy].includes(rate),
-    ).length,
+  learningCards = linkedSignal<{ toGo: T[]; repeat: T[]; learning: T[] }>(() => ({
+    toGo: this.cards(),
+    repeat: [],
+    learning: [],
   }));
+  currentCard = computed(() => this.learningCards().toGo.at(0) ?? this.learningCards().repeat.at(0) ?? null);
   CardGrade = CardGrade;
   showCardDefinition = signal(false);
-
-  private cardsRate = signal<Record<string, CardGrade>>({});
 
   onCardClick() {
     const currentCard = this.currentCard();
@@ -97,7 +88,16 @@ export class LearnCardsComponent<T extends LearnCardsCard> {
       return;
     }
 
-    this.cardsRate.set({ ...this.cardsRate(), [currentCard.id]: grade });
+    this.learningCards.update(learningCards => {
+      const toGo = learningCards.toGo.filter(card => card.id !== currentCard.id);
+      // if card is repeated again it should be moved to the end of the list
+      // otherwise just ensure that it is removed from the `repeat` list
+      const otherCardsToRepeat = learningCards.repeat.filter(card => card.id !== currentCard.id);
+      const repeat = grade === CardGrade.Again ? [...otherCardsToRepeat, currentCard] : otherCardsToRepeat;
+      const learning = grade === CardGrade.Again ? learningCards.learning : [...learningCards.learning, currentCard];
+
+      return { toGo, repeat, learning };
+    });
     this.rateCard.emit({ card: currentCard, grade });
     this.showCardDefinition.set(false);
   }

@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
+import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { LearnCardsButtonComponent } from 'src/app/learning/learn-cards-button/learn-cards-button.component';
 import { IconComponent } from 'src/app/ui/icon/icon';
@@ -24,7 +25,7 @@ import { SearchService } from '../search.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex max-h-[80vh] flex-col gap-2">
+    <section class="flex max-h-[80dvh] flex-col gap-2">
       <div class="flex items-center gap-2">
         <input
           class="grow"
@@ -45,11 +46,13 @@ import { SearchService } from '../search.service';
         }
       </div>
 
-      @if (searchParams()) {
-        @if (searchResult.status() === 'error') {
-          <p class="text-semantic-danger">Error loading search results:</p>
-          <p>{{ searchResult.error() }}</p>
-        } @else if (!searchResult.isLoading() && formattedSearchResult().length === 0) {
+      @if (searchResult.status() === 'error') {
+        <p class="text-semantic-danger">Error loading search results:</p>
+        <p>{{ searchResult.error() }}</p>
+      }
+
+      @if (showSearchResults()) {
+        @if (formattedSearchResult().length === 0) {
           <p>No results found</p>
 
           <ng-container *ngTemplateOutlet="syntax"></ng-container>
@@ -125,6 +128,15 @@ export class SearchCardsComponent {
   formattedSearchResult = computed(
     () => this.cachedSearchResultValue()?.map(card => ({ ...card, stability: card.fsrs?.card.stability })) ?? [],
   );
+  // prevent search results list flickering in several cases
+  // - having multiple 'not found' search results in a row
+  // - from an empty search string to some search result
+  showSearchResults = linkedSignal<GetCardsParams | undefined, boolean>({
+    source: this.searchParams,
+    computation: (searchParams, previous) =>
+      // we should reset the state to `false` when `searchParams` is empty
+      searchParams ? previous?.value || (this.searchResult.hasValue() && !this.searchResult.isLoading()) : false,
+  });
 
   charactersToEscape = charactersToEscape;
 
