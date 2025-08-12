@@ -32,7 +32,7 @@ export class DialogComponent {
   contentRef = contentChild.required(TemplateRef);
 
   modalClass = clsx([
-    'top-0 grid h-full w-full p-5 pt-14',
+    'top-0 grid h-full w-full p-5',
     'transition-transform duration-300 [&:not([open])]:translate-x-full',
   ]);
 }
