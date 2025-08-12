@@ -24,7 +24,7 @@ import { SearchService } from '../search.service';
 @Component({
   selector: 'app-search-cards',
   template: `
-    <section class="flex max-h-[80vh] flex-col gap-2">
+    <section class="flex max-h-[80dvh] flex-col gap-2">
       <div class="flex items-center gap-2">
         <input
           class="grow"
