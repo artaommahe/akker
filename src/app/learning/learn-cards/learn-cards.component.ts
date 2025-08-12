@@ -62,10 +62,10 @@ export class LearnCardsComponent<T extends LearnCardsCard> {
   cards = input.required<T[]>();
   rateCard = output<{ card: T; grade: CardGrade }>();
 
-  learningCards = linkedSignal(() => ({
+  learningCards = linkedSignal<{ toGo: T[]; repeat: T[]; learning: T[] }>(() => ({
     toGo: this.cards(),
-    repeat: [] as T[],
-    learning: [] as T[],
+    repeat: [],
+    learning: [],
   }));
   currentCard = computed(() => this.learningCards().toGo.at(0) ?? this.learningCards().repeat.at(0) ?? null);
   CardGrade = CardGrade;

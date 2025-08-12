@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounce, map, of, timer } from 'rxjs';
+import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { LearnCardsButtonComponent } from 'src/app/learning/learn-cards-button/learn-cards-button.component';
 import { IconComponent } from 'src/app/ui/icon/icon';
@@ -130,7 +131,7 @@ export class SearchCardsComponent {
   // prevent search results list flickering in several cases
   // - having multiple 'not found' search results in a row
   // - from an empty search string to some search result
-  showSearchResults = linkedSignal({
+  showSearchResults = linkedSignal<GetCardsParams | undefined, boolean>({
     source: this.searchParams,
     computation: (searchParams, previous) =>
       // we should reset the state to `false` when `searchParams` is empty
