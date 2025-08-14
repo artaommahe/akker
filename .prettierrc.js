@@ -1,4 +1,7 @@
-module.exports = {
+/**
+ * @type {import("prettier").Config}
+ */
+const config = {
   printWidth: 120,
   tabWidth: 2,
   useTabs: false,
@@ -23,3 +26,5 @@ module.exports = {
   importOrderParserPlugins: ['typescript', 'decorators'],
   plugins: ['prettier-plugin-tailwindcss', '@trivago/prettier-plugin-sort-imports'],
 };
+
+export default config;

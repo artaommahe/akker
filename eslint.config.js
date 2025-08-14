@@ -1,10 +1,14 @@
 // @ts-check
-const eslint = require('@eslint/js');
-const tseslint = require('typescript-eslint');
-const angular = require('angular-eslint');
-const eslintConfigPrettier = require('eslint-config-prettier/flat');
+import eslint from '@eslint/js';
+import angular from 'angular-eslint';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import storybook from 'eslint-plugin-storybook';
+import tseslint from 'typescript-eslint';
 
-module.exports = tseslint.config(
+export default tseslint.config(
+  {
+    ignores: ['!.storybook'],
+  },
   {
     files: ['**/*.ts'],
     extends: [
@@ -39,5 +43,7 @@ module.exports = tseslint.config(
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
     rules: {},
   },
+  storybook.configs['flat/recommended'],
+  storybook.configs['flat/csf-strict'],
   eslintConfigPrettier,
 );
