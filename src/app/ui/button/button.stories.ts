@@ -14,7 +14,10 @@ const meta = {
         appButton
         appButtonType="${args.type}"
         ${args.semantic && `appButtonSemantic="${args.semantic}"`}
-      >Button</button>`,
+      >
+        Button
+      </button>
+    `,
   }),
   argTypes: {
     // there is an issue in `compodoc` that it doesn't treat aliased input signals as inputs

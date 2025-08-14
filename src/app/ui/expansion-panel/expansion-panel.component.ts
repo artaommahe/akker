@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, signal }
   selector: 'app-expansion-panel',
   template: `
     <details (toggle)="isOpen.set(details.open)" #details>
-      <summary class="text-lg"><ng-content></ng-content></summary>
+      <summary class="text-primary cursor-pointer text-lg"><ng-content></ng-content></summary>
 
       @if (isOpen()) {
         <ng-container *ngTemplateOutlet="contentRef()"></ng-container>
