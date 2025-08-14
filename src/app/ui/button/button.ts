@@ -10,7 +10,7 @@ export class ButtonDirective {
 
   class = computed(() =>
     clsx(
-      'rounded-lg border px-3 py-2 outline-hidden',
+      'rounded-lg border px-3 py-2 outline-hidden cursor-pointer',
 
       this.type() === 'primary' && [
         'border-transparent bg-action-primary text-primary',
