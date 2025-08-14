@@ -94,10 +94,7 @@
           }
         },
         "storybook": {
-          "builder": "@analogjs/storybook-angular:start-storybook",
-          "options": {
-            "compodoc": false
-          }
+          "builder": "@analogjs/storybook-angular:start-storybook"
         },
         "build-storybook": {
           "builder": "@analogjs/storybook-angular:build-storybook"
