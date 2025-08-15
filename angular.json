@@ -94,7 +94,11 @@
           }
         },
         "storybook": {
-          "builder": "@analogjs/storybook-angular:start-storybook"
+          "builder": "@analogjs/storybook-angular:start-storybook",
+          "options": {
+            "open": false,
+            "compodocArgs": ["-e", "json", "-t"]
+          }
         },
         "build-storybook": {
           "builder": "@analogjs/storybook-angular:build-storybook"
