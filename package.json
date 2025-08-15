@@ -44,6 +44,7 @@
     "@angular/compiler-cli": "^20.1.6",
     "@compodoc/compodoc": "^1.1.26",
     "@playwright/test": "^1.54.2",
+    "@storybook/addon-a11y": "^9.1.2",
     "@storybook/addon-docs": "^9.1.2",
     "@storybook/angular": "^9.1.2",
     "@tailwindcss/postcss": "^4.1.11",
