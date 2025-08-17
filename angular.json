@@ -101,7 +101,10 @@
           }
         },
         "build-storybook": {
-          "builder": "@analogjs/storybook-angular:build-storybook"
+          "builder": "@analogjs/storybook-angular:build-storybook",
+          "options": {
+            "compodocArgs": ["-e", "json", "-t"]
+          }
         }
       }
     }
