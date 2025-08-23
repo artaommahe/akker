@@ -31,7 +31,7 @@ jobs:
       - name: Prepare
         run: cp ./dist/${{ github.event.repository.name }}/browser/index.html ./dist/${{ github.event.repository.name }}/browser/404.html
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist/${{ github.event.repository.name }}/browser
 
