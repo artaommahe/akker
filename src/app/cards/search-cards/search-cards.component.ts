@@ -35,7 +35,7 @@ import { SearchService } from '../search.service';
           aria-describedby="search-syntax"
           placeholder="Search cards..."
           [value]="searchString()"
-          (input)="setSearchString($event)"
+          (input)="searchString.set($event.target.value)"
           #searchInput
         />
 
@@ -145,10 +145,6 @@ export class SearchCardsComponent {
       // `autofocus` attribute doesn't work here, most likely because how modal's content is rendered
       this.searchInputRef()?.nativeElement.focus();
     });
-  }
-
-  setSearchString(event: Event) {
-    this.searchString.set((event.target as HTMLInputElement).value);
   }
 
   clearSearchInput() {
