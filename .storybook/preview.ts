@@ -1,8 +1,5 @@
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { type Preview, applicationConfig } from '@storybook/angular';
-// NOTE: hack to avoid `NG0908: In this configuration Angular requires Zone.js` error
-// when running storybook tests
-import 'zone.js';
 
 import docJson from '../documentation.json';
 import { appConfig } from '../src/app/app.config';
