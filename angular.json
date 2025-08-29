@@ -73,7 +73,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@analogjs/vitest-angular:test"
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "project": "unit"
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -104,6 +107,12 @@
           "builder": "@analogjs/storybook-angular:build-storybook",
           "options": {
             "compodocArgs": ["-e", "json", "-t"]
+          }
+        },
+        "test-storybook": {
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "project": "storybook"
           }
         }
       }

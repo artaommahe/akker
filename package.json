@@ -12,7 +12,9 @@
     "format": "prettier --write --ignore-unknown .",
     "e2e": "ng e2e",
     "storybook": "ng run akker:storybook",
-    "build-storybook": "ng run akker:build-storybook"
+    "build-storybook": "ng run akker:build-storybook",
+    "test-storybook": "ng run akker:test-storybook",
+    "compodoc": "compodoc -p tsconfig.json -e json -d ."
   },
   "private": true,
   "dependencies": {
