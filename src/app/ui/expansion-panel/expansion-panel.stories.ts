@@ -4,6 +4,9 @@ import { ExpansionPanelComponent } from './expansion-panel.component';
 
 const meta = {
   component: ExpansionPanelComponent,
+  parameters: {
+    a11y: { test: 'todo' },
+  },
   render: args => ({
     args,
     template: `

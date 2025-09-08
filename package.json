@@ -1,7 +1,6 @@
 {
   "name": "akker",
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,7 +12,9 @@
     "format": "prettier --write --ignore-unknown .",
     "e2e": "ng e2e",
     "storybook": "ng run akker:storybook",
-    "build-storybook": "ng run akker:build-storybook"
+    "build-storybook": "ng run akker:build-storybook",
+    "test-storybook": "ng run akker:test-storybook",
+    "compodoc": "compodoc -p tsconfig.json -e json -d ."
   },
   "private": true,
   "dependencies": {
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@analogjs/storybook-angular": "^1.20.2",
+    "@analogjs/vite-plugin-angular": "^1.20.2",
     "@analogjs/vitest-angular": "^1.20.2",
     "@angular/build": "^20.2.2",
     "@angular/cli": "^20.2.2",
@@ -46,6 +48,7 @@
     "@playwright/test": "^1.55.0",
     "@storybook/addon-a11y": "^9.1.5",
     "@storybook/addon-docs": "^9.1.5",
+    "@storybook/addon-vitest": "^9.1.5",
     "@storybook/angular": "^9.1.5",
     "@tailwindcss/postcss": "^4.1.13",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
