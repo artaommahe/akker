@@ -4,6 +4,9 @@ import { ButtonDirective } from './button';
 
 const meta = {
   component: ButtonDirective,
+  parameters: {
+    a11y: { test: 'todo' },
+  },
   render: args => ({
     args,
     // there is an issue in `compodoc` that it doesn't treat aliased input signals as inputs
