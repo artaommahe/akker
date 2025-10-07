@@ -9,7 +9,7 @@ import { CardsService, type NewCard } from '../cards.service';
 @Component({
   selector: 'app-add-cards',
   template: `
-    <form class="flex h-full flex-col gap-3" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="text-primary flex h-full flex-col gap-3" [formGroup]="form" (ngSubmit)="onSubmit()">
       <h2 class="text-xl">Add cards</h2>
 
       <ul id="new-cards-hint">

@@ -8,7 +8,7 @@ import { AddCardsComponent } from '../add-cards/add-cards.component';
   selector: 'app-add-cards-button',
   template: `
     <button
-      class="bg-action-primary fixed right-6 bottom-16 flex items-center justify-center rounded-full shadow-md"
+      class="bg-action-primary fixed right-6 bottom-16 flex cursor-pointer items-center justify-center rounded-full shadow-md"
       title="Add cards"
       (click)="showAddCardsDialog.set(true)"
     >
