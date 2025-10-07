@@ -40,7 +40,12 @@ import { SearchService } from '../search.service';
         />
 
         @if (searchParams()) {
-          <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="clearSearchInput()">
+          <button
+            class="flex shrink-0 cursor-pointer"
+            type="button"
+            aria-label="Clear search string"
+            (click)="clearSearchInput()"
+          >
             <app-icon class="text-secondary size-6" name="crossInCircle" />
           </button>
         }

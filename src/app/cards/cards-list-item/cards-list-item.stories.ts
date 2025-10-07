@@ -4,6 +4,9 @@ import { CardsListItemComponent } from './cards-list-item.component';
 
 const meta = {
   component: CardsListItemComponent,
+  parameters: {
+    a11y: { test: 'todo' },
+  },
 } satisfies Meta<CardsListItemComponent>;
 
 export default meta;
