@@ -2,13 +2,11 @@ import { type Meta, type StoryObj } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { CardsService, type NewCard } from '../cards.service';
+import { CardsService } from '../cards.service';
 import { AddCardsButtonComponent } from './add-cards-button.component';
 
 class MockCardsService {
-  addCards(cards: NewCard[]) {
-    action('addCards')(cards);
-  }
+  addCards = action('addCards');
 }
 
 const meta = {
