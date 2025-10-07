@@ -8,7 +8,6 @@ const meta = {
     a11y: { test: 'todo' },
   },
   render: args => ({
-    args,
     template: `
       <app-expansion-panel ${argsToTemplate(args)}>
         Toggle panel
