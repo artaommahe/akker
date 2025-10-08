@@ -20,6 +20,7 @@ const meta = {
         Button
       </button>
     `,
+    props: args,
   }),
   argTypes: {
     // there is an issue in `compodoc` that it doesn't treat aliased input signals as inputs

@@ -2,7 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, input, output } from '@angular/core';
 import clsx from 'clsx';
 
-import { IconComponent } from '../icon/icon';
+import { IconComponent } from '../icon/icon.component';
 import { ModalComponent } from '../modal/modal.component';
 
 /**

@@ -17,6 +17,7 @@ const meta = {
         </ng-template>
       </app-expansion-panel>
     `,
+    props: args,
   }),
 } satisfies Meta<ExpansionPanelComponent>;
 

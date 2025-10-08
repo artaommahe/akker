@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { DialogComponent } from '../../ui/dialog/dialog.component';
-import { IconComponent } from '../../ui/icon/icon';
+import { IconComponent } from '../../ui/icon/icon.component';
 import { AddSeedsComponent } from '../add-seeds/add-seeds.component';
 
 @Component({
