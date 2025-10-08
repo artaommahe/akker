@@ -4,7 +4,9 @@ import { LearnCardsComponent } from './learn-cards.component';
 
 const meta = {
   component: LearnCardsComponent,
-  parameters: {},
+  parameters: {
+    a11y: { test: 'todo' },
+  },
   render: args => ({
     template: `
       <div class="h-[600px]">

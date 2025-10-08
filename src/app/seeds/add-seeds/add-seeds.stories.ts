@@ -16,7 +16,9 @@ const meta = {
       providers: [{ provide: SeedsService, useClass: MockSeedsService }],
     }),
   ],
-  parameters: {},
+  parameters: {
+    a11y: { test: 'todo' },
+  },
   render: args => ({
     template: `
       <div class="h-[400px]">

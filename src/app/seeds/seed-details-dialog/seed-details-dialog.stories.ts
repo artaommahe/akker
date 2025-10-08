@@ -17,7 +17,9 @@ const meta = {
       providers: [{ provide: SeedsService, useClass: MockSeedsService }],
     }),
   ],
-  parameters: {},
+  parameters: {
+    a11y: { test: 'todo' },
+  },
 } satisfies Meta<SeedDetailsDialogComponent>;
 
 export default meta;

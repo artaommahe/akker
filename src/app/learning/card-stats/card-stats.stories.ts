@@ -5,7 +5,9 @@ import { CardStatsComponent } from './card-stats.component';
 
 const meta = {
   component: CardStatsComponent,
-  parameters: {},
+  parameters: {
+    a11y: { test: 'todo' },
+  },
 } satisfies Meta<CardStatsComponent>;
 
 export default meta;

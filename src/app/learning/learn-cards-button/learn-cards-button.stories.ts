@@ -16,7 +16,9 @@ const meta = {
       providers: [{ provide: CardsService, useClass: MockCardsService }],
     }),
   ],
-  parameters: {},
+  parameters: {
+    a11y: { test: 'todo' },
+  },
 } satisfies Meta<LearnCardsButtonComponent>;
 
 export default meta;

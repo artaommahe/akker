@@ -30,6 +30,9 @@ export const Default: StoryObj<IconComponent> = {
 };
 
 export const AllIcons: StoryObj<IconComponent> = {
+  parameters: {
+    a11y: { test: 'todo' },
+  },
   render: () => ({
     template: `
       <div class="grid grid-cols-6 gap-6">

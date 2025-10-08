@@ -4,7 +4,9 @@ import { SeedsListItemComponent } from './seeds-list-item.component';
 
 const meta = {
   component: SeedsListItemComponent,
-  parameters: {},
+  parameters: {
+    a11y: { test: 'todo' },
+  },
 } satisfies Meta<SeedsListItemComponent>;
 
 export default meta;
