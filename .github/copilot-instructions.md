@@ -48,6 +48,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Storybook
 
+- Use `satisfies<Meta<typeof Component>>` for story meta to ensure type safety
+- Use `satisfies StoryObj<typeof Component>` for individual stories to ensure type safety
+- Don't keep empty `parameters` or `args` objects
 - Keep common args in `meta`
 - Use `argsToTemplate` to pass args to the component if custom story render function is needed
 - Use `implements Pick<OriginalService, 'methodName'>` for mock services in stories to ensure type safety
