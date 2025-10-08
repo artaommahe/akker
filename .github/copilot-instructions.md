@@ -45,3 +45,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## Storybook
+
+- Keep common args in `meta`
+- Use `argsToTemplate` to pass args to the component if custom story render function is needed
+- Use `implements Pick<OriginalService, 'methodName'>` for mock services in stories to ensure type safety
