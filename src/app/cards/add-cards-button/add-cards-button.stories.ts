@@ -23,6 +23,4 @@ const meta = {
 
 export default meta;
 
-export const Default = {
-  args: {},
-} satisfies StoryObj<AddCardsButtonComponent>;
+export const Default = {} satisfies StoryObj<AddCardsButtonComponent>;

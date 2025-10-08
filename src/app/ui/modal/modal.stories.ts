@@ -26,6 +26,4 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<ModalComponent> = {
-  args: {},
-};
+export const Default = {} satisfies StoryObj<ModalComponent>;

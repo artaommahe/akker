@@ -65,9 +65,7 @@ const meta = {
 
 export default meta;
 
-export const Default = {
-  args: {},
-} satisfies StoryObj<CardsListComponent>;
+export const Default = {} satisfies StoryObj<CardsListComponent>;
 
 export const Loading = {
   args: {

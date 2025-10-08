@@ -19,7 +19,7 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<LearnCardsComponent> = {
+export const Default = {
   args: {
     cards: [
       { id: '1', term: 'appel', fullTerm: 'de appel', definition: 'apple' },
@@ -30,4 +30,4 @@ export const Default: StoryObj<LearnCardsComponent> = {
       { id: '6', term: 'zon', fullTerm: 'de zon', definition: 'sun' },
     ],
   },
-};
+} satisfies StoryObj<LearnCardsComponent>;

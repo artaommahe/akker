@@ -8,7 +8,6 @@ const iconNames = Object.keys(globalIcons);
 
 const meta = {
   component: IconComponent,
-  parameters: {},
   argTypes: {
     name: {
       control: 'select',
@@ -19,7 +18,7 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<IconComponent> = {
+export const Default = {
   args: {
     name: iconNames[0],
   },
@@ -27,9 +26,9 @@ export const Default: StoryObj<IconComponent> = {
     template: `<app-icon class="size-5" ${argsToTemplate(args)} />`,
     props: args,
   }),
-};
+} satisfies StoryObj<IconComponent>;
 
-export const AllIcons: StoryObj<IconComponent> = {
+export const AllIcons = {
   parameters: {
     a11y: { test: 'todo' },
   },
@@ -50,4 +49,4 @@ export const AllIcons: StoryObj<IconComponent> = {
     `,
     props: {},
   }),
-};
+} satisfies StoryObj<IconComponent>;

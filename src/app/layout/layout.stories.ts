@@ -20,6 +20,4 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<LayoutComponent> = {
-  args: {},
-};
+export const Default = {} satisfies StoryObj<LayoutComponent>;

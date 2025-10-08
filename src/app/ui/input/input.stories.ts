@@ -14,16 +14,13 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<InputDirective> = {
-  args: {},
-};
+export const Default = {} satisfies StoryObj<InputDirective>;
 
-export const Textarea: StoryObj<InputDirective> = {
+export const Textarea = {
   render: args => ({
     template: `
   <textarea class="w-full" appInput ${argsToTemplate(args)} placeholder="Type something..." rows="4"></textarea>
     `,
     props: args,
   }),
-  args: {},
-};
+} satisfies StoryObj<InputDirective>;

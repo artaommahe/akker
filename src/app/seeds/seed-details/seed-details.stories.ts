@@ -24,8 +24,8 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<SeedDetailsComponent> = {
+export const Default = {
   args: {
     seed: { name: 'snoep' },
   },
-};
+} satisfies StoryObj<SeedDetailsComponent>;

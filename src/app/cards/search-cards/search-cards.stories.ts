@@ -41,6 +41,4 @@ const meta = {
 
 export default meta;
 
-export const Default = {
-  args: {},
-} satisfies StoryObj<SearchCardsComponent>;
+export const Default = {} satisfies StoryObj<SearchCardsComponent>;

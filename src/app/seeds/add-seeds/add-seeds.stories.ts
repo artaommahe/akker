@@ -6,7 +6,7 @@ import { SeedsService } from '../seeds.service';
 import { AddSeedsComponent } from './add-seeds.component';
 
 class MockSeedsService implements Pick<SeedsService, 'addSeeds'> {
-  addSeeds = action('addSeeds');
+  addSeeds = action('addSeeds') as SeedsService['addSeeds'];
 }
 
 const meta = {
@@ -31,4 +31,4 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<AddSeedsComponent> = {};
+export const Default = {} satisfies StoryObj<AddSeedsComponent>;

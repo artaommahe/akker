@@ -11,7 +11,7 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<CardsListItemComponent> = {
+export const Default = {
   args: {
     card: {
       id: '1',
@@ -19,9 +19,9 @@ export const Default: StoryObj<CardsListItemComponent> = {
       stability: 5,
     },
   },
-};
+} satisfies StoryObj<CardsListItemComponent>;
 
-export const NoStability: StoryObj<CardsListItemComponent> = {
+export const NoStability = {
   args: {
     card: {
       id: '2',
@@ -29,4 +29,4 @@ export const NoStability: StoryObj<CardsListItemComponent> = {
       stability: undefined,
     },
   },
-};
+} satisfies StoryObj<CardsListItemComponent>;

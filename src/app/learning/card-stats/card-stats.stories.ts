@@ -12,7 +12,7 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<CardStatsComponent> = {
+export const Default = {
   args: {
     fsrs: {
       card: {
@@ -28,4 +28,4 @@ export const Default: StoryObj<CardStatsComponent> = {
       },
     },
   },
-};
+} satisfies StoryObj<CardStatsComponent>;

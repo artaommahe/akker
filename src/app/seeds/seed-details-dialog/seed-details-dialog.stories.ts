@@ -24,9 +24,9 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<SeedDetailsDialogComponent> = {
+export const Default = {
   args: {
     open: true,
     seed: { name: 'snoep' },
   },
-};
+} satisfies StoryObj<SeedDetailsDialogComponent>;

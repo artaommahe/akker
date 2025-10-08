@@ -11,8 +11,8 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<SeedsListItemComponent> = {
+export const Default = {
   args: {
     seed: { name: 'snoep', count: 3 },
   },
-};
+} satisfies StoryObj<SeedsListItemComponent>;

@@ -6,7 +6,7 @@ import { SeedsService } from '../seeds.service';
 import { AddSeedsButtonComponent } from './add-seeds-button.component';
 
 class MockSeedsService implements Pick<SeedsService, 'addSeeds'> {
-  addSeeds = action('addSeeds');
+  addSeeds = action('addSeeds') as SeedsService['addSeeds'];
 }
 
 const meta = {
@@ -16,9 +16,8 @@ const meta = {
       providers: [{ provide: SeedsService, useClass: MockSeedsService }],
     }),
   ],
-  parameters: {},
 } satisfies Meta<AddSeedsButtonComponent>;
 
 export default meta;
 
-export const Default: StoryObj<AddSeedsButtonComponent> = {};
+export const Default = {} satisfies StoryObj<AddSeedsButtonComponent>;

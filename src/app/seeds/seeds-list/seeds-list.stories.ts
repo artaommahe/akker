@@ -30,7 +30,7 @@ const meta = {
 
 export default meta;
 
-export const Default: StoryObj<SeedsListComponent> = {
+export const Default = {
   args: {
     seeds: [
       { name: 'snoep', count: 3 },
@@ -38,18 +38,18 @@ export const Default: StoryObj<SeedsListComponent> = {
       { name: 'hemel', count: 1 },
     ],
   },
-};
+} satisfies StoryObj<SeedsListComponent>;
 
-export const Loading: StoryObj<SeedsListComponent> = {
+export const Loading = {
   args: {
     seeds: [],
     isLoading: true,
   },
-};
+} satisfies StoryObj<SeedsListComponent>;
 
-export const LoadingError: StoryObj<SeedsListComponent> = {
+export const LoadingError = {
   args: {
     seeds: [],
     loadingError: new Error('Failed to load seeds'),
   },
-};
+} satisfies StoryObj<SeedsListComponent>;
