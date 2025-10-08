@@ -8,7 +8,7 @@ import { AddSeedsComponent } from '../add-seeds/add-seeds.component';
   selector: 'app-add-seeds-button',
   template: `
     <button
-      class="bg-action-primary fixed right-6 bottom-16 flex items-center justify-center rounded-full shadow-md"
+      class="bg-action-primary fixed right-6 bottom-16 flex cursor-pointer items-center justify-center rounded-full shadow-md"
       title="Add seeds"
       (click)="showAddSeedsDialog.set(true)"
     >
