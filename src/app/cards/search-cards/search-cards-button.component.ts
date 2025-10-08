@@ -9,7 +9,7 @@ import { SearchCardsComponent } from './search-cards.component';
   template: `
     <!-- NOTE: using button with explicit 'click' listener provides a better accessibility. Imitates input's styles-->
     <button
-      class="bg-secondary focus-visible:border-primary text-secondary w-full rounded-lg border border-transparent p-2 text-left outline-hidden"
+      class="bg-secondary focus-visible:border-primary text-secondary w-full cursor-pointer rounded-lg border border-transparent p-2 text-left outline-hidden"
       (click)="searchModalIsVisible.set(true)"
     >
       Search cards...

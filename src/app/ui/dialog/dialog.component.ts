@@ -2,7 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TemplateRef, contentChild, input, output } from '@angular/core';
 import clsx from 'clsx';
 
-import { IconComponent } from '../icon/icon';
+import { IconComponent } from '../icon/icon.component';
 import { ModalComponent } from '../modal/modal.component';
 
 /**
@@ -14,7 +14,11 @@ import { ModalComponent } from '../modal/modal.component';
     <app-modal [open]="open()" [modalClass]="modalClass" (dismiss)="dismiss.emit()" #dialog>
       <ng-template>
         <!-- TODO: ui/button -->
-        <button class="absolute top-2 right-2 flex p-2" aria-label="Close dialog" (click)="dialog.close()">
+        <button
+          class="absolute top-2 right-2 flex cursor-pointer p-2"
+          aria-label="Close dialog"
+          (click)="dialog.close()"
+        >
           <app-icon class="text-secondary size-6" name="crossInCircle" />
         </button>
 

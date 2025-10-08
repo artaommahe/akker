@@ -8,7 +8,6 @@ const meta = {
     a11y: { test: 'todo' },
   },
   render: args => ({
-    args,
     template: `
       <app-expansion-panel ${argsToTemplate(args)}>
         Toggle panel
@@ -18,6 +17,7 @@ const meta = {
         </ng-template>
       </app-expansion-panel>
     `,
+    props: args,
   }),
 } satisfies Meta<ExpansionPanelComponent>;
 

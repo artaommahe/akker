@@ -75,7 +75,6 @@ export class CardDetailsComponent implements OnInit {
   update = output<CardDetailsCard>();
 
   form = inject(NonNullableFormBuilder).group({
-    // TODO: ? check that term is not used by other cards
     term: ['', [Validators.minLength(1), Validators.required]],
     fullTerm: [''],
     definition: [''],

@@ -8,7 +8,6 @@ const meta = {
     a11y: { test: 'todo' },
   },
   render: args => ({
-    args,
     // there is an issue in `compodoc` that it doesn't treat aliased input signals as inputs
     // so `${argsToTemplate(args)}` can't properly map from `type` to `appButtonType`
     // https://github.com/storybookjs/storybook/issues/29697
@@ -21,6 +20,7 @@ const meta = {
         Button
       </button>
     `,
+    props: args,
   }),
   argTypes: {
     // there is an issue in `compodoc` that it doesn't treat aliased input signals as inputs

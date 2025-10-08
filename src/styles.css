@@ -51,6 +51,10 @@ layer(base);
 }
 
 @layer base {
+  html {
+    @apply font-roboto text-primary;
+  }
+
   ::file-selector-button {
     @apply bg-inverse border-secondary text-inverse border-2 px-1.5;
   }
