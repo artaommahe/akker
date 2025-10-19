@@ -1,5 +1,4 @@
-import { type Meta, type StoryObj } from '@storybook/angular';
-import { argsToTemplate } from '@storybook/angular';
+import { type Meta, type StoryObj, argsToTemplate } from '@storybook/angular';
 
 import { globalIcons } from './global-icons';
 import { IconComponent } from './icon.component';
