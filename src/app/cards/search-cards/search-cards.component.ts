@@ -15,7 +15,7 @@ import { debounce, map, of, timer } from 'rxjs';
 import type { GetCardsParams } from 'src/app/barn/cards-api.service';
 import type { DbCard } from 'src/app/barn/rxdb/schema/cards';
 import { LearnCardsButtonComponent } from 'src/app/learning/learn-cards-button/learn-cards-button.component';
-import { IconComponent } from 'src/app/ui/icon/icon';
+import { IconComponent } from 'src/app/ui/icon/icon.component';
 import { InputDirective } from 'src/app/ui/input/input';
 
 import { CardsListComponent } from '../cards-list/cards-list.component';
@@ -40,7 +40,12 @@ import { SearchService } from '../search.service';
         />
 
         @if (searchParams()) {
-          <button class="flex shrink-0" type="button" aria-label="Clear search string" (click)="clearSearchInput()">
+          <button
+            class="flex shrink-0 cursor-pointer"
+            type="button"
+            aria-label="Clear search string"
+            (click)="clearSearchInput()"
+          >
             <app-icon class="text-secondary size-6" name="crossInCircle" />
           </button>
         }
