@@ -1,3 +1,5 @@
+import '@angular/compiler';
+
 import { setProjectAnnotations } from '@analogjs/storybook-angular/testing';
 import * as addonA11y from '@storybook/addon-a11y/preview';
 import { beforeAll } from 'vitest';

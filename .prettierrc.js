@@ -24,6 +24,7 @@ const config = {
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrderParserPlugins: ['typescript', 'decorators'],
+  importOrderSideEffects: false,
   plugins: ['prettier-plugin-tailwindcss', '@trivago/prettier-plugin-sort-imports'],
 };
 

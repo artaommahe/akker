@@ -40,14 +40,6 @@ export default defineConfig(({ mode }) => {
               configDir: path.join(dirname, '.storybook'),
             }),
           ],
-          // for some reasons running these tests right after installing libs fails with an error
-          // > Error: Failed to import test file node_modules/@storybook/addon-vitest/dist/vitest-plugin/setup-file.mjs
-          // > Caused by: Error: Vitest failed to find the runner. This is a bug in Vitest. Please, open an issue with reproduction.
-          // looks like adding `@storybook/angular/dist/client/index.mjs` to `optimizeDeps` fixes the issue :/
-          // https://github.com/vitest-dev/vitest/issues/8471
-          optimizeDeps: {
-            include: ['@storybook/angular/dist/client/index.mjs'],
-          },
           test: {
             name: 'storybook',
             setupFiles: ['./.storybook/vitest.setup.ts'],
