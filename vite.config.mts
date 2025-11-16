@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-/// <reference types="@vitest/browser/providers/playwright" />
 import angular from '@analogjs/vite-plugin-angular';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+import { playwright } from '@vitest/browser-playwright';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
             include: ['src/**/*.spec.ts'],
             browser: {
               enabled: true,
-              provider: 'playwright',
+              provider: playwright(),
               headless: true,
               instances: [{ browser: 'chromium' }],
               screenshotFailures: false,
@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => {
             setupFiles: ['./.storybook/vitest.setup.ts'],
             browser: {
               enabled: true,
-              provider: 'playwright',
+              provider: playwright(),
               headless: true,
               instances: [{ browser: 'chromium' }],
             },
