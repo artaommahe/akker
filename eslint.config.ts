@@ -1,11 +1,12 @@
-// @ts-check
 import eslint from '@eslint/js';
 import angular from 'angular-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import storybook from 'eslint-plugin-storybook';
+import { globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
+  globalIgnores(['storybook-static']),
   {
     ignores: ['!.storybook'],
   },
