@@ -82,7 +82,7 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["./**/*.ts", "./**/*.html"],
-            "eslintConfig": "eslint.config.js"
+            "eslintConfig": "eslint.config.ts"
           }
         },
         "e2e": {

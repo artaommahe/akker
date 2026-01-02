@@ -1,6 +1,9 @@
+import { type Routes, provideRouter, withHashLocation } from '@angular/router';
 import { type Meta, type StoryObj } from '@storybook/angular';
 
 import { LayoutComponent } from './layout.component';
+
+const routes: Routes = [{ path: '**', component: LayoutComponent }];
 
 const meta = {
   component: LayoutComponent,
@@ -8,6 +11,9 @@ const meta = {
     layout: 'fullscreen',
   },
   render: () => ({
+    applicationConfig: {
+      providers: [provideRouter(routes, withHashLocation())],
+    },
     template: `
       <app-layout>
         <div class="p-8 text-center text-xl">
