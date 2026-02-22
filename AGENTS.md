@@ -68,7 +68,7 @@ Imports are sorted by Prettier using `@trivago/prettier-plugin-sort-imports`:
 
 ```typescript
 // Third-party imports
-import { NgIf } from '@angular/common';
+import { Component } from '@angular/common';
 import { map } from 'rxjs/operators';
 
 import { CardService } from '../services/card.service';
